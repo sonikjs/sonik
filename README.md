@@ -12,6 +12,8 @@ const app = createApp()
 export default app
 ```
 
+See examples: [./examples](./examples/)
+
 ## Author
 
 Yusuke Wada <https://github.com/yusukebe>
