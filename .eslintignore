@@ -1,0 +1,6 @@
+node_modules
+dist
+*.tgz
+yarn-error.log
+sandbox
+examples

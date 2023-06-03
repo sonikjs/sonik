@@ -1,0 +1,5 @@
+name = "nashi-example-basic"
+compatibility_date = "2023-01-01"
+
+[build]
+command = "yarn build"
