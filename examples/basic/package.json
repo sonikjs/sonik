@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "hono": "^3.2.2",
-    "nashi": "./nashi-0.0.0.tgz"
+    "nashi": "^0.0.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
