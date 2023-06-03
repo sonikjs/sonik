@@ -1,20 +1,21 @@
 {
-  "name": "nashi-example-basic",
+  "name": "sonik-example-basic",
   "version": "0.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "build": "vite build",
-    "dev": "wrangler dev --live-reload dist/index.mjs",
-    "deploy": "wrangler deploy --minify dist/index.mjs"
+    "dev": "vite",
+    "deploy": "wrangler pages deploy ./dist"
   },
   "dependencies": {
-    "hono": "^3.2.2",
-    "nashi": "./nashi-0.0.0.tgz"
+    "hono": "^3.6.3",
+    "sonik": "^0.0.79"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
-    "concurrently": "^8.1.0",
-    "vite": "^4.3.9",
-    "wrangler": "^3.0.1"
+    "@sonikjs/cloudflare-pages": "^0.0.1",
+    "vite": "^4.4.6",
+    "wrangler": "^3.4.0"
   }
 }
