@@ -11,7 +11,8 @@
     "postbuild": "publint",
     "lint": "eslint -c .eslintrc.cjs src/**.ts",
     "lint:fix": "eslint -c .eslintrc.cjs src/**.ts --fix",
-    "release": "yarn build && np"
+    "prerelease": "yarn build",
+    "release": "np"
   },
   "files": [
     "dist"
