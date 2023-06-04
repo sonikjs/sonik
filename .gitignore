@@ -3,3 +3,4 @@ dist
 yarn-error.log
 package-lock.json
 *.tgz
+sandbox
