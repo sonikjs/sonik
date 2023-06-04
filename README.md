@@ -2,17 +2,30 @@
 
 Nashi means "nothing". An almost nothing framework.
 
-## Usage
+## Quick Start
 
-```ts
-import { createApp } from 'nashi'
+Just try it.
 
-const app = createApp()
-
-export default app
+```
+npx degit yusukebe/nashi/examples/basic my-app
+cd my-app
 ```
 
-See examples: [./examples](./examples/)
+npm:
+
+```
+npm run install
+npm run dev
+npm run deploy
+```
+
+yarn:
+
+```
+yarn install
+yarn dev
+yarn deploy
+```
 
 ## Author
 
