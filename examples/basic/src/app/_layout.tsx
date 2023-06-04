@@ -1,4 +1,4 @@
-import type { LayoutHandler } from '../../../../src'
+import type { LayoutHandler } from 'nashi'
 
 const handler: LayoutHandler = (children, _c) => {
   return (

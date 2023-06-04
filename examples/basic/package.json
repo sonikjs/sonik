@@ -8,8 +8,8 @@
     "deploy": "wrangler deploy --minify dist/index.mjs"
   },
   "dependencies": {
-    "hono": "^3.2.2",
-    "nashi": "^0.0.1"
+    "hono": "^3.2.4",
+    "nashi": "^0.0.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
