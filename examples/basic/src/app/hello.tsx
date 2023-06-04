@@ -1,4 +1,4 @@
-import type { H } from 'nashi'
+import type { H } from '../../../../src'
 
 export const handler: H = {
   GET: (c) => {

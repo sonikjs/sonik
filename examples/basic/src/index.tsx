@@ -1,4 +1,4 @@
-import { createApp } from 'nashi'
+import { createApp } from '../../../src'
 
 const app = createApp()
 app.showRoutes()
