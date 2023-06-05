@@ -1,4 +1,5 @@
 {
+  "deno.enable": false,
   "eslint.validate": [
     "javascript",
     "javascriptreact",

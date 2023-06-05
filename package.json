@@ -1,59 +1,15 @@
 {
-  "name": "nashi",
-  "description": "Nashi means \"nothing\". An almost nothing framework.",
-  "version": "0.0.2",
-  "types": "dist/index.d.ts",
-  "module": "dist/index.js",
-  "type": "module",
-  "scripts": {
-    "build:esbuild": "esbuild --bundle --format=esm --minify --outfile=dist/index.js src/index.ts",
-    "build": "rimraf dist && yarn build:esbuild && tsc --emitDeclarationOnly --declaration",
-    "postbuild": "publint",
-    "lint": "eslint -c .eslintrc.cjs src/**.ts",
-    "lint:fix": "eslint -c .eslintrc.cjs src/**.ts --fix",
-    "prerelease": "yarn build",
-    "release": "np"
-  },
-  "files": [
-    "dist"
+  "name": "nashi-monorepo",
+  "description": "monorepo for Nashi.js",
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
   "author": "Yusuke Wada <yusuke@kamawada.com> (https://github.com/yusukebe)",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/yusukebe/nashi.git"
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org",
-    "access": "public"
-  },
-  "homepage": "https://github.com/yusukebe/nashi",
-  "dependencies": {
-    "hono": "^3.2.2"
-  },
-  "devDependencies": {
-    "@types/node": "^20.2.5",
-    "@typescript-eslint/eslint-plugin": "^5.59.8",
-    "@typescript-eslint/parser": "^5.59.8",
-    "eslint": "^8.42.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-define-config": "^1.20.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-node": "^11.1.0",
-    "np": "^8.0.2",
-    "prettier": "^2.8.8",
-    "publint": "^0.1.12",
-    "rimraf": "^5.0.1",
-    "typescript": "^5.0.4",
-    "vite": "^4.3.9"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+  "homepage": "https://github.com/yusukebe/nashi"
 }

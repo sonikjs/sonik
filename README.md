@@ -7,7 +7,7 @@ Nashi means "nothing". An almost nothing framework.
 Just try it.
 
 ```
-npx degit yusukebe/nashi/examples/basic my-app
+npx degit yusukebe/nashi/packages/examples/basic my-app
 cd my-app
 ```
 
