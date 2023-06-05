@@ -14,5 +14,7 @@ export type LayoutHandler = (
   c: Context
 ) => HtmlEscapedString | Promise<HtmlEscapedString>
 
+export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
+
 export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'
 export type Route = Partial<{ [Key in Methods]: Handler }>

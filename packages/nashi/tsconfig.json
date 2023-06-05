@@ -14,13 +14,6 @@
     "types": [
       "vite/client"
     ],
-    "rootDir": "./src/",
     "outDir": "./dist/",
   },
-  "include": [
-    "src/**/*.ts",
-  ],
-  "exclude": [
-    "examples/**/*",
-  ]
 }

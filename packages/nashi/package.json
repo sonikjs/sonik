@@ -6,9 +6,9 @@
   "module": "dist/index.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
-    "build:esbuild": "esbuild --bundle --format=esm --minify --outfile=dist/index.js src/index.ts",
-    "build": "rimraf dist && yarn build:esbuild && tsc --emitDeclarationOnly --declaration",
+    "test": "vitest --run",
+    "build:esbuild": "esbuild --bundle --format=esm --minify --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
+    "build": "rimraf dist && yarn build:esbuild && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json",
     "postbuild": "publint",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
@@ -39,15 +39,13 @@
     "hono": "^3.2.2"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.2",
     "@types/node": "^20.2.5",
-    "esbuild-jest": "^0.5.0",
-    "jest": "^29.5.0",
     "np": "^8.0.2",
     "publint": "^0.1.12",
     "rimraf": "^5.0.1",
     "typescript": "^5.0.4",
-    "vite": "^4.3.9"
+    "vite": "^4.3.9",
+    "vitest": "^0.31.4"
   },
   "engines": {
     "node": ">=18.0.0"
