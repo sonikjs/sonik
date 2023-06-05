@@ -16,7 +16,7 @@
     "release": "release-it"
   },
   "files": [
-    "README.md",
+    "../../README.md",
     "dist"
   ],
   "exports": {
