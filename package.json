@@ -11,5 +11,15 @@
     "type": "git",
     "url": "https://github.com/yusukebe/nashi.git"
   },
-  "homepage": "https://github.com/yusukebe/nashi"
+  "homepage": "https://github.com/yusukebe/nashi",
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-define-config": "^1.20.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-node": "^11.1.0"
+  }
 }
