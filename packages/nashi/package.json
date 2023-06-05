@@ -6,6 +6,7 @@
   "module": "dist/index.js",
   "type": "module",
   "scripts": {
+    "test": "jest",
     "build:esbuild": "esbuild --bundle --format=esm --minify --outfile=dist/index.js src/index.ts",
     "build": "rimraf dist && yarn build:esbuild && tsc --emitDeclarationOnly --declaration",
     "postbuild": "publint",
