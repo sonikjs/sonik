@@ -42,6 +42,7 @@
     "@types/node": "^20.2.5",
     "np": "^8.0.2",
     "publint": "^0.1.12",
+    "release-it": "^15.10.5",
     "rimraf": "^5.0.1",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
