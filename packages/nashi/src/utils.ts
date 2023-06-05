@@ -1,6 +1,7 @@
-export const filePathToPath = (filePath: string) => {
+export const filePathToPath = (filePath: string, rootPath: string = '/src/app') => {
   return filePath
-    .replace(/\/src\/app|\.tsx$/g, '')
+    .replace(rootPath, '')
+    .replace(/\.tsx$/g, '')
     .replace(/^\/index/, '/') // `/index`
     .replace(/\/index/, '') // `/about/index`
     .replace(/\[\.{3}.+\]/, '*')

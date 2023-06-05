@@ -11,35 +11,44 @@ import type {
 } from './types'
 import { filePathToPath } from './utils'
 
-type CreateAppOptions = {
-  app?: Hono
-  PRESERVED?: Record<string, { default: ReservedHandler }>
-  FILES?: Record<string, { default: Route }>
-}
+type CreateAppOptions = Partial<{
+  app: Hono
+  PRESERVED: Record<string, unknown>
+  FILES: Record<string, unknown>
+  root: string
+}>
 
-type NashiOptions = Omit<CreateAppOptions, 'app'>
+type NashiOptions = Partial<{
+  PRESERVED: Record<string, { default: ReservedHandler }>
+  FILES: Record<string, { default: Route }>
+  root: string
+}>
 
 class Nashi {
   readonly PRESERVED: Record<string, { default: ReservedHandler }>
   readonly FILES: Record<string, { default: Route }>
   readonly preservedHandlers: Record<string, ReservedHandler>
+  readonly root: string
 
   constructor(options?: NashiOptions) {
     // `import.meta.glob` can only use literals
     this.PRESERVED =
       options?.PRESERVED ??
-      import.meta.glob('/src/app/(_layout|_error|_404).tsx', {
+      import.meta.glob('/src/app/(_layout|_error|_404).(tsx|ts)', {
         eager: true,
       })
     this.FILES =
       options?.FILES ??
-      import.meta.glob('/src/app/**/[a-zA-Z[]*.tsx', {
+      import.meta.glob('/src/app/**/[a-z_-[]*.(tsx|ts)', {
         eager: true,
       })
 
-    // Init preserved
+    this.root = options?.root ?? '/src/app'
+
+    // Init preservedHandlers
     this.preservedHandlers = Object.keys(this.PRESERVED).reduce((preserved, file) => {
-      const key = file.replace(/\/src\/app\/|\.tsx$/g, '')
+      const root = this.root ?? '/src/app'
+      const key = file.replace(`${root}/`, '').replace(/\.tsx$/g, '')
       return { ...preserved, [key]: this.PRESERVED[file].default }
     }, {}) as Record<string, ReservedHandler>
   }
@@ -61,7 +70,7 @@ class Nashi {
     const app = options?.app ?? new Hono()
 
     Object.keys(this.FILES).map((filePath) => {
-      const path = filePathToPath(filePath)
+      const path = filePathToPath(filePath, this.root)
       const file = this.FILES[filePath]
       Object.keys(file.default).map((method) => {
         app.on(method, path, (c) => {
@@ -92,8 +101,9 @@ class Nashi {
 export const createApp = (options?: CreateAppOptions) => {
   const nashi = options
     ? new Nashi({
-        FILES: options.FILES,
-        PRESERVED: options.PRESERVED,
+        FILES: options.FILES as Record<string, { default: Route }>,
+        PRESERVED: options.PRESERVED as Record<string, { default: ReservedHandler }>,
+        root: options.root,
       })
     : new Nashi()
   return nashi.createApp({ app: options?.app })
