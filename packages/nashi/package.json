@@ -1,7 +1,7 @@
 {
   "name": "nashi",
   "description": "Nashi means \"nothing\". An almost nothing framework.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
