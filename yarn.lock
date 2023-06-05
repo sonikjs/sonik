@@ -2650,7 +2650,7 @@ nanoid@^3.3.6:
   integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
 "nashi@file:/Users/yusuke/work/nashi/packages/nashi":
-  version "0.0.5"
+  version "0.0.6"
   resolved "file:packages/nashi"
   dependencies:
     hono "^3.2.2"
