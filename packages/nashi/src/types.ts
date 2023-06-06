@@ -14,6 +14,8 @@ export type LayoutHandler = (
   c: Context
 ) => HtmlEscapedString | Promise<HtmlEscapedString>
 
+export type FunctionComponent = () => HtmlEscapedString
+
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 
 export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'

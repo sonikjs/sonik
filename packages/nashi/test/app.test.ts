@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createApp } from '../src'
 
 describe('Basic', () => {
-  const FILES = import.meta.glob('/test/mock/**/[a-z_[]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/test/mock/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
     eager: true,
   })
 
@@ -33,6 +33,12 @@ describe('Basic', () => {
     expect(res.status).toBe(200)
     /* eslint-disable quotes */
     expect(await res.text()).toBe("<p>It's me</p>")
+  })
+
+  it('Should return 200 response /page', async () => {
+    const res = await app.request('/page')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toBe('<h1>Function Component!</h1>')
   })
 })
 

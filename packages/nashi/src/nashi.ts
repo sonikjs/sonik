@@ -1,5 +1,6 @@
 import type { Context } from 'hono'
 import { Hono } from 'hono/tiny'
+import type { HtmlEscapedString } from 'hono/utils/html'
 import type {
   ErrorHandler,
   Handler,
@@ -8,6 +9,7 @@ import type {
   Methods,
   LayoutHandler,
   ReservedHandler,
+  FunctionComponent,
 } from './types'
 import { filePathToPath } from './utils'
 
@@ -20,13 +22,13 @@ type CreateAppOptions = Partial<{
 
 type NashiOptions = Partial<{
   PRESERVED: Record<string, { default: ReservedHandler }>
-  FILES: Record<string, { default: Route }>
+  FILES: Record<string, { default: Route | FunctionComponent }>
   root: string
 }>
 
 class Nashi {
   readonly PRESERVED: Record<string, { default: ReservedHandler }>
-  readonly FILES: Record<string, { default: Route }>
+  readonly FILES: Record<string, { default: Route | FunctionComponent }>
   readonly preservedHandlers: Record<string, ReservedHandler>
   readonly root: string
 
@@ -39,7 +41,7 @@ class Nashi {
       })
     this.FILES =
       options?.FILES ??
-      import.meta.glob('/src/app/**/[a-z_-[]*.(tsx|ts)', {
+      import.meta.glob('/src/app/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
         eager: true,
       })
 
@@ -47,7 +49,7 @@ class Nashi {
 
     // Init preservedHandlers
     this.preservedHandlers = Object.keys(this.PRESERVED).reduce((preserved, file) => {
-      const root = this.root ?? '/src/app'
+      const root = this.root
       const key = file.replace(`${root}/`, '').replace(/\.tsx$/g, '')
       return { ...preserved, [key]: this.PRESERVED[file].default }
     }, {}) as Record<string, ReservedHandler>
@@ -71,10 +73,18 @@ class Nashi {
 
     Object.keys(this.FILES).map((filePath) => {
       const path = filePathToPath(filePath, this.root)
-      const file = this.FILES[filePath]
-      Object.keys(file.default).map((method) => {
+      const fileDefault = this.FILES[filePath].default
+
+      if (typeof fileDefault === 'function') {
+        app.get(path, (c) => {
+          return this.toWebResponse(c, fileDefault())
+        })
+        return
+      }
+
+      Object.keys(fileDefault).map((method) => {
         app.on(method, path, (c) => {
-          const handler = file.default[method as Methods]
+          const handler = fileDefault[method as Methods]
           if (handler) {
             const res = handler(c)
             return this.toWebResponse(c, res)
