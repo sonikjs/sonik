@@ -1,5 +1,7 @@
-import type { Context } from 'hono'
+import type { Context as HonoContext } from 'hono'
 import type { HtmlEscapedString } from 'hono/utils/html'
+
+export type Context = HonoContext
 
 export type HandlerResponse =
   | HtmlEscapedString
@@ -14,7 +16,7 @@ export type LayoutHandler = (
   c: Context
 ) => HtmlEscapedString | Promise<HtmlEscapedString>
 
-export type FunctionComponent = () => HtmlEscapedString
+export type FunctionComponent = (c: Context) => HtmlEscapedString
 
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 

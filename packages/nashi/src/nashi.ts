@@ -1,6 +1,5 @@
 import type { Context } from 'hono'
 import { Hono } from 'hono/tiny'
-import type { HtmlEscapedString } from 'hono/utils/html'
 import type {
   ErrorHandler,
   Handler,
@@ -77,7 +76,7 @@ class Nashi {
 
       if (typeof fileDefault === 'function') {
         app.get(path, (c) => {
-          return this.toWebResponse(c, fileDefault())
+          return this.toWebResponse(c, fileDefault(c))
         })
         return
       }
