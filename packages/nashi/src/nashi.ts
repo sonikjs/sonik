@@ -1,14 +1,13 @@
-import type { Context } from 'hono'
+import type { Context, Env } from 'hono'
 import { Hono } from 'hono/tiny'
 import type {
   ErrorHandler,
   Handler,
   HandlerResponse,
-  Route,
-  Methods,
   LayoutHandler,
   ReservedHandler,
   FunctionComponent,
+  AppHandler,
 } from './types'
 import { filePathToPath } from './utils'
 
@@ -21,13 +20,32 @@ type CreateAppOptions = Partial<{
 
 type NashiOptions = Partial<{
   PRESERVED: Record<string, { default: ReservedHandler }>
-  FILES: Record<string, { default: Route | FunctionComponent }>
+  FILES: Record<string, { default: FunctionComponent; app?: AppHandler }>
   root: string
 }>
 
+function sortObject<T>(obj: Record<string, T>) {
+  const sortedEntries = Object.entries(obj).sort((a, b) => {
+    if (a[0] > b[0]) {
+      return -1
+    }
+    if (a[0] < b[0]) {
+      return 1
+    }
+    return 0
+  })
+
+  const sortedObject: Record<string, T> = {}
+  for (const [key, value] of sortedEntries) {
+    sortedObject[key] = value
+  }
+
+  return sortedObject
+}
+
 class Nashi {
   readonly PRESERVED: Record<string, { default: ReservedHandler }>
-  readonly FILES: Record<string, { default: Route | FunctionComponent }>
+  readonly FILES: Record<string, { default: FunctionComponent; app?: AppHandler }>
   readonly preservedHandlers: Record<string, ReservedHandler>
   readonly root: string
 
@@ -38,11 +56,13 @@ class Nashi {
       import.meta.glob('/src/app/(_layout|_error|_404).(tsx|ts)', {
         eager: true,
       })
-    this.FILES =
+    const FILES =
       options?.FILES ??
       import.meta.glob('/src/app/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
         eager: true,
       })
+
+    this.FILES = sortObject(FILES)
 
     this.root = options?.root ?? '/src/app'
 
@@ -67,8 +87,8 @@ class Nashi {
     return c.json(res, status)
   }
 
-  createApp = (options?: { app?: Hono }) => {
-    const app = options?.app ?? new Hono()
+  createApp = <E extends Env>(options?: { app?: Hono }) => {
+    const app = (options?.app ?? new Hono()) as Hono<E>
 
     Object.keys(this.FILES).map((filePath) => {
       const path = filePathToPath(filePath, this.root)
@@ -78,19 +98,12 @@ class Nashi {
         app.get(path, (c) => {
           return this.toWebResponse(c, fileDefault(c))
         })
-        return
       }
 
-      Object.keys(fileDefault).map((method) => {
-        app.on(method, path, (c) => {
-          const handler = fileDefault[method as Methods]
-          if (handler) {
-            const res = handler(c)
-            return this.toWebResponse(c, res)
-          }
-          return c.notFound()
-        })
-      })
+      const appHandler = this.FILES[filePath]['app']
+      if (appHandler) {
+        appHandler(app.use(path))
+      }
     })
 
     const notFound = this.preservedHandlers['_404'] as Handler
@@ -107,13 +120,13 @@ class Nashi {
   }
 }
 
-export const createApp = (options?: CreateAppOptions) => {
+export const createApp = <E extends Env>(options?: CreateAppOptions) => {
   const nashi = options
     ? new Nashi({
-        FILES: options.FILES as Record<string, { default: Route }>,
+        FILES: options.FILES as Record<string, { default: FunctionComponent; app?: AppHandler }>,
         PRESERVED: options.PRESERVED as Record<string, { default: ReservedHandler }>,
         root: options.root,
       })
     : new Nashi()
-  return nashi.createApp({ app: options?.app })
+  return nashi.createApp<E>({ app: options?.app })
 }

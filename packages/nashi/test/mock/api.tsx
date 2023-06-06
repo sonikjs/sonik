@@ -1,16 +1,16 @@
-import type { Route } from '../../src'
+import type { AppHandler } from '../../src'
 
-export default {
-  GET: (c) =>
-    c.json({ foo: 'bar' }, 200, {
-      'X-Custom': 'Hello',
-    }),
-  POST: (c) =>
-    c.json(
+export const app: AppHandler = (app) => {
+  app.post((c) => {
+    return c.json(
       {
         ok: true,
-        message: 'created',
       },
       201
-    ),
-} satisfies Route
+    )
+  })
+}
+
+export default function Home() {
+  return <h1>Welcome!</h1>
+}

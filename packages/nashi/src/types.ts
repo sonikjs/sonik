@@ -1,7 +1,8 @@
-import type { Context as HonoContext } from 'hono'
+import type { Context } from 'hono'
+import type { Hono } from 'hono'
 import type { HtmlEscapedString } from 'hono/utils/html'
 
-export type Context = HonoContext
+export type { Hono, Context } from 'hono'
 
 export type HandlerResponse =
   | HtmlEscapedString
@@ -15,10 +16,14 @@ export type LayoutHandler = (
   children: HtmlEscapedString,
   c: Context
 ) => HtmlEscapedString | Promise<HtmlEscapedString>
+export type AppHandler = (app: Hono) => void
 
 export type FunctionComponent = (c: Context) => HtmlEscapedString
 
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 
 export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'
-export type Route = Partial<{ [Key in Methods]: Handler }>
+export type Route = Partial<{ [Key in Methods]: Handler }> &
+  Partial<{
+    APP: AppHandler
+  }>

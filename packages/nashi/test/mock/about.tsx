@@ -1,5 +1,5 @@
 import type { Route } from '../../src'
 
-export default {
-  GET: () => <h1>About</h1>,
-} satisfies Route
+export default function About() {
+  return <h1>About me!</h1>
+}
