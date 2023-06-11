@@ -49,13 +49,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yusukebe/xsjs.git"
+    "url": "https://github.com/yusukebe/sonik.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
   },
-  "homepage": "https://github.com/yusukebe/xsjs",
+  "homepage": "https://github.com/yusukebe/sonik",
   "dependencies": {
     "@babel/core": "^7.22.5",
     "@babel/generator": "^7.22.5",
