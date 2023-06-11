@@ -18,7 +18,7 @@ import {
 } from '@babel/types'
 import type { Plugin } from 'vite'
 
-export function xsjsVitePlugin(): Plugin {
+export function sonikVitePlugin(): Plugin {
   let idCounter = 0
 
   return {

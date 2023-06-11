@@ -1,4 +1,4 @@
-import type { Route } from 'nashi'
+import type { Route } from 'sonik'
 
 export default {
   GET: (c) => {

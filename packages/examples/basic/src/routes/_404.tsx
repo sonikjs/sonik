@@ -1,4 +1,4 @@
-import type { Handler } from 'nashi'
+import type { Handler } from 'sonik'
 
 const handler: Handler = (c) => {
   return <p>Not Found</p>

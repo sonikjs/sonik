@@ -1,12 +1,12 @@
 import { defineConfig } from 'vite'
-import { nashiVitePlugin } from 'nashi/vite-plugin'
+import { sonikVitePlugin } from 'sonik/vite-plugin'
 import { resolve } from 'path'
 import { transform } from 'esbuild'
 
 export default defineConfig(({ mode }) => {
   if (mode === 'server') {
     return {
-      plugins: [nashiVitePlugin(), minifyEs()],
+      plugins: [sonikVitePlugin(), minifyEs()],
       ssr: {
         noExternal: true,
         format: 'esm',
@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
     }
   }
   return {
-    plugins: [nashiVitePlugin(), minifyEs()],
+    plugins: [sonikVitePlugin(), minifyEs()],
     build: {
       lib: {
         noExternal: true,

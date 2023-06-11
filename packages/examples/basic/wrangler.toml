@@ -1,4 +1,4 @@
-name = "nashi-example-basic"
+name = "sonik-example-basic"
 compatibility_date = "2023-01-01"
 
 main = "dist/server.js"

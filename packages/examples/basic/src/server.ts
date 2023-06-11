@@ -1,4 +1,4 @@
-import { createApp } from 'nashi'
+import { createApp } from 'sonik'
 
 import { serveStatic } from 'hono/cloudflare-workers'
 

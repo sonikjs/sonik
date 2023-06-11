@@ -1,4 +1,4 @@
-import type { LayoutHandler } from 'nashi'
+import type { LayoutHandler } from 'sonik'
 
 const handler: LayoutHandler = (children) => {
   return (

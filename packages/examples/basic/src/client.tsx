@@ -1,3 +1,3 @@
-import { createClient } from 'nashi/client'
+import { createClient } from 'sonik/client'
 
 createClient()

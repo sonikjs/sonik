@@ -1,5 +1,5 @@
 {
-  "name": "nashi-example-basic",
+  "name": "sonik-example-basic",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "hono": "^3.2.4",
-    "nashi": "^0.0.12"
+    "sonik": "^0.0.1-0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
