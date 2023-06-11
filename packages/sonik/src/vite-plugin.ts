@@ -18,8 +18,12 @@ import {
 } from '@babel/types'
 import type { Plugin } from 'vite'
 
-export function sonikVitePlugin(): Plugin {
-  let idCounter = 0
+type PluginOptions = {
+  shouldWrap: boolean
+}
+
+export function sonikVitePlugin(options?: Partial<PluginOptions>): Plugin {
+  let classCounter = 0
 
   return {
     name: 'sonik-vite-plugin',
@@ -48,7 +52,10 @@ export function sonikVitePlugin(): Plugin {
 
                 node.openingElement.attributes.push(componentNameAttribute)
 
-                const idDiv = jsxAttribute(jsxIdentifier('id'), stringLiteral('id-' + idCounter))
+                const idDiv = jsxAttribute(
+                  jsxIdentifier('class'),
+                  stringLiteral('component-wrapper-' + classCounter)
+                )
 
                 const newJSXOpeningElement: JSXOpeningElement = {
                   type: 'JSXOpeningElement',
@@ -69,10 +76,14 @@ export function sonikVitePlugin(): Plugin {
                   false
                 )
 
-                path.replaceWith(newElement)
+                if (options?.shouldWrap === true) {
+                  path.replaceWith(newElement)
+                } else {
+                  path.replaceWith(node)
+                }
 
                 isFirstJSXElement = false
-                idCounter++
+                classCounter++
               }
             },
           })

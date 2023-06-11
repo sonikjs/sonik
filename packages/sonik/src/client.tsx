@@ -17,11 +17,13 @@ export const createClient = async (options?: { hydrate?: Hydrate }) => {
 
     const newElem = createElement(Component, {})
     const elements = document.querySelectorAll(`[component-name="${componentName}"]`)
-    elements.forEach((element) => {
-      const parentElement = element.parentElement
-      if (parentElement) {
-        h(newElem, parentElement)
-      }
-    })
+    if (elements) {
+      elements.forEach((element) => {
+        const parentElement = element.parentElement
+        if (parentElement) {
+          h(newElem, parentElement)
+        }
+      })
+    }
   })
 }
