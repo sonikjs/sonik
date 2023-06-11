@@ -9,13 +9,14 @@
     "declaration": true,
     "lib": [
       "WebWorker",
-      "ESNext"
+      "ESNext",
+      "DOM"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
     ],
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
+    "jsxImportSource": "preact",
     "outDir": "./dist/",
   },
 }

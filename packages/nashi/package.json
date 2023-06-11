@@ -7,8 +7,10 @@
   "type": "module",
   "scripts": {
     "test": "vitest --run",
-    "build:esbuild": "esbuild --bundle --format=esm --minify --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
-    "build": "rimraf dist && yarn build:esbuild && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json",
+    "build:server": "esbuild --bundle --format=esm --minify --external:preact --external:preact-render-to-string --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
+    "build:vite-plugin": "esbuild --format=esm --platform=node --minify --tsconfig=tsconfig.build.json --outfile=dist/vite-plugin.js src/vite-plugin.ts",
+    "build:client": "esbuild --format=esm --minify --tsconfig=tsconfig.build.json --outfile=dist/client.js src/client.tsx",
+    "build": "rimraf dist && yarn build:server && yarn build:client && yarn build:vite-plugin && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json",
     "postbuild": "publint",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
@@ -23,6 +25,24 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
+    "./vite-plugin": {
+      "types": "./dist/vite-plugin.d.ts",
+      "import": "./dist/vite-plugin.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "client": [
+        "./dist/client"
+      ],
+      "vite-plugin": [
+        "./dist/vite-plugin"
+      ]
     }
   },
   "author": "Yusuke Wada <yusuke@kamawada.com> (https://github.com/yusukebe)",
@@ -37,13 +57,23 @@
   },
   "homepage": "https://github.com/yusukebe/nashi",
   "dependencies": {
-    "hono": "^3.2.2"
+    "@babel/core": "^7.22.5",
+    "@babel/generator": "^7.22.5",
+    "@babel/parser": "^7.22.5",
+    "@babel/traverse": "^7.22.5",
+    "@babel/types": "^7.22.5",
+    "hono": "^3.2.2",
+    "preact": "10.11.0",
+    "preact-render-to-string": "5.2.6"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.20.1",
     "@types/node": "^20.2.5",
+    "esbuild": "^0.18.0",
     "publint": "^0.1.12",
     "release-it": "^15.10.5",
     "rimraf": "^5.0.1",
+    "tsx": "^3.12.7",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
     "vitest": "^0.31.4"

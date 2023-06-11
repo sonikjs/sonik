@@ -1,24 +1,21 @@
 import type { Context } from 'hono'
 import type { Hono } from 'hono'
-import type { HtmlEscapedString } from 'hono/utils/html'
+import type { VNode } from 'preact'
 
 export type { Hono, Context } from 'hono'
 
-export type HandlerResponse =
-  | HtmlEscapedString
-  | Promise<HtmlEscapedString>
-  | Response
-  | Promise<Response>
+export type HandlerResponse = VNode | Promise<VNode> | Response | Promise<Response>
 
 export type Handler = (c: Context) => HandlerResponse
 export type ErrorHandler = (e: Error, c: Context) => HandlerResponse
-export type LayoutHandler = (
-  children: HtmlEscapedString,
-  c: Context
-) => HtmlEscapedString | Promise<HtmlEscapedString>
+export type LayoutHandler = (children: VNode, c: Context) => VNode
 export type AppHandler = (app: Hono) => void
 
-export type FunctionComponent = (c: Context) => HtmlEscapedString
+export type FCOptions = {
+  island: (Component: VNode) => VNode
+}
+
+export type FC = (c: Context, options: FCOptions) => VNode
 
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 

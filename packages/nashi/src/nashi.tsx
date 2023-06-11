@@ -1,15 +1,10 @@
 import type { Context, Env } from 'hono'
 import { Hono } from 'hono/tiny'
-import type {
-  ErrorHandler,
-  Handler,
-  HandlerResponse,
-  LayoutHandler,
-  ReservedHandler,
-  FunctionComponent,
-  AppHandler,
-} from './types'
-import { filePathToPath } from './utils'
+import type { VNode } from 'preact'
+import { render } from 'preact-render-to-string'
+
+import type { ErrorHandler, Handler, ReservedHandler, FC, AppHandler, LayoutHandler } from './types'
+import { filePathToPath, sortObject } from './utils'
 
 type CreateAppOptions = Partial<{
   app: Hono
@@ -20,34 +15,17 @@ type CreateAppOptions = Partial<{
 
 type NashiOptions = Partial<{
   PRESERVED: Record<string, { default: ReservedHandler }>
-  FILES: Record<string, { default: FunctionComponent; app?: AppHandler }>
+  FILES: Record<string, { default: FC; app?: AppHandler }>
   root: string
 }>
 
-function sortObject<T>(obj: Record<string, T>) {
-  const sortedEntries = Object.entries(obj).sort((a, b) => {
-    if (a[0] > b[0]) {
-      return -1
-    }
-    if (a[0] < b[0]) {
-      return 1
-    }
-    return 0
-  })
-
-  const sortedObject: Record<string, T> = {}
-  for (const [key, value] of sortedEntries) {
-    sortedObject[key] = value
-  }
-
-  return sortedObject
-}
-
 class Nashi {
   readonly PRESERVED: Record<string, { default: ReservedHandler }>
-  readonly FILES: Record<string, { default: FunctionComponent; app?: AppHandler }>
+  readonly FILES: Record<string, { default: FC; app?: AppHandler }>
   readonly preservedHandlers: Record<string, ReservedHandler>
   readonly root: string
+
+  count: number = 0
 
   constructor(options?: NashiOptions) {
     // `import.meta.glob` can only use literals
@@ -74,17 +52,24 @@ class Nashi {
     }, {}) as Record<string, ReservedHandler>
   }
 
-  private toWebResponse = async (c: Context, res: HandlerResponse, status: number = 200) => {
+  private toWebResponse = async (
+    c: Context,
+    res: VNode | Promise<VNode> | Response | Promise<Response>,
+    status: number = 200
+  ) => {
     if (res instanceof Promise) res = await res
     if (res instanceof Response) return res
-    if (typeof res === 'string' || res['isEscaped']) {
-      const layout = this.preservedHandlers['_layout'] as LayoutHandler
-      if (layout) {
-        return c.html(await layout(res, c), status)
-      }
-      return c.html(res, status)
+    const layout = this.preservedHandlers['_layout'] as LayoutHandler
+
+    if (layout) {
+      return c.html(render(layout(res, c)), status)
     }
-    return c.json(res, status)
+    return c.html(render(res), status)
+  }
+
+  island = (Component: VNode) => {
+    this.count++
+    return <div id={'id-' + this.count}>{Component}</div>
   }
 
   createApp = <E extends Env>(options?: { app?: Hono }) => {
@@ -96,7 +81,13 @@ class Nashi {
 
       if (typeof fileDefault === 'function') {
         app.get(path, (c) => {
-          return this.toWebResponse(c, fileDefault(c))
+          this.count = 0
+          return this.toWebResponse(
+            c,
+            fileDefault(c, {
+              island: this.island,
+            })
+          )
         })
       }
 
@@ -123,7 +114,7 @@ class Nashi {
 export const createApp = <E extends Env>(options?: CreateAppOptions) => {
   const nashi = options
     ? new Nashi({
-        FILES: options.FILES as Record<string, { default: FunctionComponent; app?: AppHandler }>,
+        FILES: options.FILES as Record<string, { default: FC; app?: AppHandler }>,
         PRESERVED: options.PRESERVED as Record<string, { default: ReservedHandler }>,
         root: options.root,
       })

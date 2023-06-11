@@ -1,2 +1,2 @@
-export { createApp } from './nashi'
-export type * from './types'
+export { createApp } from './nashi.js'
+export type * from './types.js'
