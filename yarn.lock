@@ -3009,10 +3009,17 @@ nanoid@^3.3.6:
   integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
 "nashi@file:/Users/yusuke/work/nashi/packages/nashi":
-  version "0.0.11"
+  version "0.0.12"
   resolved "file:packages/nashi"
   dependencies:
+    "@babel/core" "^7.22.5"
+    "@babel/generator" "^7.22.5"
+    "@babel/parser" "^7.22.5"
+    "@babel/traverse" "^7.22.5"
+    "@babel/types" "^7.22.5"
     hono "^3.2.2"
+    preact "10.11.0"
+    preact-render-to-string "5.2.6"
 
 natural-compare-lite@^1.4.0:
   version "1.4.0"
