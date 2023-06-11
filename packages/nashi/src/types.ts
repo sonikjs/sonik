@@ -11,11 +11,9 @@ export type ErrorHandler = (e: Error, c: Context) => HandlerResponse
 export type LayoutHandler = (children: VNode, c: Context) => VNode
 export type AppHandler = (app: Hono) => void
 
-export type FCOptions = {
-  island: (Component: VNode) => VNode
-}
+export type FCOptions = {}
 
-export type FC = (c: Context, options: FCOptions) => VNode
+export type FC = (c: Context, options?: Partial<FCOptions>) => VNode
 
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 

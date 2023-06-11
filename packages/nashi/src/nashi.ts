@@ -67,11 +67,6 @@ class Nashi {
     return c.html(render(res), status)
   }
 
-  island = (Component: VNode) => {
-    this.count++
-    return <div id={'id-' + this.count}>{Component}</div>
-  }
-
   createApp = <E extends Env>(options?: { app?: Hono }) => {
     const app = (options?.app ?? new Hono()) as Hono<E>
 
@@ -82,12 +77,7 @@ class Nashi {
       if (typeof fileDefault === 'function') {
         app.get(path, (c) => {
           this.count = 0
-          return this.toWebResponse(
-            c,
-            fileDefault(c, {
-              island: this.island,
-            })
-          )
+          return this.toWebResponse(c, fileDefault(c))
         })
       }
 
