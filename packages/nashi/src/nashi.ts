@@ -31,18 +31,18 @@ class Nashi {
     // `import.meta.glob` can only use literals
     this.PRESERVED =
       options?.PRESERVED ??
-      import.meta.glob('/src/app/(_layout|_error|_404).(tsx|ts)', {
+      import.meta.glob('/src/routes/(_layout|_error|_404).(tsx|ts)', {
         eager: true,
       })
     const FILES =
       options?.FILES ??
-      import.meta.glob('/src/app/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+      import.meta.glob('/src/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
         eager: true,
       })
 
     this.FILES = sortObject(FILES)
 
-    this.root = options?.root ?? '/src/app'
+    this.root = options?.root ?? '/src/routes'
 
     // Init preservedHandlers
     this.preservedHandlers = Object.keys(this.PRESERVED).reduce((preserved, file) => {

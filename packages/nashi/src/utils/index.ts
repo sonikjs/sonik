@@ -1,4 +1,4 @@
-export const filePathToPath = (filePath: string, rootPath: string = '/src/app') => {
+export const filePathToPath = (filePath: string, rootPath: string = '/src/routes') => {
   return filePath
     .replace(rootPath, '')
     .replace(/\.tsx$/g, '')
