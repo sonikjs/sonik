@@ -1,12 +1,11 @@
 import { defineConfig } from 'vite'
-import { sonikVitePlugin } from 'sonik/vite-plugin'
+import { sonikVitePlugin, minifyEs } from 'sonik/vite-plugins'
 import { resolve } from 'path'
-import { transform } from 'esbuild'
 
 export default defineConfig(({ mode }) => {
   if (mode === 'server') {
     return {
-      plugins: [sonikVitePlugin(), minifyEs()],
+      plugins: [sonikVitePlugin({ shouldWrap: true }), minifyEs()],
       ssr: {
         noExternal: true,
         format: 'esm',
@@ -21,7 +20,7 @@ export default defineConfig(({ mode }) => {
     }
   }
   return {
-    plugins: [sonikVitePlugin(), minifyEs()],
+    plugins: [sonikVitePlugin({ shouldWrap: false }), minifyEs()],
     build: {
       lib: {
         noExternal: true,
@@ -33,18 +32,3 @@ export default defineConfig(({ mode }) => {
     },
   }
 })
-
-function minifyEs() {
-  return {
-    name: 'minifyEs',
-    renderChunk: {
-      order: 'post',
-      async handler(code, chunk, outputOptions) {
-        if (outputOptions.format === 'es') {
-          return await transform(code, { minify: true })
-        }
-        return code
-      },
-    },
-  }
-}

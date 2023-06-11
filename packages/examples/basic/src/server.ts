@@ -1,9 +1,10 @@
 import { createApp } from 'sonik'
-
 import { serveStatic } from 'hono/cloudflare-workers'
 
 const app = createApp()
 
 app.get('/static/*', serveStatic({ root: './' }))
+
+app.showRoutes()
 
 export default app

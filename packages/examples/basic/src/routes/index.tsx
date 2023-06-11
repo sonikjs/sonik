@@ -1,4 +1,4 @@
-import Counter from '../island/Counter'
+import Counter from '../islands/Counter'
 import type { Context } from 'sonik'
 
 export default function Home(c: Context) {
