@@ -8,9 +8,9 @@
   "scripts": {
     "test": "vitest --run",
     "build:server": "esbuild --bundle --format=esm --minify --external:preact --external:preact-render-to-string --external:hono --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
-    "build:vite-plugin": "esbuild --format=esm --platform=node --minify --tsconfig=tsconfig.build.json --outfile=dist/vite-plugin.js src/vite-plugin.ts",
+    "build:vite-plugins": "esbuild --format=esm --platform=node --minify --tsconfig=tsconfig.build.json --outdir=dist src/vite-plugins/* src/vite-plugins.ts",
     "build:client": "esbuild --format=esm --minify --tsconfig=tsconfig.build.json --outfile=dist/client.js src/client.tsx",
-    "build": "rimraf dist && yarn build:server && yarn build:client && yarn build:vite-plugin && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json",
+    "build": "rimraf dist && yarn build:server && yarn build:client && yarn build:vite-plugins && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json",
     "watch": "concurrently \"yarn build:server --watch\" \"yarn build:client --watch\" \"yarn build:vite-plugin --watch\"",
     "postbuild": "publint",
     "lint": "eslint src/**.ts",
@@ -30,9 +30,9 @@
       "types": "./dist/client.d.ts",
       "import": "./dist/client.js"
     },
-    "./vite-plugin": {
-      "types": "./dist/vite-plugin.d.ts",
-      "import": "./dist/vite-plugin.js"
+    "./vite-plugins": {
+      "types": "./dist/vite-plugins.d.ts",
+      "import": "./dist/vite-plugins.js"
     }
   },
   "typesVersions": {
@@ -40,8 +40,8 @@
       "client": [
         "./dist/client"
       ],
-      "vite-plugin": [
-        "./dist/vite-plugin"
+      "vite-plugins": [
+        "./dist/vite-plugins"
       ]
     }
   },
@@ -74,6 +74,7 @@
     "publint": "^0.1.12",
     "release-it": "^15.10.5",
     "rimraf": "^5.0.1",
+    "rollup": "^3.25.0",
     "tsx": "^3.12.7",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
