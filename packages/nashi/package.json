@@ -1,7 +1,7 @@
 {
-  "name": "nashi",
-  "description": "Nashi means \"nothing\". An almost nothing framework.",
-  "version": "0.0.12",
+  "name": "sonik",
+  "description": "[WIP] On as supersonik train",
+  "version": "0.0.0",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
@@ -15,8 +15,7 @@
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
     "prerelease": "yarn build && yarn test && cp ../../README.md ./",
-    "release": "release-it",
-    "postpublish": "rm README.md"
+    "release": "release-it"
   },
   "files": [
     "dist"
