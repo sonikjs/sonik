@@ -1,7 +1,7 @@
 {
   "name": "sonik",
-  "description": "[WIP] On as supersonik train",
-  "version": "0.0.1-0",
+  "description": "Supersonik web framework for the Edges.",
+  "version": "0.0.0",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
@@ -48,13 +48,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yusukebe/nashi.git"
+    "url": "https://github.com/yusukebe/xsjs.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
   },
-  "homepage": "https://github.com/yusukebe/nashi",
+  "homepage": "https://github.com/yusukebe/xsjs",
   "dependencies": {
     "@babel/core": "^7.22.5",
     "@babel/generator": "^7.22.5",

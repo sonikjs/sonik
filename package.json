@@ -1,6 +1,6 @@
 {
-  "name": "nashi-monorepo",
-  "description": "monorepo for Nashi.js",
+  "name": "sonik-monorepo",
+  "description": "monorepo for Sonik",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -9,9 +9,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yusukebe/nashi.git"
+    "url": "https://github.com/yusukebe/sonik.git"
   },
-  "homepage": "https://github.com/yusukebe/nashi",
+  "homepage": "https://github.com/yusukebe/sonik",
   "devDependencies": {
     "prettier": "^2.8.8",
     "@typescript-eslint/eslint-plugin": "^5.59.8",

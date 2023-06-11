@@ -3008,19 +3008,6 @@ nanoid@^3.3.6:
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.6.tgz"
   integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
-"nashi@file:/Users/yusuke/work/nashi/packages/nashi":
-  version "0.0.12"
-  resolved "file:packages/nashi"
-  dependencies:
-    "@babel/core" "^7.22.5"
-    "@babel/generator" "^7.22.5"
-    "@babel/parser" "^7.22.5"
-    "@babel/traverse" "^7.22.5"
-    "@babel/types" "^7.22.5"
-    hono "^3.2.2"
-    preact "10.11.0"
-    preact-render-to-string "5.2.6"
-
 natural-compare-lite@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/natural-compare-lite/-/natural-compare-lite-1.4.0.tgz"
@@ -3837,6 +3824,19 @@ socks@^2.7.1:
   dependencies:
     ip "^2.0.0"
     smart-buffer "^4.2.0"
+
+"sonik@file:/Users/yusuke/work/nashi/packages/nashi":
+  version "0.0.1-0"
+  resolved "file:packages/nashi"
+  dependencies:
+    "@babel/core" "^7.22.5"
+    "@babel/generator" "^7.22.5"
+    "@babel/parser" "^7.22.5"
+    "@babel/traverse" "^7.22.5"
+    "@babel/types" "^7.22.5"
+    hono "^3.2.2"
+    preact "10.11.0"
+    preact-render-to-string "5.2.6"
 
 source-map-js@^1.0.2:
   version "1.0.2"

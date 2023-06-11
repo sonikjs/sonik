@@ -13,13 +13,13 @@ type CreateAppOptions = Partial<{
   root: string
 }>
 
-type NashiOptions = Partial<{
+type SonikOptions = Partial<{
   PRESERVED: Record<string, { default: ReservedHandler }>
   FILES: Record<string, { default: FC; app?: AppHandler }>
   root: string
 }>
 
-class Nashi {
+class Sonik {
   readonly PRESERVED: Record<string, { default: ReservedHandler }>
   readonly FILES: Record<string, { default: FC; app?: AppHandler }>
   readonly preservedHandlers: Record<string, ReservedHandler>
@@ -27,7 +27,7 @@ class Nashi {
 
   count: number = 0
 
-  constructor(options?: NashiOptions) {
+  constructor(options?: SonikOptions) {
     // `import.meta.glob` can only use literals
     this.PRESERVED =
       options?.PRESERVED ??
@@ -102,12 +102,12 @@ class Nashi {
 }
 
 export const createApp = <E extends Env>(options?: CreateAppOptions) => {
-  const nashi = options
-    ? new Nashi({
+  const sonik = options
+    ? new Sonik({
         FILES: options.FILES as Record<string, { default: FC; app?: AppHandler }>,
         PRESERVED: options.PRESERVED as Record<string, { default: ReservedHandler }>,
         root: options.root,
       })
-    : new Nashi()
-  return nashi.createApp<E>({ app: options?.app })
+    : new Sonik()
+  return sonik.createApp<E>({ app: options?.app })
 }

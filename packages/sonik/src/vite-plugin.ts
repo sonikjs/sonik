@@ -18,11 +18,11 @@ import {
 } from '@babel/types'
 import type { Plugin } from 'vite'
 
-export function nashiVitePlugin(): Plugin {
+export function xsjsVitePlugin(): Plugin {
   let idCounter = 0
 
   return {
-    name: 'nashi-vite-plugin',
+    name: 'sonik-vite-plugin',
     async load(id) {
       if (/island/.test(id)) {
         const fileName = id.replace(/^.*src\/island\//, '')

@@ -1,13 +1,13 @@
-# Nashi.js
+# Sonik
 
-Nashi means "nothing". An almost nothing framework.
+[WIP] Supersonik web framework for the Edges.
 
 ## Quick Start
 
 Just try it.
 
 ```
-npx degit yusukebe/nashi/packages/examples/basic my-app
+npx degit yusukebe/sonik/packages/examples/basic my-app
 cd my-app
 ```
 
