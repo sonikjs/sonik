@@ -1,5 +1,10 @@
 name = "nashi-example-basic"
 compatibility_date = "2023-01-01"
 
+main = "dist/server.js"
+
+[site]
+bucket = './site'
+
 [build]
 command = "yarn build"

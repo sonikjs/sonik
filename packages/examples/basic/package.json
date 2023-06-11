@@ -1,18 +1,22 @@
 {
   "name": "nashi-example-basic",
   "version": "0.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
-    "build": "vite build",
-    "dev": "wrangler dev --live-reload dist/index.mjs",
-    "deploy": "wrangler deploy --minify dist/index.mjs"
+    "build:client": "vite build --outDir ./site/static",
+    "build:server": "vite build --mode 'server'",
+    "build": "concurrently \"yarn build:client\" \"yarn build:server\"",
+    "dev": "wrangler dev --live-reload dist/server.js",
+    "deploy": "wrangler deploy --minify dist/server.js"
   },
   "dependencies": {
     "hono": "^3.2.4",
-    "nashi": "^0.0.10"
+    "nashi": "^0.0.11"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
+    "concurrently": "^8.2.0",
     "vite": "^4.3.9",
     "wrangler": "^3.0.1"
   }

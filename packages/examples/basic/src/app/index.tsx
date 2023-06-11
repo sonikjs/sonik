@@ -1,5 +1,13 @@
-import type { Route } from 'nashi'
+import Counter from '../island/Counter'
+import type { Context } from 'nashi'
 
-export default {
-  GET: () => <h1>Hello!</h1>,
-} satisfies Route
+export default function Home(c: Context) {
+  return (
+    <div>
+      <h2>Hello {c.req.query('name')}!</h2>
+      <Counter />
+      <Counter />
+      <Counter />
+    </div>
+  )
+}
