@@ -1,5 +1,4 @@
-import type { Context } from 'hono'
-import type { Hono } from 'hono'
+import type { Context, Env, Hono } from 'hono'
 import type { VNode } from 'preact'
 
 export type { Hono, Context } from 'hono'

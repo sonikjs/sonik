@@ -67,8 +67,8 @@ class Sonik {
     return c.html(render(res), status)
   }
 
-  createApp = <E extends Env>(options?: { app?: Hono }) => {
-    const app = (options?.app ?? new Hono()) as Hono<E>
+  createApp = <E extends Env>(options?: { app?: Hono }): Hono<E> => {
+    const app = options?.app ?? new Hono()
 
     Object.keys(this.FILES).map((filePath) => {
       const path = filePathToPath(filePath, this.root)
@@ -97,7 +97,7 @@ class Sonik {
       app.onError((e, c) => this.toWebResponse(c, error(e, c), 500))
     }
 
-    return app
+    return app as unknown as Hono<E>
   }
 }
 

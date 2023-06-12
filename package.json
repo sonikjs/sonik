@@ -11,7 +11,7 @@
     "build:vite-plugins": "esbuild --format=esm --platform=node --minify --tsconfig=tsconfig.build.json --outdir=dist src/vite-plugins/* src/vite-plugins.ts",
     "build:client": "esbuild --format=esm --minify --tsconfig=tsconfig.build.json --outfile=dist/client.js src/client.tsx",
     "build": "rimraf dist && yarn build:server && yarn build:client && yarn build:vite-plugins && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json",
-    "watch": "concurrently \"yarn build:server --watch\" \"yarn build:client --watch\" \"yarn build:vite-plugin --watch\"",
+    "watch": "concurrently \"yarn build:server --watch\" \"yarn build:client --watch\" \"yarn build:vite-plugins --watch\"",
     "postbuild": "publint",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
