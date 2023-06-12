@@ -35,7 +35,7 @@ export function sonikVitePlugin(options?: Partial<PluginOptions>): Plugin {
 
         const ast = parse(contents, {
           sourceType: 'module',
-          plugins: ['jsx'],
+          plugins: ['typescript', 'jsx'],
         })
 
         if (ast) {
