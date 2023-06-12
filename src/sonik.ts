@@ -2,6 +2,7 @@ import type { Context, Env } from 'hono'
 import { Hono } from 'hono/tiny'
 import type { VNode } from 'preact'
 import { render } from 'preact-render-to-string'
+import type { Route } from './types'
 
 import type { ErrorHandler, Handler, ReservedHandler, FC, AppHandler, LayoutHandler } from './types'
 import { filePathToPath, sortObject } from './utils'
@@ -111,3 +112,5 @@ export const createApp = <E extends Env>(options?: CreateAppOptions) => {
     : new Sonik()
   return sonik.createApp<E>({ app: options?.app })
 }
+
+export const defineRoute = (route: Route): Route => route
