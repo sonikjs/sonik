@@ -78,7 +78,6 @@ class Sonik {
       if (typeof fileDefault === 'function') {
         app.get(path, (c) => {
           this.count = 0
-          console.log(fileDefault)
           return this.toWebResponse(c, fileDefault(c))
         })
       }
