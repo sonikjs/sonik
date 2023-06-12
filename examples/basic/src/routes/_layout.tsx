@@ -18,7 +18,7 @@ const handler: LayoutHandler = (children) => {
             <small>© 2023 yusukebe</small>
           </footer>
         </div>
-        <script src='/static/client.js'></script>
+        <script type='module' src='/static/client.js'></script>
       </body>
     </html>
   )

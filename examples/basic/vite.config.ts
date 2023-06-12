@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import { sonikVitePlugin, minifyEs } from 'sonik/vite-plugins'
-import { resolve } from 'path'
 
 export default defineConfig(({ mode }) => {
   if (mode === 'server') {
@@ -24,7 +23,7 @@ export default defineConfig(({ mode }) => {
     build: {
       lib: {
         noExternal: true,
-        entry: resolve(__dirname, './src/client.tsx'),
+        entry: './src/client.tsx',
         fileName: 'client',
         formats: ['es'],
       },
