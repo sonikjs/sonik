@@ -7,7 +7,7 @@
 Just try it.
 
 ```
-npx degit yusukebe/sonik/packages/examples/basic my-app
+npx degit yusukebe/sonik/examples/basic my-app
 cd my-app
 ```
 
