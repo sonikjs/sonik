@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest'
 import { createApp } from '../src'
 
 describe('Basic', () => {
-  const FILES = import.meta.glob('/tests/mock/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/tests/mock',
+    root: '/tests/mock/routes',
     FILES: FILES,
   })
 
@@ -43,16 +43,16 @@ describe('Basic', () => {
 })
 
 describe('With preserved', () => {
-  const FILES = import.meta.glob('/tests/mock/**/[a-z-_[]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
-  const PRESERVED = import.meta.glob('/tests/mock/(_layout|_error|_404).tsx', {
+  const PRESERVED = import.meta.glob('/tests/mock/routes/(_layout|_error|_404).tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/tests/mock',
+    root: '/tests/mock/routes',
     FILES: FILES,
     PRESERVED: PRESERVED,
   })
@@ -86,12 +86,12 @@ describe('With preserved', () => {
 })
 
 describe('API', () => {
-  const FILES = import.meta.glob('/tests/mock/**/[a-z-_[]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/tests/mock',
+    root: '/tests/mock/routes',
     FILES: FILES,
   })
 

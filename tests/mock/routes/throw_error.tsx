@@ -1,4 +1,4 @@
-import { defineRoute } from '../../src'
+import { defineRoute } from '../../../src'
 
 export default defineRoute({
   GET: () => {

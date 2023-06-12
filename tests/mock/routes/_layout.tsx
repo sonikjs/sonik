@@ -1,4 +1,4 @@
-import type { LayoutHandler } from '../../src'
+import type { LayoutHandler } from '../../../src'
 
 const handler: LayoutHandler = (children, c) => {
   return (
