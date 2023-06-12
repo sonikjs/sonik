@@ -8,14 +8,7 @@ import _traverse from '@babel/traverse'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const traverse = _traverse.default as typeof _traverse
-import type { JSXOpeningElement, JSXClosingElement } from '@babel/types'
-import {
-  jsxElement,
-  jsxExpressionContainer,
-  jsxAttribute,
-  jsxIdentifier,
-  stringLiteral,
-} from '@babel/types'
+import { jsxAttribute, jsxIdentifier, stringLiteral } from '@babel/types'
 import type { Plugin } from 'vite'
 
 type PluginOptions = {
@@ -49,39 +42,8 @@ export function sonikVitePlugin(options?: Partial<PluginOptions>): Plugin {
                   jsxIdentifier('component-name'),
                   stringLiteral(fileName)
                 )
-
                 node.openingElement.attributes.push(componentNameAttribute)
-
-                const idDiv = jsxAttribute(
-                  jsxIdentifier('class'),
-                  stringLiteral('component-wrapper-' + classCounter)
-                )
-
-                const newJSXOpeningElement: JSXOpeningElement = {
-                  type: 'JSXOpeningElement',
-                  name: jsxIdentifier('div'),
-                  attributes: [idDiv],
-                  selfClosing: false,
-                }
-
-                const newJSXClosingElement: JSXClosingElement = {
-                  type: 'JSXClosingElement',
-                  name: jsxIdentifier('div'),
-                }
-
-                const newElement = jsxElement(
-                  newJSXOpeningElement,
-                  newJSXClosingElement,
-                  [jsxExpressionContainer(node)],
-                  false
-                )
-
-                if (options?.shouldWrap === true) {
-                  path.replaceWith(newElement)
-                } else {
-                  path.replaceWith(node)
-                }
-
+                path.replaceWith(node)
                 isFirstJSXElement = false
                 classCounter++
               }

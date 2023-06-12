@@ -12,14 +12,18 @@ export const createClient = async (options?: { hydrate?: Hydrate }) => {
     const elements = document.querySelectorAll(`[component-name="${componentName}"]`)
     if (elements) {
       elements.forEach(async (element) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const fileCallback = FILES[filePath] as () => Promise<{ default: Promise<any> }>
-        const file = await fileCallback()
-        const Component = await file.default
-        const newElem = createElement(Component, {})
-
         const parentElement = element.parentElement
         if (parentElement) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const fileCallback = FILES[filePath] as () => Promise<{ default: Promise<any> }>
+          const file = await fileCallback()
+          const Component = await file.default
+
+          const serializedProps =
+            parentElement.attributes.getNamedItem('data-serialized-props')?.value
+
+          const newElem = createElement(Component, JSON.parse(serializedProps ?? '{}'))
+
           h(newElem, parentElement)
         }
       })

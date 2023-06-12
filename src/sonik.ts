@@ -1,10 +1,17 @@
 import type { Context, Env } from 'hono'
 import { Hono } from 'hono/tiny'
 import type { VNode } from 'preact'
+import { h, options as preactOptions } from 'preact'
 import { render } from 'preact-render-to-string'
-import type { Route } from './types'
-
-import type { ErrorHandler, Handler, ReservedHandler, FC, AppHandler, LayoutHandler } from './types'
+import type {
+  Route,
+  ErrorHandler,
+  Handler,
+  ReservedHandler,
+  FC,
+  AppHandler,
+  LayoutHandler,
+} from './types'
 import { filePathToPath, sortObject } from './utils'
 
 type CreateAppOptions = Partial<{
@@ -63,8 +70,10 @@ class Sonik {
     const layout = this.preservedHandlers['_layout'] as LayoutHandler
 
     if (layout) {
+      // @ts-ignore
       return c.html(render(layout(res, c)), status)
     }
+    // @ts-ignore
     return c.html(render(res), status)
   }
 
@@ -125,3 +134,29 @@ export const createApp = <E extends Env>(options?: CreateAppOptions) => {
 }
 
 export const defineRoute = (route: Route): Route => route
+
+const DEFAULT_PROPS = ['children', '__wrapped', 'name']
+
+const oldHook = preactOptions.vnode
+preactOptions.vnode = (vnode) => {
+  // @ts-ignore
+  if (typeof vnode.type === 'function' && !vnode.props['__wrapped']) {
+    const originalType = vnode.type
+
+    vnode.type = (props) => {
+      const keys = Object.keys(props)
+      const hasProps = keys.some((key) => !DEFAULT_PROPS.includes(key))
+      if (!hasProps) {
+        return h(originalType, props)
+      }
+      return h(
+        'div',
+        { 'data-serialized-props': JSON.stringify(props), class: 'component-wrapper' },
+        h(originalType, props)
+      )
+    }
+    // @ts-ignore
+    vnode.props['__wrapped'] = true
+  }
+  if (oldHook) oldHook(vnode)
+}
