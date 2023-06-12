@@ -1,5 +1,5 @@
-import type { Route } from '../../src'
+import { defineRoute } from '../../src'
 
-export default {
+export default defineRoute({
   GET: () => <h1>Hello</h1>,
-} satisfies Route
+})

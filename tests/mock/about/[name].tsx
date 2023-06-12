@@ -1,7 +1,7 @@
-import type { Route } from '../../../src'
+import { defineRoute } from '../../../src'
 
-export default {
+export default defineRoute({
   GET: (c) => {
     return <p>It's {c.req.param('name')}</p>
   },
-} satisfies Route
+})

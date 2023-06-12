@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { createApp } from '../src'
 
-describe.skip('Basic', () => {
-  const FILES = import.meta.glob('/test/mock/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+describe('Basic', () => {
+  const FILES = import.meta.glob('/tests/mock/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test/mock',
+    root: '/tests/mock',
     FILES: FILES,
   })
 
@@ -22,12 +22,6 @@ describe.skip('Basic', () => {
     expect(res.status).toBe(404)
   })
 
-  it('Should return 200 response /about', async () => {
-    const res = await app.request('/about')
-    expect(res.status).toBe(200)
-    expect(await res.text()).toBe('<h1>About</h1>')
-  })
-
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
@@ -40,22 +34,30 @@ describe.skip('Basic', () => {
     expect(res.status).toBe(200)
     expect(await res.text()).toBe('<h1>Function Component!</h1>')
   })
+
+  it('Should return 500 response /throw_error', async () => {
+    const res = await app.request('/throw_error')
+    expect(res.status).toBe(500)
+    expect(await res.text()).toBe('Internal Server Error')
+  })
 })
 
-describe.skip('With preserved', () => {
-  const FILES = import.meta.glob('/test/mock/**/[a-z-_[]*.(tsx|ts)', {
+describe('With preserved', () => {
+  const FILES = import.meta.glob('/tests/mock/**/[a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
-  const PRESERVED = import.meta.glob('/test/mock/(_layout|_error|_404).tsx', {
+  const PRESERVED = import.meta.glob('/tests/mock/(_layout|_error|_404).tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test/mock',
+    root: '/tests/mock',
     FILES: FILES,
     PRESERVED: PRESERVED,
   })
+
+  app.showRoutes()
 
   it('Should return 200 response - /', async () => {
     const res = await app.request('/')
@@ -69,10 +71,11 @@ describe.skip('With preserved', () => {
     expect(await res.text()).toBe('<html><body><h1>Not Found</h1></body></html>')
   })
 
-  it('Should return 200 response /about', async () => {
-    const res = await app.request('/about')
+  it('Should return 200 response /about/me', async () => {
+    const res = await app.request('/about/me')
     expect(res.status).toBe(200)
-    expect(await res.text()).toBe('<html><body><h1>About</h1></body></html>')
+    /* eslint-disable quotes */
+    expect(await res.text()).toBe("<html><body><p>It's me</p></body></html>")
   })
 
   it('Should return 500 response /throw_error', async () => {
@@ -82,13 +85,13 @@ describe.skip('With preserved', () => {
   })
 })
 
-describe.skip('API', () => {
-  const FILES = import.meta.glob('/test/mock/**/[a-z-_[]*.(tsx|ts)', {
+describe('API', () => {
+  const FILES = import.meta.glob('/tests/mock/**/[a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test/mock',
+    root: '/tests/mock',
     FILES: FILES,
   })
 
@@ -99,7 +102,7 @@ describe.skip('API', () => {
     expect(await res.json()).toEqual({ foo: 'bar' })
   })
 
-  it('Should return 200 response - POST /foo', async () => {
+  it('Should return 200 response - POST /api', async () => {
     const res = await app.request('/api', {
       method: 'POST',
     })

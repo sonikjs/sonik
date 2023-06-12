@@ -1,16 +1,21 @@
-import type { AppHandler } from '../../src'
+import { defineRoute } from '../../src'
 
-export const app: AppHandler = (app) => {
-  app.post((c) => {
-    return c.json(
-      {
-        ok: true,
-      },
-      201
-    )
-  })
-}
-
-export default function Home() {
-  return <h1>Welcome!</h1>
-}
+export default defineRoute({
+  APP: (app) => {
+    app.get((c) => {
+      c.header('X-Custom', 'Hello')
+      return c.json({
+        foo: 'bar',
+      })
+    })
+    app.post((c) => {
+      return c.json(
+        {
+          message: 'created',
+          ok: true,
+        },
+        201
+      )
+    })
+  },
+})

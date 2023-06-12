@@ -16,13 +16,13 @@ type CreateAppOptions = Partial<{
 
 type SonikOptions = Partial<{
   PRESERVED: Record<string, { default: ReservedHandler }>
-  FILES: Record<string, { default: FC; app?: AppHandler }>
+  FILES: Record<string, { default: FC & Route }>
   root: string
 }>
 
 class Sonik {
   readonly PRESERVED: Record<string, { default: ReservedHandler }>
-  readonly FILES: Record<string, { default: FC; app?: AppHandler }>
+  readonly FILES: Record<string, { default: FC & Route }>
   readonly preservedHandlers: Record<string, ReservedHandler>
   readonly root: string
 
@@ -82,10 +82,21 @@ class Sonik {
         })
       }
 
-      const appHandler = this.FILES[filePath]['app']
-      if (appHandler) {
-        appHandler(app.use(path))
-      }
+      Object.keys(fileDefault).map((method) => {
+        if (method === 'APP') {
+          const appHandler = fileDefault['APP']
+          if (appHandler) {
+            appHandler(app.use(path))
+          }
+        } else {
+          const handler = fileDefault[method as keyof Route] as Handler
+          if (handler) {
+            app.on(method, path, (c) => {
+              return this.toWebResponse(c, handler(c))
+            })
+          }
+        }
+      })
     })
 
     const notFound = this.preservedHandlers['_404'] as Handler
