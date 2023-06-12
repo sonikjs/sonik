@@ -16,7 +16,7 @@
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
     "prerelease": "yarn build && yarn test && cp ../../README.md ./",
-    "release": "release-it"
+    "release": "np"
   },
   "files": [
     "dist"
@@ -78,9 +78,9 @@
     "eslint-define-config": "^1.20.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
+    "np": "^8.0.3",
     "prettier": "^2.8.8",
     "publint": "^0.1.12",
-    "release-it": "^15.10.5",
     "rimraf": "^5.0.1",
     "rollup": "^3.25.0",
     "tsx": "^3.12.7",
