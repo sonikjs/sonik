@@ -26,7 +26,7 @@ describe('Basic', () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
     /* eslint-disable quotes */
-    expect(await res.text()).toBe("<p>It's me</p>")
+    expect(await res.text()).toBe("<p>It's me</p><b>My name is me</b>")
   })
 
   it('Should return 200 response /page', async () => {
@@ -75,7 +75,7 @@ describe('With preserved', () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
     /* eslint-disable quotes */
-    expect(await res.text()).toBe("<html><body><p>It's me</p></body></html>")
+    expect(await res.text()).toBe("<html><body><p>It's me</p><b>My name is me</b></body></html>")
   })
 
   it('Should return 500 response /throw_error', async () => {
