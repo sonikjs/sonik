@@ -149,7 +149,7 @@ preactOptions.vnode = (vnode) => {
       const keys = Object.keys(props)
       const hasProps = keys.some((key) => !DEFAULT_PROPS.includes(key))
       if (!hasProps) {
-        return h(originalType, props)
+        return h('div', { class: 'component-wrapper' }, h(originalType, props))
       }
       return h(
         'div',

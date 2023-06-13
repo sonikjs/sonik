@@ -13,8 +13,7 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           external: ['__STATIC_CONTENT_MANIFEST', 'preact'],
         },
-        target: 'esnext',
-        ssr: './src/server.ts',
+        ssr: './app/server.ts',
       },
     }
   }
@@ -23,7 +22,7 @@ export default defineConfig(({ mode }) => {
     build: {
       lib: {
         noExternal: true,
-        entry: './src/client.tsx',
+        entry: './app/client.tsx',
         fileName: 'client',
         formats: ['es'],
       },
