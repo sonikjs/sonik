@@ -122,7 +122,7 @@ class Sonik {
   }
 }
 
-export const createApp = <E extends Env>(options?: CreateAppOptions) => {
+export function createApp<E extends Env>(options?: CreateAppOptions) {
   const sonik = options
     ? new Sonik({
         FILES: options.FILES as Record<string, { default: FC; app?: AppHandler }>,
@@ -133,7 +133,9 @@ export const createApp = <E extends Env>(options?: CreateAppOptions) => {
   return sonik.createApp<E>({ app: options?.app })
 }
 
-export const defineRoute = (route: Route): Route => route
+export function defineRoute(route: Route) {
+  return route
+}
 
 const DEFAULT_PROPS = ['children', '__wrapped', 'name']
 
