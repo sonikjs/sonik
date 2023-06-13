@@ -3,20 +3,20 @@ import { filePathToPath } from '../src/utils'
 
 describe('filePathToPath', () => {
   it('Should return a correct path', () => {
-    expect(filePathToPath('/src/routes/index.tsx')).toBe('/')
-    expect(filePathToPath('/src/routes/about.tsx')).toBe('/about')
-    expect(filePathToPath('/src/routes/about/index.tsx')).toBe('/about')
-    expect(filePathToPath('/src/routes/about/me')).toBe('/about/me')
-    expect(filePathToPath('/src/routes/about/me/index.tsx')).toBe('/about/me')
-    expect(filePathToPath('/src/routes/about/me/address.tsx')).toBe('/about/me/address')
+    expect(filePathToPath('/app/routes/index.tsx')).toBe('/')
+    expect(filePathToPath('/app/routes/about.tsx')).toBe('/about')
+    expect(filePathToPath('/app/routes/about/index.tsx')).toBe('/about')
+    expect(filePathToPath('/app/routes/about/me')).toBe('/about/me')
+    expect(filePathToPath('/app/routes/about/me/index.tsx')).toBe('/about/me')
+    expect(filePathToPath('/app/routes/about/me/address.tsx')).toBe('/about/me/address')
   })
   it('Should return a correct path - with slug', () => {
-    expect(filePathToPath('/src/routes/[slug].tsx')).toBe('/:slug')
-    expect(filePathToPath('/src/routes/posts/[slug].tsx')).toBe('/posts/:slug')
+    expect(filePathToPath('/app/routes/[slug].tsx')).toBe('/:slug')
+    expect(filePathToPath('/app/routes/posts/[slug].tsx')).toBe('/posts/:slug')
   })
   it('Should return a correct path - with catch-all', () => {
-    expect(filePathToPath('/src/routes/[...slug].tsx')).toBe('/*')
-    expect(filePathToPath('/src/routes/posts/[...slug].tsx')).toBe('/posts/*')
+    expect(filePathToPath('/app/routes/[...slug].tsx')).toBe('/*')
+    expect(filePathToPath('/app/routes/posts/[...slug].tsx')).toBe('/posts/*')
   })
 
   it('Should return a correct path - with root option', () => {

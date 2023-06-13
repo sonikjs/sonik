@@ -22,7 +22,7 @@ export function sonikVitePlugin(options?: Partial<PluginOptions>): Plugin {
     name: 'sonik-vite-plugin',
     async load(id) {
       if (/islands/.test(id)) {
-        const fileName = id.replace(/^.*src\/islands\//, '')
+        const fileName = id.replace(/^.*app\/islands\//, '')
 
         const contents = await fs.readFile(id, 'utf-8')
 
