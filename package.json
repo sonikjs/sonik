@@ -15,7 +15,7 @@
     "postbuild": "publint",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
-    "prerelease": "yarn build && yarn test && cp ../../README.md ./",
+    "prerelease": "yarn build && yarn test",
     "release": "np"
   },
   "files": [
