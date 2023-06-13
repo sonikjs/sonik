@@ -43,7 +43,7 @@ describe('Basic', () => {
 })
 
 describe('With preserved', () => {
-  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z-_[]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
@@ -86,7 +86,7 @@ describe('With preserved', () => {
 })
 
 describe('API', () => {
-  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z-_[]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
