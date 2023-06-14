@@ -70,9 +70,11 @@ class Sonik {
     const layout = this.preservedHandlers['_layout'] as LayoutHandler
 
     if (layout) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return c.html(render(layout(res, c)), status)
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return c.html(render(res), status)
   }
@@ -141,6 +143,7 @@ const DEFAULT_PROPS = ['children', '__wrapped', 'name']
 
 const oldHook = preactOptions.vnode
 preactOptions.vnode = (vnode) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (typeof vnode.type === 'function' && !vnode.props['__wrapped']) {
     const originalType = vnode.type
@@ -157,6 +160,7 @@ preactOptions.vnode = (vnode) => {
         h(originalType, props)
       )
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     vnode.props['__wrapped'] = true
   }

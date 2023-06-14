@@ -11,13 +11,7 @@ const traverse = _traverse.default as typeof _traverse
 import { jsxAttribute, jsxIdentifier, stringLiteral } from '@babel/types'
 import type { Plugin } from 'vite'
 
-type PluginOptions = {
-  shouldWrap: boolean
-}
-
-export function sonikVitePlugin(options?: Partial<PluginOptions>): Plugin {
-  let classCounter = 0
-
+export function sonikVitePlugin(): Plugin {
   return {
     name: 'sonik-vite-plugin',
     async load(id) {
@@ -45,7 +39,6 @@ export function sonikVitePlugin(options?: Partial<PluginOptions>): Plugin {
                 node.openingElement.attributes.push(componentNameAttribute)
                 path.replaceWith(node)
                 isFirstJSXElement = false
-                classCounter++
               }
             },
           })
