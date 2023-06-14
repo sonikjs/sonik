@@ -1,8 +1,8 @@
-import type { Route } from 'sonik'
+import { defineRoute } from 'sonik'
 
-export default {
+export default defineRoute({
   GET: (c) => {
     const name = c.req.param('name')
     return <h1>It's {name}!</h1>
   },
-} satisfies Route
+})
