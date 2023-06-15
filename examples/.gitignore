@@ -1,2 +1,3 @@
 yarn.lock
 basic/site/static/*.js
+basic/site/static/*.json
