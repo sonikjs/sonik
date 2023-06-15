@@ -8,3 +8,4 @@ bucket = './site'
 
 [build]
 command = "yarn build"
+watch_dir = "./app"
