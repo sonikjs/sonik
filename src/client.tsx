@@ -3,7 +3,7 @@ import { type VNode, createElement, hydrate } from 'preact'
 type Hydrate = (vnode: VNode, parent: HTMLElement) => void
 
 export const createClient = async (options?: { hydrate?: Hydrate }) => {
-  const FILES = import.meta.glob('/app/islands/**/[a-zA-Z[-]+.(tsx|ts)')
+  const FILES = import.meta.glob('/app/islands/**/[a-zA-Z0-9[-]+.(tsx|ts)')
   const h = options?.hydrate ?? hydrate
 
   Object.keys(FILES).map(async (filePath) => {

@@ -44,7 +44,7 @@ class Sonik {
       })
     const FILES =
       options?.FILES ??
-      import.meta.glob('/app/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+      import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx|ts)', {
         eager: true,
       })
 
