@@ -1,2 +1,2 @@
-export { createApp, defineRoute } from './sonik.js'
-export type * from './types.js'
+export { createApp, defineRoute } from './server'
+export type * from './types'

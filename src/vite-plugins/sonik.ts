@@ -8,7 +8,14 @@ import _traverse from '@babel/traverse'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const traverse = _traverse.default as typeof _traverse
-import { jsxAttribute, jsxIdentifier, stringLiteral } from '@babel/types'
+import {
+  jsxAttribute,
+  jsxClosingElement,
+  jsxElement,
+  jsxIdentifier,
+  jsxOpeningElement,
+  stringLiteral,
+} from '@babel/types'
 import type { Plugin } from 'vite'
 
 export function sonikVitePlugin(): Plugin {
@@ -37,7 +44,17 @@ export function sonikVitePlugin(): Plugin {
                   stringLiteral(fileName)
                 )
                 node.openingElement.attributes.push(componentNameAttribute)
-                path.replaceWith(node)
+                const wrappingDiv = jsxElement(
+                  jsxOpeningElement(
+                    jsxIdentifier('div'),
+                    [jsxAttribute(jsxIdentifier('component-wrapper'), stringLiteral('true'))],
+                    false
+                  ),
+                  jsxClosingElement(jsxIdentifier('div')),
+                  [node],
+                  false
+                )
+                path.replaceWith(wrappingDiv)
                 isFirstJSXElement = false
               }
             },

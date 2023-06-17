@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest'
 import { createApp } from '../src'
 
 describe('Basic', () => {
-  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/tests/mock/routes',
+    root: '/test/mock/routes',
     FILES: FILES,
   })
 
@@ -26,9 +26,7 @@ describe('Basic', () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
     /* eslint-disable quotes */
-    expect(await res.text()).toBe(
-      '<div class="component-wrapper"><p>It\'s me</p><div class="component-wrapper"><b>My name is me</b></div></div>'
-    )
+    expect(await res.text()).toBe("<p>It's me</p><b>My name is me</b>")
   })
 
   it('Should return 200 response /page', async () => {
@@ -45,16 +43,16 @@ describe('Basic', () => {
 })
 
 describe('With preserved', () => {
-  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
-  const PRESERVED = import.meta.glob('/tests/mock/routes/(_layout|_error|_404).tsx', {
+  const PRESERVED = import.meta.glob('/test/mock/routes/(_layout|_error|_404).tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/tests/mock/routes',
+    root: '/test/mock/routes',
     FILES: FILES,
     PRESERVED: PRESERVED,
   })
@@ -77,9 +75,7 @@ describe('With preserved', () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
     /* eslint-disable quotes */
-    expect(await res.text()).toBe(
-      '<html><body><div class="component-wrapper"><p>It\'s me</p><div class="component-wrapper"><b>My name is me</b></div></div></body></html>'
-    )
+    expect(await res.text()).toBe("<html><body><p>It's me</p><b>My name is me</b></body></html>")
   })
 
   it('Should return 500 response /throw_error', async () => {
@@ -90,12 +86,12 @@ describe('With preserved', () => {
 })
 
 describe('API', () => {
-  const FILES = import.meta.glob('/tests/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const FILES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/tests/mock/routes',
+    root: '/test/mock/routes',
     FILES: FILES,
   })
 

@@ -1,33 +1,18 @@
 import type { Context, Env } from 'hono'
 import { Hono } from 'hono/tiny'
 import type { VNode } from 'preact'
-import { h, options as preactOptions } from 'preact'
+import { h } from 'preact'
 import { render } from 'preact-render-to-string'
-import type {
-  Route,
-  ErrorHandler,
-  Handler,
-  ReservedHandler,
-  FC,
-  AppHandler,
-  LayoutHandler,
-} from './types'
-import { filePathToPath, sortObject } from './utils'
+import type { Route, ErrorHandler, Handler, ReservedHandler, FC, LayoutHandler } from '../types'
+import { filePathToPath, sortObject } from '../utils'
 
-type CreateAppOptions = Partial<{
-  app: Hono
-  PRESERVED: Record<string, unknown>
-  FILES: Record<string, unknown>
-  root: string
-}>
-
-type SonikOptions = Partial<{
+type ServerOptions = Partial<{
   PRESERVED: Record<string, { default: ReservedHandler }>
   FILES: Record<string, { default: FC & Route }>
   root: string
 }>
 
-class Sonik {
+export class Server {
   readonly PRESERVED: Record<string, { default: ReservedHandler }>
   readonly FILES: Record<string, { default: FC & Route }>
   readonly preservedHandlers: Record<string, ReservedHandler>
@@ -35,13 +20,21 @@ class Sonik {
 
   count: number = 0
 
-  constructor(options?: SonikOptions) {
+  constructor(options?: ServerOptions) {
     // `import.meta.glob` can only use literals
     this.PRESERVED =
       options?.PRESERVED ??
       import.meta.glob('/app/routes/(_layout|_error|_404).(tsx|ts)', {
         eager: true,
       })
+
+    // Check all routes are exporting `default`
+    // Currently, this part only check files under `/app/routes/**`
+    import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx|ts)', {
+      eager: true,
+      import: 'default',
+    })
+
     const FILES =
       options?.FILES ??
       import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx|ts)', {
@@ -88,8 +81,8 @@ class Sonik {
 
       if (typeof fileDefault === 'function') {
         app.get(path, (c) => {
-          this.count = 0
-          return this.toWebResponse(c, fileDefault(c))
+          const res = h(() => fileDefault(c), {})
+          return this.toWebResponse(c, res)
         })
       }
 
@@ -122,47 +115,4 @@ class Sonik {
 
     return app as unknown as Hono<E>
   }
-}
-
-export function createApp<E extends Env>(options?: CreateAppOptions) {
-  const sonik = options
-    ? new Sonik({
-        FILES: options.FILES as Record<string, { default: FC; app?: AppHandler }>,
-        PRESERVED: options.PRESERVED as Record<string, { default: ReservedHandler }>,
-        root: options.root,
-      })
-    : new Sonik()
-  return sonik.createApp<E>({ app: options?.app })
-}
-
-export function defineRoute(route: Route) {
-  return route
-}
-
-const DEFAULT_PROPS = ['children', '__wrapped', 'name']
-
-const oldHook = preactOptions.vnode
-preactOptions.vnode = (vnode) => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  if (typeof vnode.type === 'function' && !vnode.props['__wrapped']) {
-    const originalType = vnode.type
-
-    vnode.type = (props) => {
-      const keys = Object.keys(props)
-      const hasProps = keys.some((key) => !DEFAULT_PROPS.includes(key))
-      if (!hasProps) {
-        return h('div', { class: 'component-wrapper' }, h(originalType, props))
-      }
-      return h(
-        'div',
-        { 'data-serialized-props': JSON.stringify(props), class: 'component-wrapper' },
-        h(originalType, props)
-      )
-    }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    vnode.props['__wrapped'] = true
-  }
-  if (oldHook) oldHook(vnode)
 }

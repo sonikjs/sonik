@@ -598,6 +598,18 @@
     "@pnpm/network.ca-file" "^1.0.1"
     config-chain "^1.1.11"
 
+"@preact/signals-core@^1.2.3":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@preact/signals-core/-/signals-core-1.3.0.tgz#0d7368f6f41a1223271d816af529525973c214ab"
+  integrity sha512-M+M3ZOtd1dtV/uasyk4SZu1vbfEJ4NeENv0F7F12nijZYedB5wSgbtZcuACyssnTznhF4ctUyrR0dZHuHfyWKA==
+
+"@preact/signals@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@preact/signals/-/signals-1.1.3.tgz#8226d3001cc162c568225083275ed8d595f8bf1f"
+  integrity sha512-N09DuAVvc90bBZVRwD+aFhtGyHAmJLhS3IFoawO/bYJRcil4k83nBOchpCEoS0s5+BXBpahgp0Mjf+IOqP57Og==
+  dependencies:
+    "@preact/signals-core" "^1.2.3"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"
@@ -4011,17 +4023,17 @@ postcss@^8.4.23:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-preact-render-to-string@5.2.6:
-  version "5.2.6"
-  resolved "https://registry.npmjs.org/preact-render-to-string/-/preact-render-to-string-5.2.6.tgz"
-  integrity sha512-JyhErpYOvBV1hEPwIxc/fHWXPfnEGdRKxc8gFdAZ7XV4tlzyzG847XAyEZqoDnynP88akM4eaHcSOzNcLWFguw==
+preact-render-to-string@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/preact-render-to-string/-/preact-render-to-string-6.1.0.tgz#6e3c70dbb9662962b626836566b091c53b6d19ae"
+  integrity sha512-/AsKU4Q4R8r4aKwwNQrkQQNUVEDmTeZr6IwesDffobFRPcTk4dSQrfo1VOcXjtlcUss6QYEe7JShUGbQIhaw+A==
   dependencies:
     pretty-format "^3.8.0"
 
-preact@10.11.0:
-  version "10.11.0"
-  resolved "https://registry.npmjs.org/preact/-/preact-10.11.0.tgz"
-  integrity sha512-Fk6+vB2kb6mSJfDgODq0YDhMfl0HNtK5+Uc9QqECO4nlyPAQwCI+BKyWO//idA7ikV7o+0Fm6LQmNuQi1wXI1w==
+preact@^10.15.1:
+  version "10.15.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.15.1.tgz#a1de60c9fc0c79a522d969c65dcaddc5d994eede"
+  integrity sha512-qs2ansoQEwzNiV5eAcRT1p1EC/dmEzaATVDJNiB3g2sRDWdA7b7MurXdJjB2+/WQktGWZwxvDrnuRFbWuIr64g==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
