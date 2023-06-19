@@ -1,5 +1,5 @@
 import type { signal } from '@preact/signals'
-import { createElement, hydrate } from 'preact'
+import type { hydrate } from 'preact'
 import { deserialize } from './deserializer'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,7 +10,6 @@ export const createClient = async (options?: {
   signal?: typeof signal
 }) => {
   const FILES = import.meta.glob('/app/islands/**/[a-zA-Z0-9[-]+.(tsx|ts)')
-  const h = options?.hydrate ?? hydrate
 
   const hydrateComponent = async () => {
     const filePromises = Object.keys(FILES).map(async (filePath) => {
@@ -18,6 +17,9 @@ export const createClient = async (options?: {
 
       const elements = document.querySelectorAll(`[component-name="${componentName}"]`)
       if (elements) {
+        const { createElement, hydrate } = await import('preact')
+        const h = options?.hydrate ?? hydrate
+
         const elementPromises = Array.from(elements).map(async (element) => {
           const fileCallback = FILES[filePath] as FileCallback
           const file = await fileCallback()
