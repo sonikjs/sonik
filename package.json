@@ -9,7 +9,7 @@
     "test": "vitest --run",
     "build:server": "esbuild --bundle --format=esm --minify --external:preact --external:preact-render-to-string --external:@preact/signals --external:hono --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
     "build:vite-plugins": "esbuild --format=esm --platform=node --minify --tsconfig=tsconfig.build.json --outdir=dist src/vite-plugins/* src/vite-plugins.ts",
-    "build:client": "esbuild --format=esm --minify --tsconfig=tsconfig.build.json --outfile=dist/client/index.js src/client/client.ts",
+    "build:client": "esbuild --format=esm --minify --tsconfig=tsconfig.build.json --bundle --external:preact --external:@preact/signals --outfile=dist/client/index.js src/client/index.ts",
     "build": "rimraf dist && yarn build:server && yarn build:client && yarn build:vite-plugins && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json",
     "watch": "concurrently \"yarn build:server --watch\" \"yarn build:client --watch\" \"yarn build:vite-plugins --watch\"",
     "postbuild": "publint",
