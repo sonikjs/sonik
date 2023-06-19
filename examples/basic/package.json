@@ -11,7 +11,7 @@
     "deploy": "wrangler deploy --minify dist/server.js"
   },
   "dependencies": {
-    "sonik": "^0.0.19"
+    "sonik": "^0.0.20"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

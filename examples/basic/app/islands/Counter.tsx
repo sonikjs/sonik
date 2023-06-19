@@ -1,13 +1,13 @@
-import { useState, useCallback } from 'preact/hooks'
+import { useSignal } from '@preact/signals'
 
 export default function Counter() {
-  const [value, setValue] = useState(0)
-  const increment = useCallback(() => {
-    setValue(value + 1)
-  }, [value])
+  const count = useSignal(0)
+  const increment = () => {
+    count.value++
+  }
   return (
     <div>
-      <p>Counter: {value}</p>
+      <p>Counter: {count}</p>
       <button onClick={increment}>Increment</button>
     </div>
   )
