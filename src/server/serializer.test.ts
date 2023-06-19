@@ -1,14 +1,16 @@
 import { expect, describe, it } from 'vitest'
 import { SERIALIZE_KEY, DEFAULT_PROPS } from '../constants'
-import { serialize } from '.'
+import { Serializer } from './serializer'
 
-describe('serialize', () => {
+describe('Serializer', () => {
+  const serializer = new Serializer()
+
   it('Should correctly serialize properties that are not signals', () => {
     const props = {
       notSignalProp: 'hello world',
       children: [],
     }
-    const result = serialize(props)
+    const result = serializer.serialize(props)
     expect(result).toEqual({
       notSignalProp: {
         [SERIALIZE_KEY]: 'l',
@@ -25,7 +27,7 @@ describe('serialize', () => {
       },
       children: [],
     }
-    const result = serialize(props)
+    const result = serializer.serialize(props)
     expect(result).toEqual({
       signalProp: {
         [SERIALIZE_KEY]: 's',
@@ -41,7 +43,7 @@ describe('serialize', () => {
       __wrapped: [],
       // etc...
     }
-    const result = serialize(props)
+    const result = serializer.serialize(props)
     DEFAULT_PROPS.forEach((defaultProp) => {
       expect(result[defaultProp]).toBeUndefined()
     })

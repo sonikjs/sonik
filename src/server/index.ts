@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Env } from 'hono'
 import { h, options as preactOptions } from 'preact'
-import { DEFAULT_PROPS, SERIALIZE_KEY } from '../constants'
 import type { Hono, Route, AppHandler, ReservedHandler, FC } from '../types'
+import { Serializer } from './serializer'
 import { Server } from './server'
 
 type CreateAppOptions = Partial<{
@@ -26,40 +26,8 @@ export function createApp<E extends Env>(options?: CreateAppOptions) {
 export function defineRoute(route: Route) {
   return route
 }
-interface Signal {
-  peek(): unknown
-  value: unknown
-}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isSignal = (x: any): x is Signal => {
-  return x !== null && typeof x === 'object' && typeof x.peek === 'function' && 'value' in x
-}
-
-let signalIdCounter = 0
-const signalMap = new Map()
-
-export const serialize = (props: Record<string, unknown>) => {
-  const data: Record<string, unknown> = {}
-  Object.keys(props).map((key) => {
-    if (!DEFAULT_PROPS.includes(key)) {
-      const value = props[key]
-      if (isSignal(value)) {
-        let signalId
-        if (signalMap.has(value)) {
-          signalId = signalMap.get(value)
-        } else {
-          signalId = signalIdCounter++
-          signalMap.set(value, signalId)
-        }
-        data[key] = { [SERIALIZE_KEY]: 's', v: value.peek(), id: signalId }
-      } else {
-        data[key] = { [SERIALIZE_KEY]: 'l', v: value }
-      }
-    }
-  })
-  return data
-}
+const serializer = new Serializer()
 
 const oldHook = preactOptions.vnode
 let data = {}
@@ -68,7 +36,7 @@ preactOptions.vnode = (vnode) => {
   if (typeof vnode.type === 'function' && !vnode.props['__done']) {
     const originalType = vnode.type
     vnode.type = (props) => {
-      data = serialize(props)
+      data = serializer.serialize(props)
       return h(originalType, props)
     }
     // @ts-ignore
