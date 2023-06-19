@@ -62,10 +62,14 @@ export class Server {
     if (res instanceof Response) return res
     const layout = this.preservedHandlers['_layout'] as LayoutHandler
 
+    const addDocType = (html: string) => {
+      return `<!doctype html>${html}`
+    }
+
     if (layout) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      return c.html(render(layout(res, c)), status)
+      return c.html(addDocType(render(layout(res, c))), status)
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

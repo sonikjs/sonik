@@ -62,26 +62,30 @@ describe('With preserved', () => {
   it('Should return 200 response - /', async () => {
     const res = await app.request('/')
     expect(res.status).toBe(200)
-    expect(await res.text()).toBe('<html><body><h1>Hello</h1></body></html>')
+    expect(await res.text()).toBe('<!doctype html><html><body><h1>Hello</h1></body></html>')
   })
 
   it('Should return 404 response - /foo', async () => {
     const res = await app.request('/foo')
     expect(res.status).toBe(404)
-    expect(await res.text()).toBe('<html><body><h1>Not Found</h1></body></html>')
+    expect(await res.text()).toBe('<!doctype html><html><body><h1>Not Found</h1></body></html>')
   })
 
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
     /* eslint-disable quotes */
-    expect(await res.text()).toBe("<html><body><p>It's me</p><b>My name is me</b></body></html>")
+    expect(await res.text()).toBe(
+      "<!doctype html><html><body><p>It's me</p><b>My name is me</b></body></html>"
+    )
   })
 
   it('Should return 500 response /throw_error', async () => {
     const res = await app.request('/throw_error')
     expect(res.status).toBe(500)
-    expect(await res.text()).toBe('<html><body><h1>Custom Error Message: Foo</h1></body></html>')
+    expect(await res.text()).toBe(
+      '<!doctype html><html><body><h1>Custom Error Message: Foo</h1></body></html>'
+    )
   })
 })
 
