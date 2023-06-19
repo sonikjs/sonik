@@ -25,7 +25,7 @@ export const createClient = async (options?: {
 
           const serializedProps = element.attributes.getNamedItem('data-serialized-props')?.value
 
-          const obj = JSON.parse(serializedProps ?? '{}') as Record<string, any>
+          const obj = JSON.parse(serializedProps ?? '{}') as Record<string, unknown>
 
           const promises = Object.keys(obj).map(async (key) => {
             const value = await deserialize(obj[key], { signal: options?.signal })
