@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Env } from 'hono'
 import { h, options as preactOptions } from 'preact'
-import type { Hono, Route, AppHandler, ReservedHandler, FC } from '../types'
-import { Serializer } from './serializer'
-import { Server } from './server'
+import { Serializer } from './server/serializer'
+import { Server } from './server/server'
+import type { Hono, Route, AppHandler, ReservedHandler, FC } from './types'
 
 type CreateAppOptions = Partial<{
   app: Hono
