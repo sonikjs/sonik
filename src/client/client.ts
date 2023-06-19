@@ -17,9 +17,6 @@ export const createClient = async (options?: {
 
       const elements = document.querySelectorAll(`[component-name="${componentName}"]`)
       if (elements) {
-        const { createElement, hydrate } = await import('preact')
-        const h = options?.hydrate ?? hydrate
-
         const elementPromises = Array.from(elements).map(async (element) => {
           const fileCallback = FILES[filePath] as FileCallback
           const file = await fileCallback()
@@ -40,6 +37,9 @@ export const createClient = async (options?: {
           results.forEach((result) => {
             props[result.key] = result.value
           })
+
+          const { createElement, hydrate } = await import('preact')
+          const h = options?.hydrate ?? hydrate
 
           const wrapper = element.parentElement
           const temp = document.createElement('div')

@@ -4,7 +4,7 @@ import { sonikVitePlugin, minifyEs } from 'sonik/vite-plugins'
 export default defineConfig(({ mode }) => {
   if (mode === 'server') {
     return {
-      plugins: [sonikVitePlugin({ shouldWrap: true }), minifyEs()],
+      plugins: [sonikVitePlugin(), minifyEs()],
       ssr: {
         noExternal: true,
         format: 'esm',
@@ -13,12 +13,13 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           external: ['__STATIC_CONTENT_MANIFEST', 'preact'],
         },
+        target: 'esnext',
         ssr: './app/server.ts',
       },
     }
   }
   return {
-    plugins: [sonikVitePlugin({ shouldWrap: false }), minifyEs()],
+    plugins: [sonikVitePlugin(), minifyEs()],
     build: {
       lib: {
         noExternal: true,
@@ -26,6 +27,8 @@ export default defineConfig(({ mode }) => {
         fileName: 'client',
         formats: ['es'],
       },
+      manifest: true,
+      ssrManifest: true,
       minify: true,
     },
   }
