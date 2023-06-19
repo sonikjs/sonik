@@ -1,7 +1,7 @@
 import { signal as mockSignal } from '@preact/signals'
 import { describe, expect, it } from 'vitest'
 import { SERIALIZE_KEY } from '../constants'
-import { deserialize } from './deserialize'
+import { deserialize } from './deserializer'
 
 describe('deserialize', () => {
   it('Should correctly deserialize non-signal serialized properties', async () => {

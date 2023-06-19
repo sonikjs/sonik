@@ -1,6 +1,6 @@
 import type { signal } from '@preact/signals'
 import { createElement, hydrate } from 'preact'
-import { deserialize } from './deserialize'
+import { deserialize } from './deserializer'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FileCallback = () => Promise<{ default: Promise<any> }>
