@@ -40,8 +40,8 @@
       "client": [
         "./dist/client"
       ],
-      "vite-plugins": [
-        "./dist/vite-plugins"
+      "vite": [
+        "./dist/vite"
       ]
     }
   },
