@@ -1,4 +1,3 @@
-import type { Env } from 'hono'
 import type { Hono, Route, AppHandler, ReservedHandler, FC } from '../types'
 import { Server } from './server'
 
@@ -9,7 +8,7 @@ type CreateAppOptions = Partial<{
   root: string
 }>
 
-export function createApp<E extends Env>(options?: CreateAppOptions) {
+export function createApp(options?: CreateAppOptions) {
   const server = options
     ? new Server({
         FILES: options.FILES as Record<string, { default: FC; app?: AppHandler }>,
@@ -17,7 +16,7 @@ export function createApp<E extends Env>(options?: CreateAppOptions) {
         root: options.root,
       })
     : new Server()
-  return server.createApp<E>({ app: options?.app })
+  return server.createApp({ app: options?.app })
 }
 
 export function defineRoute(route: Route) {
