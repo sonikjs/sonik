@@ -18,9 +18,9 @@ import {
 } from '@babel/types'
 import type { Plugin } from 'vite'
 
-export function sonikVitePlugin(): Plugin {
+export function islandComponents(): Plugin {
   return {
-    name: 'sonik-vite-plugin',
+    name: 'transform-island-components',
     async load(id) {
       if (/islands/.test(id)) {
         const fileName = id.replace(/^.*app\/islands\//, '')

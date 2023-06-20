@@ -13,7 +13,6 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           external: ['__STATIC_CONTENT_MANIFEST', 'preact'],
         },
-        target: 'esnext',
         ssr: './app/server.ts',
       },
     }
@@ -28,8 +27,6 @@ export default defineConfig(({ mode }) => {
         formats: ['es'],
       },
       manifest: true,
-      ssrManifest: true,
-      minify: true,
     },
   }
 })

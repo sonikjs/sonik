@@ -8,7 +8,7 @@
   "scripts": {
     "test": "vitest --run",
     "build:server": "esbuild --bundle --format=esm --minify --external:preact --external:preact-render-to-string --external:@preact/signals --external:hono --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
-    "build:vite-plugins": "esbuild --format=esm --platform=node --minify --tsconfig=tsconfig.build.json --outdir=dist src/vite-plugins/* src/vite-plugins.ts",
+    "build:vite-plugins": "esbuild --bundle --format=esm --platform=node --minify --external:@babel/* --external:esbuild --tsconfig=tsconfig.build.json --outfile=dist/vite/index.js src/vite/index.ts",
     "build:client": "esbuild --format=esm --minify --tsconfig=tsconfig.build.json --bundle --external:preact --external:@preact/signals --outfile=dist/client/index.js src/client/index.ts",
     "build": "rimraf dist && yarn build:server && yarn build:client && yarn build:vite-plugins && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json",
     "watch": "concurrently \"yarn build:server --watch\" \"yarn build:client --watch\" \"yarn build:vite-plugins --watch\"",
@@ -30,9 +30,9 @@
       "types": "./dist/client/index.d.ts",
       "import": "./dist/client/index.js"
     },
-    "./vite-plugins": {
-      "types": "./dist/vite-plugins.d.ts",
-      "import": "./dist/vite-plugins.js"
+    "./vite": {
+      "types": "./dist/vite/index.d.ts",
+      "import": "./dist/vite/index.js"
     }
   },
   "typesVersions": {
