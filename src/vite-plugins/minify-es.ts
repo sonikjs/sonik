@@ -1,12 +1,12 @@
 import { transform } from 'esbuild'
-import type { NormalizedOutputOptions, RenderedChunk } from 'rollup'
+import type { Plugin } from 'vite'
 
-export function minifyEs() {
+export function minifyEs(): Plugin {
   return {
-    name: 'minifyEs',
+    name: 'minify-es',
     renderChunk: {
       order: 'post',
-      async handler(code: string, _: RenderedChunk, outputOptions: NormalizedOutputOptions) {
+      async handler(code, _, outputOptions) {
         if (outputOptions.format === 'es') {
           return await transform(code, { minify: true })
         }
