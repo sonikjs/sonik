@@ -1,7 +1,7 @@
 import { transform } from 'esbuild'
 import type { Plugin } from 'vite'
 
-export function minifyEs(): Plugin {
+export function minifyEsPlugin(): Plugin {
   return {
     name: 'minify-es',
     renderChunk: {

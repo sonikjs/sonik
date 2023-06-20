@@ -1,6 +1,6 @@
 import type { PluginOption } from 'vite'
-import { islandComponents } from './island-components'
-import { minifyEs } from './minify-es'
+import { islandComponentsPlugin } from './island-components'
+import { minifyEsPlugin } from './minify-es'
 
 type SonikVitePluginOptions = {
   minify?: boolean
@@ -8,7 +8,7 @@ type SonikVitePluginOptions = {
 
 export function sonikVitePlugin(options?: SonikVitePluginOptions): PluginOption[] {
   if (options && options.minify === false) {
-    return [islandComponents()]
+    return [islandComponentsPlugin()]
   }
-  return [islandComponents(), minifyEs()]
+  return [islandComponentsPlugin(), minifyEsPlugin()]
 }
