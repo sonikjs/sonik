@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite'
-import { sonikVitePlugin, minifyEs } from 'sonik/vite-plugins'
+import { sonikVitePlugin } from 'sonik/vite'
 
 export default defineConfig(({ mode }) => {
   if (mode === 'server') {
     return {
-      plugins: [sonikVitePlugin(), minifyEs()],
+      plugins: [sonikVitePlugin()],
       ssr: {
         noExternal: true,
         format: 'esm',
@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
     }
   }
   return {
-    plugins: [sonikVitePlugin(), minifyEs()],
+    plugins: [sonikVitePlugin()],
     build: {
       lib: {
         noExternal: true,
