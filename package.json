@@ -48,8 +48,8 @@
       "vite": [
         "./dist/vite"
       ],
-      "middleware": [
-        "./dist/middleware"
+      "middleware/preload": [
+        "./dist/middleware/preload"
       ]
     }
   },

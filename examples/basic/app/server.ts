@@ -1,23 +1,16 @@
 import { createApp } from 'sonik'
+import { preload } from 'sonik/middleware/preload'
 import { Hono } from 'hono/tiny'
 import { serveStatic } from 'hono/cloudflare-workers'
-import { cache } from 'hono/cache'
-import { preloadMiddleware } from './preload-middleware'
 
-type Bindings = {
-  __STATIC_CONTENT: KVNamespace
-}
-
-const base = new Hono<{ Bindings: Bindings }>()
+const base = new Hono()
 
 base.get(
   '*',
-  cache({
-    cacheName: 'sonik-example-basic',
-    cacheControl: 'max-age=3600',
+  preload({
+    manifestPath: 'static/manifest.json',
   })
 )
-base.get('*', preloadMiddleware())
 
 const app = createApp({ app: base })
 
