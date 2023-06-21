@@ -37,7 +37,10 @@ export const preload = (options: PreloadOptions): MiddlewareHandler => {
             // @ts-ignore
             namespace: c.env.__STATIC_CONTENT,
           })
-          if (!manifestJson) return
+          if (!manifestJson) {
+            console.log(`Can't find manifest from ${options.manifestPath}`)
+            return
+          }
           manifest = JSON.parse(bufferToString(manifestJson)) as Manifest
         }
       }
