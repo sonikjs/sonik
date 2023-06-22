@@ -61,7 +61,7 @@ export function islandComponentsPlugin(): Plugin {
   return {
     name: 'transform-island-components',
     async load(id) {
-      if (/islands/.test(id)) {
+      if (/islands\/.+\.tsx/.test(id)) {
         const componentName = id.replace(/^.*app\/islands\//, '')
         const contents = await fs.readFile(id, 'utf-8')
         const code = transformJsxTags(contents, componentName)
