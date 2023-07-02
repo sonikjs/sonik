@@ -7,15 +7,16 @@
     "build:client": "vite build --outDir ./site/static",
     "build:server": "vite build --mode 'server'",
     "build": "concurrently \"yarn build:client\" \"yarn build:server\"",
-    "dev": "wrangler dev --live-reload dist/server.js",
-    "deploy": "wrangler deploy --minify dist/server.js"
+    "dev": "tsx ./dev-server.ts",
+    "deploy": "yarn build && wrangler deploy --minify dist/server.js"
   },
   "dependencies": {
-    "sonik": "^0.0.23"
+    "sonik": "^0.0.24"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
     "concurrently": "^8.2.0",
+    "tsx": "^3.12.7",
     "vite": "^4.3.9",
     "wrangler": "^3.0.1"
   }

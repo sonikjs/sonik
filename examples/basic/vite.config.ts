@@ -1,22 +1,7 @@
 import { defineConfig } from 'vite'
 import { sonikVitePlugin } from 'sonik/vite'
 
-export default defineConfig(({ mode }) => {
-  if (mode === 'server') {
-    return {
-      plugins: [sonikVitePlugin()],
-      ssr: {
-        noExternal: true,
-        format: 'esm',
-      },
-      build: {
-        rollupOptions: {
-          external: ['__STATIC_CONTENT_MANIFEST', 'preact'],
-        },
-        ssr: './app/server.ts',
-      },
-    }
-  }
+export default defineConfig(() => {
   return {
     plugins: [sonikVitePlugin()],
     build: {
@@ -27,6 +12,7 @@ export default defineConfig(({ mode }) => {
         formats: ['es'],
       },
       manifest: true,
+      outDir: './site/static',
     },
   }
 })
