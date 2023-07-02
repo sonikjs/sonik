@@ -1,5 +1,5 @@
 import type { Context, Env } from 'hono'
-import { Hono } from 'hono/tiny'
+import { Hono } from 'hono/quick'
 import type { VNode } from 'preact'
 import { h } from 'preact'
 import { render } from 'preact-render-to-string'

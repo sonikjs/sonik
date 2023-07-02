@@ -1,6 +1,6 @@
 import { createApp } from 'sonik'
 import { preload } from 'sonik/middleware/preload'
-import { Hono } from 'hono/tiny'
+import { Hono } from 'hono/quick'
 import { serveStatic } from 'hono/cloudflare-workers'
 
 const base = new Hono()
