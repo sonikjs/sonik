@@ -1,4 +1,10 @@
-yarn.lock
 basic/site/static/*.js
 basic/site/static/*.json
 .wrangler
+.pnp.*
+.yarn*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
