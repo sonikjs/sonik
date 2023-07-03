@@ -1,6 +1,6 @@
 import path from 'path'
 import { getRequestListener } from '@hono/node-server'
-import express from 'express'
+import connect from 'connect'
 import type { ModuleNode, ViteDevServer } from 'vite'
 import { createServer as createViteServer, build as viteBuild } from 'vite'
 import { unstable_dev } from 'wrangler'
@@ -78,12 +78,10 @@ export const startServer = async (options?: StartServerOptions) => {
   await buildClientScript()
   await rebuildAndRestart()
 
-  // Express as a dev server
-  // I don't want to use it...
-  const server = express()
+  const server = connect()
   server.use(vite.middlewares)
 
-  server.use('*', async (req, res) => {
+  server.use(async (req, res) => {
     req.url = req.originalUrl
     getRequestListener(async (workerRequest) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
