@@ -6,7 +6,7 @@ type SonikVitePluginOptions = {
   minify?: boolean
 }
 
-export function sonikVitePlugin(options?: SonikVitePluginOptions): PluginOption[] {
+export function sonikVite(options?: SonikVitePluginOptions): PluginOption[] {
   if (options && options.minify === false) {
     return [islandComponentsPlugin()]
   }
