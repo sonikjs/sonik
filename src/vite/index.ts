@@ -12,3 +12,6 @@ export function sonikVite(options?: SonikVitePluginOptions): PluginOption[] {
   }
   return [islandComponentsPlugin(), minifyEsPlugin()]
 }
+
+export { sonikViteServer } from './server'
+export { sonikViteClient } from './client'
