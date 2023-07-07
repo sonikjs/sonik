@@ -18,7 +18,3 @@ export function createApp(options?: CreateAppOptions) {
     : new Server()
   return server.createApp({ app: options?.app })
 }
-
-export function defineRoute(route: Route) {
-  return route
-}
