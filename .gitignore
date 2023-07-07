@@ -4,11 +4,3 @@ yarn-error.log
 package-lock.json
 *.tgz
 sandbox
-
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
