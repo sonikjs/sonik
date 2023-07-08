@@ -1,7 +1,7 @@
-import { defineRoute } from '../../../src'
+import type { Route } from '../../../src'
 
-export default defineRoute({
+export default {
   GET: () => {
     throw new Error('Foo')
   },
-})
+} satisfies Route

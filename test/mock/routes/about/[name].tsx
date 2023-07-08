@@ -1,7 +1,7 @@
-import { defineRoute } from '../../../../src'
+import type { Route } from '../../../../src'
 import Badge from '../../components/Badge'
 
-export default defineRoute({
+export default {
   GET: (c) => {
     const { name } = c.req.param()
     return (
@@ -11,4 +11,4 @@ export default defineRoute({
       </>
     )
   },
-})
+} satisfies Route
