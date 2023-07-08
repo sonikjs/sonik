@@ -1,4 +1,5 @@
 import { useSignal } from '@preact/signals'
+import styles from './Counter.module.css'
 
 export default function Counter() {
   const count = useSignal(0)
@@ -8,7 +9,9 @@ export default function Counter() {
   return (
     <div>
       <p>Counter: {count}</p>
-      <button onClick={increment}>Increment</button>
+      <button class={styles.count} onClick={increment}>
+        Increment
+      </button>
     </div>
   )
 }

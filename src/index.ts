@@ -2,7 +2,7 @@
 import { h, options as preactOptions } from 'preact'
 import { Serializer } from './server/serializer'
 
-export { createApp, defineRoute } from './server'
+export { createApp } from './server'
 
 export type * from './types'
 

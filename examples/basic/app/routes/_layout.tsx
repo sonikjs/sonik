@@ -5,6 +5,7 @@ const handler: LayoutHandler = (children) => {
     <html lang='ja'>
       <head>
         <link rel='modulepreload' href='/static/client.js' as='script' />
+        <link rel='stylesheet' href='/static/style.css' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </head>
       <body>

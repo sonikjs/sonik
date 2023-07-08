@@ -86,19 +86,28 @@ export function sonikViteServer(options?: SonikViteServerOptions): Plugin[] {
           return ''
         }
       },
-      handleHotUpdate: async ({ file }: { file: string; modules: Array<ModuleNode> }) => {
-        if (file.startsWith(path.resolve(process.cwd(), 'app/islands'))) {
-          await buildClient()
-        }
+      handleHotUpdate: async ({
+        file,
+        modules,
+        server,
+      }: {
+        file: string
+        modules: Array<ModuleNode>
+        server: ViteDevServer
+      }) => {
         if (file.startsWith(path.resolve(process.cwd(), 'app'))) {
-          await buildServer()
+          Promise.all([await buildClient(), await buildServer()])
           if (worker) worker.stop()
           worker = await unstable_dev('./dist/server.js', wranglerDevOptions)
+          if (modules.length === 0) {
+            server.ws.send({
+              type: 'full-reload',
+            })
+          }
         }
       },
       configureServer: async (server) => {
-        await buildClient()
-        await buildServer()
+        Promise.all([await buildClient(), await buildServer()])
         async function createMiddleware(server: ViteDevServer): Promise<Connect.HandleFunction> {
           return async function (
             req: http.IncomingMessage,

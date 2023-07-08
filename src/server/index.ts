@@ -1,4 +1,4 @@
-import type { Hono, Route, AppHandler, ReservedHandler, FC } from '../types'
+import type { Hono, AppHandler, ReservedHandler, FC } from '../types'
 import { Server } from './server'
 
 type CreateAppOptions = Partial<{
