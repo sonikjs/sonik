@@ -1,7 +1,7 @@
 {
   "name": "sonik",
   "description": "Supersonik web framework for the Edges.",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
