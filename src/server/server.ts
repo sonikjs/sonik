@@ -3,18 +3,27 @@ import { Hono } from 'hono/quick'
 import type { VNode } from 'preact'
 import { h } from 'preact'
 import { render } from 'preact-render-to-string'
-import type { Route, ErrorHandler, Handler, ReservedHandler, FC, LayoutHandler } from '../types'
+import type {
+  Route,
+  ErrorHandler,
+  Handler,
+  ReservedHandler,
+  FC,
+  LayoutHandler,
+  Head,
+} from '../types'
 import { filePathToPath, sortObject } from '../utils'
+import { createHeadTags } from './head'
 
 type ServerOptions = Partial<{
   PRESERVED: Record<string, { default: ReservedHandler }>
-  FILES: Record<string, { default: FC & Route }>
+  FILES: Record<string, { default: FC & Route; head?: Head }>
   root: string
 }>
 
 export class Server {
   readonly PRESERVED: Record<string, { default: ReservedHandler }>
-  readonly FILES: Record<string, { default: FC & Route }>
+  readonly FILES: Record<string, { default: FC & Route; head?: Head }>
   readonly preservedHandlers: Record<string, ReservedHandler>
   readonly root: string
 
@@ -56,7 +65,8 @@ export class Server {
   private toWebResponse = async (
     c: Context,
     res: VNode | Promise<VNode> | Response | Promise<Response>,
-    status: number = 200
+    status: number = 200,
+    head?: Head
   ) => {
     if (res instanceof Promise) res = await res
     if (res instanceof Response) return res
@@ -69,7 +79,7 @@ export class Server {
     if (layout) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      return c.html(addDocType(render(layout(res, c))), status)
+      return c.html(addDocType(render(layout(res, createHeadTags(head)))), status)
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -82,11 +92,12 @@ export class Server {
     Object.keys(this.FILES).map((filePath) => {
       const path = filePathToPath(filePath, this.root)
       const fileDefault = this.FILES[filePath].default
+      const head = this.FILES[filePath].head
 
       if (typeof fileDefault === 'function') {
         app.get(path, (c) => {
           const res = h(() => fileDefault(c), {})
-          return this.toWebResponse(c, res)
+          return this.toWebResponse(c, res, 200, head)
         })
       }
 
@@ -100,7 +111,7 @@ export class Server {
           const handler = fileDefault[method as keyof Route] as Handler
           if (handler) {
             app.on(method, path, (c) => {
-              return this.toWebResponse(c, handler(c))
+              return this.toWebResponse(c, handler(c), 200, head)
             })
           }
         }
