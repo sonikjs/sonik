@@ -1,4 +1,10 @@
-import type { Route } from 'sonik'
+import type { Route, HeadTag } from 'sonik'
+
+export const headTag: HeadTag = (c) => {
+  return {
+    title: `It's ${c.req.param('name')}`,
+  }
+}
 
 export default {
   GET: (c) => {
