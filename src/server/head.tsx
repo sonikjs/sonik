@@ -14,6 +14,13 @@ export const createHeadTags = (head?: Head) => {
       ) : (
         <Fragment></Fragment>
       )}
+      {head && head.link ? (
+        head.link.map((attr) => {
+          return <link {...attr} />
+        })
+      ) : (
+        <Fragment></Fragment>
+      )}
     </Fragment>
   )
 }
