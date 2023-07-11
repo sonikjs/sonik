@@ -6,7 +6,7 @@
   "scripts": {
     "build:server": "vite build",
     "build:client": "vite build -c vite.client.config.ts",
-    "build": "concurrently \"yarn build:client\" \"yarn build:server\"",
+    "build": "yarn build:client && yarn build:server",
     "dev": "vite",
     "deploy": "yarn build && wrangler deploy --minify dist/server.js"
   },
@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
-    "concurrently": "^8.2.0",
     "tsx": "^3.12.7",
     "vite": "^4.3.9",
     "wrangler": "^3.0.1"
