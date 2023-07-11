@@ -3,7 +3,7 @@
 import { h, Fragment } from 'preact'
 import type { Head } from '../types'
 
-export const createHeadTags = (head?: Head) => {
+export const createHeadTag = (head?: Head) => {
   return (
     <Fragment>
       {head && head.title ? <title>{head.title}</title> : <Fragment />}

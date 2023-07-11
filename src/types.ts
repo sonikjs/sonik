@@ -28,3 +28,5 @@ export type Head = {
   link?: Record<string, string>[]
   script?: Record<string, string>[]
 }
+
+export type HeadTag = (c: Context) => Head
