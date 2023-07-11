@@ -129,9 +129,18 @@ export function sonikViteServer(options?: SonikViteServerOptions): Plugin[] {
                   if (!worker) {
                     worker = await unstable_dev('./dist/server.js', wranglerDevOptions)
                   }
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  //@ts-ignore
-                  const newResponse = await worker.fetch(workerRequest.url, workerRequest)
+                  const newResponse = await worker.fetch(workerRequest.url, {
+                    method: workerRequest.method,
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    headers: workerRequest.headers,
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    body: workerRequest.body,
+                    duplex: 'half',
+                    redirect: 'manual',
+                  })
+
                   if (insertClientScript === false) return newResponse
                   if (newResponse.headers.get('content-type')?.match(/^text\/html/)) {
                     const body =
