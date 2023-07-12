@@ -1,6 +1,4 @@
-/** @jsx h */
-/** @jsxFragment Fragment */
-import { h, Fragment } from 'preact'
+import { Fragment } from 'preact'
 import type { Head } from '../types'
 
 export const createHeadTag = (head?: Head) => {
