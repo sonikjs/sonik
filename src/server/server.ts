@@ -10,7 +10,7 @@ import type {
   ReservedHandler,
   FC,
   LayoutHandler,
-  HeadTag,
+  HeadHandler,
   Head,
 } from '../types'
 import { filePathToPath, sortObject } from '../utils'
@@ -18,14 +18,17 @@ import { createHeadTag } from './head'
 
 type ServerOptions = Partial<{
   PRESERVED: Record<string, { default: ReservedHandler }>
-  FILES: Record<string, { default: FC & Route; headTag?: HeadTag }>
+  FILES: Record<string, { default: FC & Route; head?: Head | HeadHandler }>
   root: string
 }>
 
 export class Server {
-  readonly PRESERVED: Record<string, { default: ReservedHandler }>
-  readonly FILES: Record<string, { default: FC & Route; headTag?: HeadTag }>
-  readonly preservedHandlers: Record<string, ReservedHandler>
+  readonly PRESERVED: Record<string, { default: ReservedHandler; head?: Head | HeadHandler }>
+  readonly FILES: Record<string, { default: FC & Route; head?: Head | HeadHandler }>
+  readonly preservedHandlers: Record<
+    string,
+    { handler: ReservedHandler; head?: Head | HeadHandler }
+  >
   readonly root: string
 
   count: number = 0
@@ -59,28 +62,32 @@ export class Server {
     this.preservedHandlers = Object.keys(this.PRESERVED).reduce((preserved, file) => {
       const root = this.root
       const key = file.replace(`${root}/`, '').replace(/\.tsx$/g, '')
-      return { ...preserved, [key]: this.PRESERVED[file].default }
-    }, {}) as Record<string, ReservedHandler>
+      return {
+        ...preserved,
+        [key]: { handler: this.PRESERVED[file].default, head: this.PRESERVED[file].head },
+      }
+    }, {}) as Record<string, { handler: ReservedHandler; head?: Head | HeadHandler }>
   }
 
   private toWebResponse = async (
     c: Context,
     res: VNode | Promise<VNode> | Response | Promise<Response>,
     status: number = 200,
-    headTag?: Head
+    head?: Head | HeadHandler
   ) => {
     if (res instanceof Promise) res = await res
     if (res instanceof Response) return res
-    const layout = this.preservedHandlers['_layout'] as LayoutHandler
+    const layout = this.preservedHandlers['_layout']?.handler as LayoutHandler
 
     const addDocType = (html: string) => {
       return `<!doctype html>${html}`
     }
 
     if (layout) {
+      head = head ? (typeof head === 'function' ? head(c) : head) : head
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      return c.html(addDocType(render(layout(res, createHeadTag(headTag)))), status)
+      return c.html(addDocType(render(layout(res, createHeadTag(head)))), status)
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -93,12 +100,12 @@ export class Server {
     Object.keys(this.FILES).map((filePath) => {
       const path = filePathToPath(filePath, this.root)
       const fileDefault = this.FILES[filePath].default
-      const headTag = this.FILES[filePath].headTag
+      const head = this.FILES[filePath].head
 
       if (typeof fileDefault === 'function') {
         app.get(path, (c) => {
           const res = h(() => fileDefault(c), {})
-          return this.toWebResponse(c, res, 200, headTag ? headTag(c) : headTag)
+          return this.toWebResponse(c, res, 200, head)
         })
       }
 
@@ -112,21 +119,23 @@ export class Server {
           const handler = fileDefault[method as keyof Route] as Handler
           if (handler) {
             app.on(method, path, (c) => {
-              return this.toWebResponse(c, handler(c), 200, headTag ? headTag(c) : headTag)
+              return this.toWebResponse(c, handler(c), 200, head)
             })
           }
         }
       })
     })
 
-    const notFound = this.preservedHandlers['_404'] as Handler
+    const notFound = this.preservedHandlers['_404']?.handler as Handler
     if (notFound) {
-      app.notFound((c) => this.toWebResponse(c, notFound(c), 404))
+      const head = this.preservedHandlers['_404'].head
+      app.notFound((c) => this.toWebResponse(c, notFound(c), 404, head))
     }
 
-    const error = this.preservedHandlers['_error'] as ErrorHandler
+    const error = this.preservedHandlers['_error']?.handler as ErrorHandler
     if (error) {
-      app.onError((e, c) => this.toWebResponse(c, error(e, c), 500))
+      const head = this.preservedHandlers['_error'].head
+      app.onError((e, c) => this.toWebResponse(c, error(e, c), 500, head))
     }
 
     return app as unknown as Hono<E>

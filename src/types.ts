@@ -29,4 +29,4 @@ export type Head = {
   script?: Record<string, string>[]
 }
 
-export type HeadTag = (c: Context) => Head
+export type HeadHandler = (c: Context) => Head
