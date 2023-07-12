@@ -1,5 +1,6 @@
 /** @jsx h */
 /** @jsxFragment Fragment */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { h, Fragment } from 'preact'
 import type { Head } from '../types'
 
