@@ -14,7 +14,7 @@ export function sonikViteClient(options?: SonikViteClientOptions): Plugin {
       const pluginConfig: UserConfig = {
         build: {
           lib: {
-            entry: options?.entry ?? './app/client.ts',
+            entry: options?.entry ?? ['./app/client.ts'],
             formats: ['es'],
             fileName: options?.fileName ?? 'client',
             name: options?.name ?? 'client',

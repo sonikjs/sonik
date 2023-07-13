@@ -7,7 +7,7 @@ export type HandlerResponse = VNode | Promise<VNode> | Response | Promise<Respon
 
 export type Handler = (c: Context) => HandlerResponse
 export type ErrorHandler = (e: Error, c: Context) => HandlerResponse
-export type LayoutHandler = (children: VNode, head: VNode) => VNode
+export type LayoutHandler = (children: VNode, head?: VNode) => VNode
 export type AppHandler = (app: Hono) => void
 
 export type FCOptions = {}

@@ -1,18 +1,20 @@
-import type { Hono, AppHandler, ReservedHandler, FC } from '../types'
+import type { Hono } from '../types'
+import type { ServerOptions } from './server'
 import { Server } from './server'
 
 type CreateAppOptions = Partial<{
   app: Hono
-  PRESERVED: Record<string, unknown>
-  FILES: Record<string, unknown>
-  root: string
-}>
+}> &
+  ServerOptions
+
+let server: Server
 
 export function createApp(options?: CreateAppOptions) {
-  const server = options
+  server = options
     ? new Server({
-        FILES: options.FILES as Record<string, { default: FC; app?: AppHandler }>,
-        PRESERVED: options.PRESERVED as Record<string, { default: ReservedHandler }>,
+        ROUTES: options.ROUTES,
+        PRESERVED: options.PRESERVED,
+        LAYOUTS: options.LAYOUTS,
         root: options.root,
       })
     : new Server()

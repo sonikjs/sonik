@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { createApp } from '../src'
+import { Route, createApp } from '../src'
+import type { LayoutFile, PreservedFile, RouteFile } from '../src/server/server'
 
 describe('Basic', () => {
-  const FILES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+  const ROUTES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
     root: '/test/mock/routes',
-    FILES: FILES,
+    ROUTES: ROUTES as Record<string, RouteFile>,
   })
 
   it('Should return 200 response - /', async () => {
@@ -43,18 +44,23 @@ describe('Basic', () => {
 })
 
 describe('With preserved', () => {
-  const FILES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const ROUTES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
-  const PRESERVED = import.meta.glob('/test/mock/routes/(_layout|_error|_404).tsx', {
+  const PRESERVED = import.meta.glob('/test/mock/routes/(_error|_404).tsx', {
+    eager: true,
+  })
+
+  const LAYOUTS = import.meta.glob('/test/mock/routes/_layout.tsx', {
     eager: true,
   })
 
   const app = createApp({
     root: '/test/mock/routes',
-    FILES: FILES,
-    PRESERVED: PRESERVED,
+    ROUTES: ROUTES as Record<string, RouteFile>,
+    PRESERVED: PRESERVED as Record<string, PreservedFile>,
+    LAYOUTS: LAYOUTS as Record<string, LayoutFile>,
   })
 
   app.showRoutes()
@@ -94,13 +100,13 @@ describe('With preserved', () => {
 })
 
 describe('API', () => {
-  const FILES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const ROUES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
     root: '/test/mock/routes',
-    FILES: FILES,
+    ROUTES: ROUES as Record<string, RouteFile>,
   })
 
   it('Should return 200 response - /api', async () => {

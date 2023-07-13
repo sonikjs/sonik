@@ -9,7 +9,7 @@ import type { UnstableDevWorker, UnstableDevOptions } from 'wrangler'
 let worker: UnstableDevWorker | undefined
 const wranglerDevOptions: UnstableDevOptions = {
   experimental: { disableExperimentalWarning: true, liveReload: false },
-  logLevel: 'info',
+  logLevel: 'debug',
 }
 
 type SonikViteServerOptions = {

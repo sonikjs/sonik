@@ -1,32 +1,70 @@
 import { describe, it, expect } from 'vitest'
-import { filePathToPath } from '.'
+import { filePathToPath, groupByDirectory, listByDirectory } from '.'
 
 describe('filePathToPath', () => {
   it('Should return a correct path', () => {
-    expect(filePathToPath('/app/routes/index.tsx')).toBe('/')
-    expect(filePathToPath('/app/routes/about.tsx')).toBe('/about')
-    expect(filePathToPath('/app/routes/about/index.tsx')).toBe('/about')
-    expect(filePathToPath('/app/routes/about/me')).toBe('/about/me')
-    expect(filePathToPath('/app/routes/about/me/index.tsx')).toBe('/about/me')
-    expect(filePathToPath('/app/routes/about/me/address.tsx')).toBe('/about/me/address')
-  })
-  it('Should return a correct path - with slug', () => {
-    expect(filePathToPath('/app/routes/[slug].tsx')).toBe('/:slug')
-    expect(filePathToPath('/app/routes/posts/[slug].tsx')).toBe('/posts/:slug')
-  })
-  it('Should return a correct path - with catch-all', () => {
-    expect(filePathToPath('/app/routes/[...slug].tsx')).toBe('/*')
-    expect(filePathToPath('/app/routes/posts/[...slug].tsx')).toBe('/posts/*')
-  })
+    expect(filePathToPath('index.tsx')).toBe('/')
+    expect(filePathToPath('about.tsx')).toBe('/about')
+    expect(filePathToPath('about/index.tsx')).toBe('/about')
+    expect(filePathToPath('about/me')).toBe('/about/me')
+    expect(filePathToPath('about/me/index.tsx')).toBe('/about/me')
+    expect(filePathToPath('about/me/address.tsx')).toBe('/about/me/address')
 
-  it('Should return a correct path - with root option', () => {
-    expect(filePathToPath('/test/mock/index.tsx', '/test/mock')).toBe('/')
-    expect(filePathToPath('/test/mock/about.tsx', '/test/mock')).toBe('/about')
-    expect(filePathToPath('/test/mock/about/index.tsx', '/test/mock')).toBe('/about')
-    expect(filePathToPath('/test/mock/about/me', '/test/mock')).toBe('/about/me')
-    expect(filePathToPath('/test/mock/about/me/index.tsx', '/test/mock')).toBe('/about/me')
-    expect(filePathToPath('/test/mock/about/me/address.tsx', '/test/mock')).toBe(
-      '/about/me/address'
-    )
+    expect(filePathToPath('/index.tsx')).toBe('/')
+    expect(filePathToPath('/about.tsx')).toBe('/about')
+    expect(filePathToPath('/about/index.tsx')).toBe('/about')
+    expect(filePathToPath('/about/me')).toBe('/about/me')
+    expect(filePathToPath('/about/me/index.tsx')).toBe('/about/me')
+    expect(filePathToPath('/about/me/address.tsx')).toBe('/about/me/address')
+  })
+})
+
+describe('groupByDirectory', () => {
+  const files = {
+    '/app/routes/index.tsx': 'file1',
+    '/app/routes/about.tsx': 'file2',
+    '/app/routes/blog/index.tsx': 'file3',
+    '/app/routes/blog/about.tsx': 'file4',
+    '/app/routes/blog/posts/index.tsx': 'file5',
+    '/app/routes/blog/posts/comments.tsx': 'file6',
+  }
+
+  it('Should group by directories', () => {
+    expect(groupByDirectory(files)).toEqual({
+      '/app/routes': {
+        'index.tsx': 'file1',
+        'about.tsx': 'file2',
+      },
+      '/app/routes/blog': {
+        'index.tsx': 'file3',
+        'about.tsx': 'file4',
+      },
+      '/app/routes/blog/posts': {
+        'index.tsx': 'file5',
+        'comments.tsx': 'file6',
+      },
+    })
+  })
+})
+
+describe('listByDirectory', () => {
+  it('Should list files by their directory', () => {
+    const files = {
+      '/app/routes/blog/posts/_layout.tsx': 'foo3',
+      '/app/routes/_layout.tsx': 'foo',
+      '/app/routes/blog/_layout.tsx': 'foo2',
+    }
+
+    const result = listByDirectory(files)
+
+    expect(result).toEqual({
+      '/app/routes': ['/app/routes/_layout.tsx'],
+      '/app/routes/blog': ['/app/routes/_layout.tsx', '/app/routes/blog/_layout.tsx'],
+      '/app/routes/blog/posts': [
+        '/app/routes/_layout.tsx',
+        '/app/routes/blog/_layout.tsx',
+        '/app/routes/blog/posts/_layout.tsx',
+      ],
+    })
   })
 })
