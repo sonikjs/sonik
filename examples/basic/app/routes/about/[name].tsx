@@ -1,6 +1,6 @@
-import type { Route, HeadTag } from 'sonik'
+import type { Route, HeadHandler } from 'sonik'
 
-export const headTag: HeadTag = (c) => {
+export const headTag: HeadHandler = (c) => {
   return {
     title: `It's ${c.req.param('name')}`,
   }
