@@ -146,12 +146,12 @@ export class Server {
         }
 
         for (const [preservedDir, content] of Object.entries(this.preservedMap)) {
-          if (dir === preservedDir) {
+          if (dir !== this.root && dir === preservedDir) {
             const notFound = content['_404.tsx']
             if (notFound) {
               const notFoundHandler = notFound.default as Handler
               const head = notFound.head
-              subApp.notFound((c) =>
+              subApp.get('*', (c) =>
                 this.toWebResponse(c, notFoundHandler(c), 404, head, layoutPaths)
               )
             }
