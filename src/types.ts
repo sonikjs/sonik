@@ -9,7 +9,7 @@ export type Handler = (c: Context, next: Next) => HandlerResponse
 export type NotFoundHandler = (c: Context) => HandlerResponse
 export type ErrorHandler = (e: Error, c: Context) => HandlerResponse
 export type LayoutHandler = (children: VNode, head?: VNode) => VNode
-export type AppHandler = (app: Hono) => void
+export type AppHandler = (app: Hono<any, any, any>) => void
 
 export type FCOptions = {}
 

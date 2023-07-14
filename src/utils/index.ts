@@ -55,6 +55,21 @@ export const groupByDirectory = <T = unknown>(files: Record<string, T>) => {
     }
   }
 
+  // Sort the files in each directory
+  for (const [directory, files] of Object.entries(organizedFiles)) {
+    const sortedEntries = Object.entries(files).sort(([keyA], [keyB]) => {
+      if (keyA[0] === '[' && keyB[0] !== '[') {
+        return 1
+      }
+      if (keyA[0] !== '[' && keyB[0] === '[') {
+        return -1
+      }
+      return keyA.localeCompare(keyB)
+    })
+
+    organizedFiles[directory] = Object.fromEntries(sortedEntries)
+  }
+
   return organizedFiles
 }
 

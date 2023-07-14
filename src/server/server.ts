@@ -13,7 +13,7 @@ import type {
   Head,
   NotFoundHandler,
 } from '../types'
-import { filePathToPath, groupByDirectory, listByDirectory } from '../utils'
+import { filePathToPath, groupByDirectory, listByDirectory, sortObject } from '../utils'
 import { createHeadTag } from './head'
 
 export type ServerOptions = Partial<{
@@ -62,13 +62,6 @@ export class Server {
       })
 
     this.layoutList = listByDirectory(this.LAYOUTS)
-
-    // Check all routes are exporting `default`
-    // Currently, this part only check files under `/app/routes/**`
-    import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx)', {
-      eager: true,
-      import: 'default',
-    })
 
     const ROUTES =
       options?.ROUTES ??
@@ -143,6 +136,8 @@ export class Server {
 
       for (const [fileName, file] of Object.entries(content)) {
         const fileDefault = file.default
+        if (!fileDefault) continue
+
         const head = file.head
 
         const path = filePathToPath(fileName)
