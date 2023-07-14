@@ -115,7 +115,22 @@ export class Server {
     for (const [dir, content] of Object.entries(this.routesMap)) {
       const subApp = new Hono()
 
-      const layoutPaths = this.layoutList[dir]
+      let layoutPaths = this.layoutList[dir]
+
+      const getLayoutPaths = (paths: string[]) => {
+        layoutPaths = this.layoutList[paths.join('/')]
+        if (!layoutPaths) {
+          paths.pop()
+          if (paths.length) {
+            getLayoutPaths(paths)
+          }
+        }
+      }
+
+      if (!layoutPaths) {
+        const dirPaths = dir.split('/')
+        getLayoutPaths(dirPaths)
+      }
 
       for (const [fileName, file] of Object.entries(content)) {
         const fileDefault = file.default
