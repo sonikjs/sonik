@@ -1,11 +1,12 @@
-import type { Context, Hono } from 'hono'
+import type { Context, Hono, Next } from 'hono'
 import type { VNode } from 'preact'
 
 export type { Hono, Context } from 'hono'
 
 export type HandlerResponse = VNode | Promise<VNode> | Response | Promise<Response>
 
-export type Handler = (c: Context) => HandlerResponse
+export type Handler = (c: Context, next: Next) => HandlerResponse
+export type NotFoundHandler = (c: Context) => HandlerResponse
 export type ErrorHandler = (e: Error, c: Context) => HandlerResponse
 export type LayoutHandler = (children: VNode, head?: VNode) => VNode
 export type AppHandler = (app: Hono) => void
@@ -29,4 +30,4 @@ export type Head = {
   script?: Record<string, string>[]
 }
 
-export type HeadHandler = (c: Context) => Head
+export type HeadHandler = (c: Context) => Head | Promise<Head>

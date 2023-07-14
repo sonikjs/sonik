@@ -3,7 +3,16 @@ import { Hono } from 'hono/quick'
 import type { VNode } from 'preact'
 import { h } from 'preact'
 import { render } from 'preact-render-to-string'
-import type { Route, ErrorHandler, Handler, FC, LayoutHandler, HeadHandler, Head } from '../types'
+import type {
+  Route,
+  ErrorHandler,
+  Handler,
+  FC,
+  LayoutHandler,
+  HeadHandler,
+  Head,
+  NotFoundHandler,
+} from '../types'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils'
 import { createHeadTag } from './head'
 
@@ -82,7 +91,7 @@ export class Server {
     if (res instanceof Promise) res = await res
     if (res instanceof Response) return res
 
-    head = head ? (typeof head === 'function' ? head(c) : head) : head
+    head = head ? (typeof head === 'function' ? await head(c) : head) : head
 
     const addDocType = (html: string) => {
       return `<!doctype html>${html}`
@@ -153,8 +162,8 @@ export class Server {
             }
           } else {
             if (handler) {
-              subApp.on(method, path, (c) => {
-                return this.toWebResponse(c, handler(c), 200, head, layoutPaths)
+              subApp.on(method, path, async (c, next) => {
+                return this.toWebResponse(c, await handler(c, next), 200, head, layoutPaths)
               })
             }
           }
@@ -164,7 +173,7 @@ export class Server {
           if (dir !== this.root && dir === preservedDir) {
             const notFound = content['_404.tsx']
             if (notFound) {
-              const notFoundHandler = notFound.default as Handler
+              const notFoundHandler = notFound.default as NotFoundHandler
               const head = notFound.head
               subApp.get('*', (c) =>
                 this.toWebResponse(c, notFoundHandler(c), 404, head, layoutPaths)
@@ -189,7 +198,7 @@ export class Server {
     if (this.preservedMap[this.root]) {
       const defaultNotFound = this.preservedMap[this.root]['_404.tsx']
       if (defaultNotFound) {
-        const notFoundHandler = defaultNotFound.default as Handler
+        const notFoundHandler = defaultNotFound.default as NotFoundHandler
         const head = defaultNotFound.head
         app.notFound((c) => this.toWebResponse(c, notFoundHandler(c), 404, head))
       }
