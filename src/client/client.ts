@@ -11,6 +11,10 @@ export const createClient = async (options?: {
 }) => {
   const FILES = import.meta.glob('/app/islands/**/[a-zA-Z0-9[-]+.(tsx|ts)')
 
+  import.meta.glob('/app/routes/**/*.css', {
+    eager: true,
+  })
+
   const hydrateComponent = async () => {
     const filePromises = Object.keys(FILES).map(async (filePath) => {
       const componentName = filePath.replace(/.*\/app\/islands\//, '')
