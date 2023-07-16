@@ -643,10 +643,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.42.0.tgz#484a1d638de2911e6f5a30c12f49c7e4a3270fb6"
   integrity sha512-6SWlXpWU5AvId8Ac7zjzmIOqMOba/JWY8XZ4A7q7Gn1Vlfg/SFFIlrtHXt9nPn4op9ZPAkl91Jao+QQv3r/ukw==
 
-"@hono/node-server@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-1.0.2.tgz#0a3cea255b89b49f00c36a11d2a8c7de617af850"
-  integrity sha512-j8oduBujeGN2+Zx8G1dp3yhiLrqCs/dMJp1wKSlXmMeAxpjVgUtYLaUjhY69lPVDyTjoBb3fmHXCX6e2iIgB9A==
+"@hono/node-server@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-1.1.0.tgz#917bda1330ca73b2a1055be62aa62307f000f46c"
+  integrity sha512-1dwun4NkN+SDhKmEcGwjrEwV0rqgCBsb78XvZTHa4JGXCne09bNCv0wDRyQXVj99nYLpANqANZ9ABlTGxS70MQ==
 
 "@humanwhocodes/config-array@^0.11.10":
   version "0.11.10"
