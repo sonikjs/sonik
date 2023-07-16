@@ -13,7 +13,7 @@ import type {
   Head,
   NotFoundHandler,
 } from '../types'
-import { filePathToPath, groupByDirectory, listByDirectory, sortObject } from '../utils'
+import { filePathToPath, groupByDirectory, listByDirectory } from '../utils'
 import { createHeadTag } from './head'
 
 export type ServerOptions = Partial<{
