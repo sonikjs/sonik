@@ -1,20 +1,18 @@
 import type { Context, Hono, Next } from 'hono'
-import type { VNode } from 'preact'
-
 export type { Hono, Context } from 'hono'
 
-export type HandlerResponse = VNode | Promise<VNode> | Response | Promise<Response>
+export type HandlerResponse = string | Promise<string> | Response | Promise<Response>
 
 export type Handler = (c: Context, next: Next) => HandlerResponse
 export type NotFoundHandler = (c: Context) => HandlerResponse
 export type ErrorHandler = (e: Error, c: Context) => HandlerResponse
-export type LayoutHandler = (children: VNode, head?: VNode) => VNode
+export type LayoutHandler = (children: string, head?: string) => string
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AppHandler = (app: Hono<any, any, any>) => void
 
 export type FCOptions = {}
 
-export type FC = (c: Context, options?: Partial<FCOptions>) => VNode
+export type FC = (c: Context, options?: Partial<FCOptions>) => string
 
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 

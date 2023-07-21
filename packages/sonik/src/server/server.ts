@@ -1,8 +1,6 @@
 import type { Context, Env } from 'hono'
 import { Hono } from 'hono/quick'
-import type { VNode } from 'preact'
-import { h } from 'preact'
-import { render } from 'preact-render-to-string'
+
 import type {
   Route,
   ErrorHandler,
@@ -76,7 +74,7 @@ export class Server {
 
   private toWebResponse = async (
     c: Context,
-    res: VNode | Promise<VNode> | Response | Promise<Response>,
+    res: string | Promise<string> | Response | Promise<Response>,
     status: number = 200,
     head?: Head | HeadHandler,
     layouts?: string[]
@@ -100,15 +98,15 @@ export class Server {
           res = layout.default(res, createHeadTag(head))
         }
       }
-      return c.html(addDocType(render(res)), status)
+      return c.html(addDocType(res), status)
     }
 
     const defaultLayout = this.LAYOUTS[this.root + '/_layout.tsx']
     if (defaultLayout) {
-      return c.html(addDocType(render(defaultLayout.default(res, createHeadTag(head)))), status)
+      return c.html(addDocType(defaultLayout.default(res, createHeadTag(head))), status)
     }
 
-    return c.html(render(res), status)
+    return c.html(res, status)
   }
 
   createApp = <E extends Env>(options?: { app?: Hono }): Hono<E> => {
@@ -144,7 +142,7 @@ export class Server {
 
         if (typeof fileDefault === 'function') {
           subApp.get(path, (c) => {
-            const res = h(() => fileDefault(c), {})
+            const res = fileDefault(c)
             return this.toWebResponse(c, res, 200, head, layoutPaths)
           })
         }

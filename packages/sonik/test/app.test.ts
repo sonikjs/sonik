@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Route, createApp } from '../src'
+import { createApp } from '../src'
 import type { LayoutFile, PreservedFile, RouteFile } from '../src/server/server'
 
 describe('Basic', () => {
