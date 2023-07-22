@@ -1,6 +1,7 @@
 basic/site/static/*.js
 basic/site/static/*.json
 basic/site/static/*.css
+yarn.lock
 .wrangler
 .pnp.*
 .yarn*
