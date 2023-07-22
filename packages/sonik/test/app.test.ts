@@ -127,3 +127,27 @@ describe('API', () => {
     })
   })
 })
+
+describe('MDX', () => {
+  const ROUES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)', {
+    eager: true,
+  })
+
+  const LAYOUTS = import.meta.glob('/test/mock/routes/_layout.tsx', {
+    eager: true,
+  })
+
+  const app = createApp({
+    root: '/test/mock/routes',
+    ROUTES: ROUES as Record<string, RouteFile>,
+    LAYOUTS: LAYOUTS as Record<string, LayoutFile>,
+  })
+
+  it('Should return 200 response with MDX', async () => {
+    const res = await app.request('/post')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toBe(
+      '<!doctype html><html><head></head><body><h2>Hello MDX!</h2></body></html>'
+    )
+  })
+})

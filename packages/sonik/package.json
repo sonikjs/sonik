@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
+    "@mdx-js/rollup": "^2.3.0",
     "concurrently": "^8.2.0",
     "esbuild": "^0.18.0",
     "publint": "^0.1.12",

@@ -55,7 +55,7 @@ export class Server {
 
     const ROUTES =
       options?.ROUTES ??
-      import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx)', {
+      import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx|mdx)', {
         eager: true,
       })
 
