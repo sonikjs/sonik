@@ -1397,6 +1397,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"create-sonik@workspace:packages/create-sonik":
+  version: 0.0.0-use.local
+  resolution: "create-sonik@workspace:packages/create-sonik"
+  languageName: unknown
+  linkType: soft
+
 "cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
