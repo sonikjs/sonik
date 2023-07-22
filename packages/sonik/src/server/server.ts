@@ -33,8 +33,6 @@ export class Server {
   readonly routesMap: RouteMap
   readonly root: string
 
-  count: number = 0
-
   constructor(options?: ServerOptions) {
     // `import.meta.glob` can only use literals
     this.PRESERVED =
