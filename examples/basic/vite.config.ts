@@ -1,9 +1,14 @@
 import { defineConfig } from 'vite'
-import { minifyEs } from 'sonik/vite'
+import { devServer, minifyEs } from 'sonik/vite'
 
 export default defineConfig({
   ssr: {
     noExternal: true,
   },
-  plugins: [minifyEs()],
+  plugins: [
+    devServer({
+      entry: './_worker.ts',
+    }),
+    minifyEs(),
+  ],
 })
