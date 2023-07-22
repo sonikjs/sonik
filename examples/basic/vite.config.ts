@@ -1,13 +1,9 @@
 import { defineConfig } from 'vite'
+import { minifyEs } from 'sonik/vite'
 
-export default defineConfig(({ ssrBuild }) => {
-  if (ssrBuild) {
-    return {
-      ssr: {
-        noExternal: true,
-      },
-    }
-  } else {
-    return {}
-  }
+export default defineConfig({
+  ssr: {
+    noExternal: true,
+  },
+  plugins: [minifyEs()],
 })
