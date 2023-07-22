@@ -7,10 +7,8 @@ type CreateAppOptions = Partial<{
 }> &
   ServerOptions
 
-let server: Server
-
 export function createApp(options?: CreateAppOptions) {
-  server = options
+  const server = options
     ? new Server({
         ROUTES: options.ROUTES,
         PRESERVED: options.PRESERVED,
