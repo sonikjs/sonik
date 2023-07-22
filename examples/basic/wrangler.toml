@@ -1,5 +1,5 @@
 name = "sonik-example-basic"
 
 [build]
-command = "yarn vite build --ssr ./_worker.ts"
+command = "vite build --ssr ./_worker.ts"
 watch_dir = "app"
