@@ -16,7 +16,7 @@ const handler: LayoutHandler = (children, head) => {
           </header>
           {children}
           <footer style='margin-top:2rem'>
-            <small>© 2023 yusukebe</small>
+            <small>© 2023 your name</small>
           </footer>
         </div>
       </body>

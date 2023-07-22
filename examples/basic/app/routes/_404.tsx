@@ -1,6 +1,6 @@
 import type { Handler } from 'sonik'
 
-const handler: Handler = (c) => {
+const handler: Handler = () => {
   return <p>Not Found</p>
 }
 
