@@ -1,15 +1,10 @@
-import type { Route, HeadHandler } from '../../../../src'
+import type { Route } from '../../../../src'
 import Badge from '../../components/Badge'
 
-export const head: HeadHandler = (c) => {
-  return {
-    title: c.req.param('name'),
-  }
-}
-
 export default {
-  GET: (c) => {
+  GET: (c, head) => {
     const { name } = c.req.param()
+    head.set({ title: name })
     return (
       <>
         <p>It's {name}</p>

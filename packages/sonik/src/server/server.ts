@@ -1,16 +1,8 @@
 import type { Context, Env } from 'hono'
 import { Hono } from 'hono/quick'
 
-import type {
-  Route,
-  ErrorHandler,
-  Handler,
-  FC,
-  LayoutHandler,
-  HeadHandler,
-  Head,
-  NotFoundHandler,
-} from '../types'
+import type { Route, ErrorHandler, Handler, FC, LayoutHandler, NotFoundHandler } from '../types'
+import { Head } from './head'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils'
 import { createHeadTag } from './head'
 
@@ -24,13 +16,13 @@ export type ServerOptions = Partial<{
 type Dir = string
 type FileName = string
 
-export type RouteFile = { default: FC & Route; head?: Head | HeadHandler }
+export type RouteFile = { default: FC & Route }
 type RouteMap = Record<Dir, Record<FileName, RouteFile>>
 
 export type LayoutFile = { default: LayoutHandler }
 type LayoutList = Record<Dir, FileName[]>
 
-export type PreservedFile = { default: ErrorHandler | Handler; head?: Head | HeadHandler }
+export type PreservedFile = { default: ErrorHandler | Handler }
 type PreservedMap = Record<Dir, Record<FileName, PreservedFile>>
 
 export class Server {
@@ -76,13 +68,11 @@ export class Server {
     c: Context,
     res: string | Promise<string> | Response | Promise<Response>,
     status: number = 200,
-    head?: Head | HeadHandler,
+    head?: Head,
     layouts?: string[]
   ) => {
     if (res instanceof Promise) res = await res
     if (res instanceof Response) return res
-
-    head = head ? (typeof head === 'function' ? await head(c) : head) : head
 
     const addDocType = (html: string) => {
       return `<!doctype html>${html}`
@@ -136,13 +126,13 @@ export class Server {
         const fileDefault = file.default
         if (!fileDefault) continue
 
-        const head = file.head
-
         const path = filePathToPath(fileName)
+
+        const head = new Head()
 
         if (typeof fileDefault === 'function') {
           subApp.get(path, (c) => {
-            const res = fileDefault(c)
+            const res = fileDefault(c, head)
             return this.toWebResponse(c, res, 200, head, layoutPaths)
           })
         }
@@ -156,7 +146,8 @@ export class Server {
           } else {
             if (handler) {
               subApp.on(method, path, async (c, next) => {
-                return this.toWebResponse(c, await handler(c, next), 200, head, layoutPaths)
+                const res = await handler(c, head, next)
+                return this.toWebResponse(c, res, 200, head, layoutPaths)
               })
             }
           }
@@ -167,17 +158,15 @@ export class Server {
             const notFound = content['_404.tsx']
             if (notFound) {
               const notFoundHandler = notFound.default as NotFoundHandler
-              const head = notFound.head
               subApp.get('*', (c) =>
-                this.toWebResponse(c, notFoundHandler(c), 404, head, layoutPaths)
+                this.toWebResponse(c, notFoundHandler(c, head), 404, head, layoutPaths)
               )
             }
             const error = content['_error.tsx']
             if (error) {
               const errorHandler = error.default as ErrorHandler
-              const head = error.head
               subApp.onError((e, c) =>
-                this.toWebResponse(c, errorHandler(e, c), 500, head, layoutPaths)
+                this.toWebResponse(c, errorHandler(e, c, head), 500, head, layoutPaths)
               )
             }
           }
@@ -188,19 +177,19 @@ export class Server {
       }
     }
 
+    const head = new Head()
+
     if (this.preservedMap[this.root]) {
       const defaultNotFound = this.preservedMap[this.root]['_404.tsx']
       if (defaultNotFound) {
         const notFoundHandler = defaultNotFound.default as NotFoundHandler
-        const head = defaultNotFound.head
-        app.notFound((c) => this.toWebResponse(c, notFoundHandler(c), 404, head))
+        app.notFound((c) => this.toWebResponse(c, notFoundHandler(c, head), 404, head))
       }
 
       const defaultError = this.preservedMap[this.root]['_error.tsx']
       if (defaultError) {
         const errorHandler = defaultError.default as ErrorHandler
-        const head = defaultError.head
-        app.onError((e, c) => this.toWebResponse(c, errorHandler(e, c), 500, head))
+        app.onError((e, c) => this.toWebResponse(c, errorHandler(e, c, head), 500, head))
       }
     }
 

@@ -1,4 +1,16 @@
-import type { Head } from '../types'
+export class Head {
+  title?: string
+  meta?: Record<string, string>[]
+  link?: Record<string, string>[]
+  script?: Record<string, string>[]
+
+  set(data: Omit<typeof this, 'set'>) {
+    this.title = data.title
+    this.meta = data.meta
+    this.link = data.link
+    this.script = data.script
+  }
+}
 
 export const createHeadTag = (head?: Head) => {
   return (
