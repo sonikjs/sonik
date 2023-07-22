@@ -12,8 +12,7 @@
     "watch": "concurrently \"yarn build:server --watch\"",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
-    "prerelease": "yarn build && yarn test",
-    "release": "np"
+    "release": "yarn build && yarn test && release-it"
   },
   "files": [
     "dist"
