@@ -12,7 +12,7 @@
     "watch": "concurrently \"yarn build:server --watch\"",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
-    "release": "yarn build && yarn test && release-it"
+    "release": "yarn build && yarn test && cp ../../README.md ./ && release-it && rm ./README.md"
   },
   "files": [
     "dist"
