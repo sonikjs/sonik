@@ -1,18 +1,17 @@
-import type { Head } from 'sonik'
-import Counter from '../islands/Counter'
+import type { Route } from 'sonik'
 
-export const head: Head = {
-  title: 'Welcome to Sonik!',
-  meta: [{ name: 'description', content: 'This an example for Sonik' }],
-}
-
-export default function Home() {
-  return (
-    <div>
-      <h2>
-        Hello <a href='/about/me'>me</a>!
-      </h2>
-      <Counter />
-    </div>
-  )
-}
+export default {
+  GET: (c, head) => {
+    head.set({
+      title: 'Welcome to Sonik!',
+      meta: [{ name: 'description', content: 'This an example for Sonik' }],
+    })
+    return (
+      <div>
+        <h2>
+          Hello <a href='/about/me'>me</a>!
+        </h2>
+      </div>
+    )
+  },
+} satisfies Route

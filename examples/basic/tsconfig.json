@@ -4,7 +4,6 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "strict": true,
     "lib": [
       "esnext"
@@ -12,9 +11,8 @@
     "types": [
       "@cloudflare/workers-types",
       "node",
-      "vite/client"
     ],
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "hono/jsx"
   },
 }

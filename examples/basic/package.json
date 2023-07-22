@@ -4,19 +4,16 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build:server": "vite build",
-    "build:client": "vite build -c vite.client.config.ts",
-    "build": "yarn build:client && yarn build:server",
-    "dev": "vite",
-    "deploy": "yarn build && wrangler deploy --minify dist/server.js"
+    "build": "vite build --ssr ./_worker.ts",
+    "dev": "wrangler pages dev --live-reload ./dist",
+    "deploy": "yarn build && wrangler pages deploy ./dist"
   },
   "dependencies": {
-    "sonik": "^0.0.30"
+    "sonik": "^0.0.31"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
-    "tsx": "^3.12.7",
-    "vite": "^4.3.9",
-    "wrangler": "^3.0.1"
+    "vite": "^4.4.6",
+    "wrangler": "^3.3.0"
   }
 }

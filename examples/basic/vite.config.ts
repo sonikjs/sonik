@@ -1,5 +1,13 @@
-import { sonikVite, sonikViteServer } from 'sonik/vite'
+import { defineConfig } from 'vite'
 
-export default {
-  plugins: [sonikVite(), sonikViteServer()],
-}
+export default defineConfig(({ ssrBuild }) => {
+  if (ssrBuild) {
+    return {
+      ssr: {
+        noExternal: true,
+      },
+    }
+  } else {
+    return {}
+  }
+})

@@ -4,8 +4,6 @@ const handler: LayoutHandler = (children, head) => {
   return (
     <html lang='ja'>
       <head>
-        <link rel='modulepreload' href='/static/client.js' as='script' />
-        <link rel='stylesheet' href='/static/style.css' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         {head}
       </head>
@@ -21,7 +19,6 @@ const handler: LayoutHandler = (children, head) => {
             <small>© 2023 yusukebe</small>
           </footer>
         </div>
-        <script type='module' src='/static/client.js'></script>
       </body>
     </html>
   )
