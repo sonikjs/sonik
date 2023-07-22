@@ -1,5 +1,4 @@
 name = "sonik-example-basic"
-compatibility_date = "2023-01-01"
 
 [build]
 command = "yarn vite build --ssr ./_worker.ts"
