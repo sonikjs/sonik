@@ -2106,18 +2106,18 @@ __metadata:
   resolution: "sonik-example-basic@workspace:."
   dependencies:
     "@cloudflare/workers-types": ^4.20230518.0
-    sonik: ^0.0.31
+    sonik: ^0.0.32
     vite: ^4.4.6
     wrangler: ^3.3.0
   languageName: unknown
   linkType: soft
 
-"sonik@npm:^0.0.31":
-  version: 0.0.31
-  resolution: "sonik@npm:0.0.31"
+"sonik@npm:^0.0.32":
+  version: 0.0.32
+  resolution: "sonik@npm:0.0.32"
   dependencies:
     hono: ^3.3.2
-  checksum: 712a3d9e684d67f049994d45adc31c709e7d4ad564ce74f929e5c6970605de01a70075833f9b623eed2a04adbb90e6bc5ed6340e3e35f7055b0df4ccf177ee52
+  checksum: e1dda24a228ba261282b07c55b4509d840ad849ea7a9eba1e5cb2246c0d7e7c0c358ea3ed6f92e7a72ca3c4b800bd501cb4927aaec4622f67691f5e1b3195d28
   languageName: node
   linkType: hard
 

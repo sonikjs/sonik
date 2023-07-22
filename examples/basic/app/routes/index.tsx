@@ -1,7 +1,7 @@
 import type { Route } from 'sonik'
 
 export default {
-  GET: (c, head) => {
+  GET: (_c, head) => {
     head.set({
       title: 'Welcome to Sonik!',
       meta: [{ name: 'description', content: 'This an example for Sonik' }],

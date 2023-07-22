@@ -9,7 +9,7 @@
     "deploy": "yarn build && wrangler pages deploy ./dist"
   },
   "dependencies": {
-    "sonik": "^0.0.31"
+    "sonik": "^0.0.32"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
