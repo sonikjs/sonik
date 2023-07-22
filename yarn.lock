@@ -251,6 +251,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hono/node-server@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@hono/node-server@npm:1.1.0"
+  checksum: 5fb45f2b0e10838fc8c3cdbb2bfea217594a1796fea65f0311b46a5647fcdbe29c0b37dab51b54035c84874f6622d64c045fd66891bbaa27a3fe9c3d6099ed8d
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.10":
   version: 0.11.10
   resolution: "@humanwhocodes/config-array@npm:0.11.10"
@@ -6045,6 +6052,7 @@ __metadata:
   resolution: "sonik@workspace:packages/sonik"
   dependencies:
     "@cloudflare/workers-types": ^4.20230518.0
+    "@hono/node-server": ^1.1.0
     "@mdx-js/rollup": ^2.3.0
     concurrently: ^8.2.0
     esbuild: ^0.18.0

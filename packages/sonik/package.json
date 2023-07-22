@@ -47,6 +47,7 @@
   },
   "homepage": "https://github.com/yusukebe/sonik",
   "dependencies": {
+    "@hono/node-server": "^1.1.0",
     "hono": "^3.3.2"
   },
   "devDependencies": {
