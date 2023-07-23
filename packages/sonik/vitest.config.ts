@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [
     {
       ...mdx({
-        jsxImportSource: 'hono/jsx',
+        jsxImportSource: 'preact',
       }),
     },
   ],
