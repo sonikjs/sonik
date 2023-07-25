@@ -3,11 +3,13 @@ import { islandComponentsPlugin } from './island-components'
 import { minifyEs } from './minify-es'
 import { devServer } from './dev-server'
 import type { DevServerOptions } from './dev-server'
+import type { BuildOptions } from './build'
 import { build } from './build'
 
 type SonikOptions = {
   minify?: boolean
-} & DevServerOptions
+} & DevServerOptions &
+  BuildOptions
 
 function sonik(options: SonikOptions): PluginOption[] {
   const plugins: PluginOption[] = [islandComponentsPlugin()]

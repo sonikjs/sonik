@@ -1,11 +1,12 @@
 import type { Plugin, UserConfig } from 'vite'
 
-type BuildOptions = {
+export type BuildOptions = {
   entry: string
   outDir?: string
   clientEntry?: string
   clientName?: string
   clientOutDir?: string
+  publicDir?: string
 }
 
 export function build(options: BuildOptions): Plugin {
@@ -23,6 +24,7 @@ export function build(options: BuildOptions): Plugin {
             },
             outDir: options.clientOutDir ?? './dist/static',
           },
+          publicDir: options.publicDir ?? './public/static',
         }
       } else {
         return {
