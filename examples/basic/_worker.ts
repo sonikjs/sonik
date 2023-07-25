@@ -15,6 +15,8 @@ const serveStatic = (): MiddlewareHandler => {
   }
 }
 
+app.use('/static/*', serveStatic())
+
 app.showRoutes()
 
 export default app

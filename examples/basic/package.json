@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@preact/signals": "^1.1.5",
-    "sonik": "^0.0.39"
+    "sonik": "^0.0.40"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

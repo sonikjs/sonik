@@ -21,6 +21,7 @@ const handler: LayoutHandler = (children, head) => {
           </footer>
         </div>
       </body>
+      <script src='/static/client.js'></script>
     </html>
   )
 }
