@@ -8,7 +8,7 @@
   "scripts": {
     "test": "vitest --run",
     "build:server": "esbuild --bundle --format=esm --minify --external:hono --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
-    "build:vite-plugins": "esbuild --bundle --format=esm --platform=node --minify --external:esbuild --external:vite --tsconfig=tsconfig.build.json --outdir=dist/vite src/vite/index.ts",
+    "build:vite-plugins": "esbuild --bundle --format=esm --platform=node --minify --external:esbuild --external:vite '--external:@babel/*' --tsconfig=tsconfig.build.json --outdir=dist/vite src/vite/index.ts",
     "build": "rimraf dist && yarn build:server && yarn build:vite-plugins && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json && publint",
     "watch": "concurrently \"yarn build:server --watch\" \"yarn build:vite-plugins --watch\"",
     "lint": "eslint src/**.ts",
