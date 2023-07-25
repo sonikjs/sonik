@@ -30,7 +30,7 @@ export function devServer(options: DevServerOptions): Plugin[] {
             if (
               passThough === false &&
               (req.url?.endsWith('.ts') ||
-                req.url?.startsWith('/app/island') ||
+                req.url?.startsWith('/app/') || // TODO: to be fixed
                 req.url?.startsWith('/@vite/client') ||
                 req.url?.startsWith('/@fs/') ||
                 req.url?.startsWith('/static') ||
