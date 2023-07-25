@@ -7,10 +7,12 @@
   "type": "module",
   "scripts": {
     "test": "vitest --run",
-    "build:server": "esbuild --bundle --format=esm --minify --external:hono --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
-    "build:vite-plugins": "esbuild --bundle --format=esm --platform=node --minify --external:esbuild --external:vite '--external:@babel/*' --tsconfig=tsconfig.build.json --outdir=dist/vite src/vite/index.ts",
-    "build": "rimraf dist && yarn build:server && yarn build:vite-plugins && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json && publint",
-    "watch": "concurrently \"yarn build:server --watch\" \"yarn build:vite-plugins --watch\"",
+    "build:server": "esbuild --bundle --format=esm --minify --external:preact --external:preact-render-to-string --external:@preact/signals --external:hono --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
+    "build:vite-plugins": "esbuild --bundle --format=esm --platform=node --minify '--external:@babel/*' --external:esbuild --external:wrangler --external:@hono/node-server --external:vite --tsconfig=tsconfig.build.json --outdir=dist/vite src/vite/index.ts",
+    "build:hono-plugins": "esbuild --format=esm --tsconfig=tsconfig.build.json --outdir=dist/middleware ./src/middleware/*",
+    "build:client": "esbuild --format=esm --minify --tsconfig=tsconfig.build.json --bundle --external:preact --external:@preact/signals --outfile=dist/client/index.js src/client/index.ts",
+    "build": "rimraf dist && yarn build:server && yarn build:client && yarn build:vite-plugins && yarn build:hono-plugins && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json && publint",
+    "watch": "concurrently \"yarn build:server --watch\" \"yarn build:client --watch\" \"yarn build:vite-plugins --watch\"",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
     "release": "yarn build && yarn test && cp ../../README.md ./ && release-it && rm ./README.md"
@@ -23,15 +25,29 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./client": {
+      "types": "./dist/client/index.d.ts",
+      "import": "./dist/client/index.js"
+    },
     "./vite": {
       "types": "./dist/vite/index.d.ts",
       "import": "./dist/vite/index.js"
+    },
+    "./middleware/preload": {
+      "types": "./dist/middleware/preload/index.d.ts",
+      "import": "./dist/middleware/preload.js"
     }
   },
   "typesVersions": {
     "*": {
+      "client": [
+        "./dist/client"
+      ],
       "vite": [
         "./dist/vite"
+      ],
+      "middleware/preload": [
+        "./dist/middleware/preload"
       ]
     }
   },
