@@ -1,4 +1,5 @@
 import type { Route } from 'sonik'
+import Counter from '../islands/Counter'
 
 export default {
   GET: (_c, head) => {
@@ -11,6 +12,7 @@ export default {
         <h2>
           Hello <a href='/about/me'>me</a>!
         </h2>
+        <Counter />
       </div>
     )
   },
