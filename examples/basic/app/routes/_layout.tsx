@@ -5,6 +5,7 @@ const handler: LayoutHandler = (children, head) => {
     <html lang='ja'>
       <head>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <link href='/static/global.css' rel='stylesheet' />
         {head}
       </head>
       <body>

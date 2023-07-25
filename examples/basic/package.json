@@ -4,14 +4,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "vite build --ssr ./_worker.ts",
+    "build": "vite build && vite build --mode client",
     "dev": "vite",
     "dev:pages": "wrangler pages dev --compatibility-date=2023-07-01 --live-reload ./dist",
     "deploy": "$npm_execpath build && wrangler pages deploy ./dist"
   },
   "dependencies": {
     "@preact/signals": "^1.1.5",
-    "sonik": "^0.0.38"
+    "sonik": "^0.0.39"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
