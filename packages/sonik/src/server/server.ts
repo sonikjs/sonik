@@ -26,6 +26,10 @@ type LayoutList = Record<Dir, FileName[]>
 export type PreservedFile = { default: ErrorHandler | Handler }
 type PreservedMap = Record<Dir, Record<FileName, PreservedFile>>
 
+const addDocType = (html: string) => {
+  return `<!doctype html>${html}`
+}
+
 export class Server {
   readonly PRESERVED: Record<string, PreservedFile>
   readonly LAYOUTS: Record<string, LayoutFile>
@@ -79,10 +83,6 @@ export class Server {
   ) => {
     if (res instanceof Promise) res = await res
     if (res instanceof Response) return res
-
-    const addDocType = (html: string) => {
-      return `<!doctype html>${html}`
-    }
 
     if (layouts && layouts.length) {
       layouts = layouts.sort((a, b) => {
