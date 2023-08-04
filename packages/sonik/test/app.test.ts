@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { createApp } from '../src'
-import type { LayoutFile, PreservedFile, RouteFile } from '../src/server/server'
 
 describe('Basic', () => {
   const ROUTES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
@@ -9,7 +8,7 @@ describe('Basic', () => {
 
   const app = createApp({
     root: '/test/mock/routes',
-    ROUTES: ROUTES as Record<string, RouteFile>,
+    ROUTES: ROUTES as any,
   })
 
   it('Should return 200 response - /', async () => {
@@ -58,9 +57,9 @@ describe('With preserved', () => {
 
   const app = createApp({
     root: '/test/mock/routes',
-    ROUTES: ROUTES as Record<string, RouteFile>,
-    PRESERVED: PRESERVED as Record<string, PreservedFile>,
-    LAYOUTS: LAYOUTS as Record<string, LayoutFile>,
+    ROUTES: ROUTES as any,
+    PRESERVED: PRESERVED as any,
+    LAYOUTS: LAYOUTS as any,
   })
 
   app.showRoutes()
@@ -106,7 +105,7 @@ describe('API', () => {
 
   const app = createApp({
     root: '/test/mock/routes',
-    ROUTES: ROUES as Record<string, RouteFile>,
+    ROUTES: ROUES as any,
   })
 
   it('Should return 200 response - /api', async () => {
@@ -139,8 +138,8 @@ describe.only('MDX', () => {
 
   const app = createApp({
     root: '/test/mock/routes',
-    ROUTES: ROUES as Record<string, RouteFile>,
-    LAYOUTS: LAYOUTS as Record<string, LayoutFile>,
+    ROUTES: ROUES as any,
+    LAYOUTS: LAYOUTS as any,
   })
 
   it('Should return 200 response with MDX', async () => {
