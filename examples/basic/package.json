@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "vite build --mode client && vite build",
+    "build": "vite build",
     "dev": "vite",
     "dev:pages": "wrangler pages dev --compatibility-date=2023-07-01 --live-reload ./dist",
     "deploy": "$npm_execpath build && wrangler pages deploy ./dist"
