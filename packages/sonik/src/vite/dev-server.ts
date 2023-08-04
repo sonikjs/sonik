@@ -43,26 +43,27 @@ export function devServer(options: DevServerOptions): Plugin[] {
 
             if (!app) {
               console.error(`Failed to find a named export "default" from ${options.entry}`)
-            } else {
-              getRequestListener(async (request) => {
-                if (passThough) {
-                  return new Response(null)
-                }
-
-                const response = await app.fetch(request)
-                if (response.headers.get('content-type')?.match(/^text\/html/)) {
-                  let body =
-                    (await response.text()) + '<script type="module" src="/@vite/client"></script>'
-                  const headers = new Headers(response.headers)
-                  headers.delete('content-length')
-                  return new Response(body, {
-                    status: response.status,
-                    headers,
-                  })
-                }
-                return response
-              })(req, res)
+              return next()
             }
+
+            getRequestListener(async (request) => {
+              if (passThough) {
+                return new Response(null)
+              }
+
+              const response = await app.fetch(request)
+              if (response.headers.get('content-type')?.match(/^text\/html/)) {
+                let body =
+                  (await response.text()) + '<script type="module" src="/@vite/client"></script>'
+                const headers = new Headers(response.headers)
+                headers.delete('content-length')
+                return new Response(body, {
+                  status: response.status,
+                  headers,
+                })
+              }
+              return response
+            })(req, res)
           }
         }
 
