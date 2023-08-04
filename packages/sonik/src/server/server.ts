@@ -1,12 +1,8 @@
 import type { Context, Env } from 'hono'
-import { Hono } from 'hono/quick'
-import type { VNode } from 'preact'
-import { h } from 'preact'
-import { render } from 'preact-render-to-string'
+import { Hono } from 'hono'
 import type { Route, ErrorHandler, Handler, FC, LayoutHandler, NotFoundHandler } from '../types'
 import { Head } from './head'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils'
-import { createHeadTag } from './head'
 
 export type ServerOptions = Partial<{
   PRESERVED: Record<string, PreservedFile>
@@ -66,7 +62,7 @@ export class Server {
 
   private toWebResponse = async (
     c: Context,
-    res: VNode | Promise<VNode> | Response | Promise<Response>,
+    res: string | Promise<string> | Response | Promise<Response>,
     status: number = 200,
     head?: Head,
     layouts?: string[]
@@ -85,18 +81,21 @@ export class Server {
       for (const path of layouts) {
         const layout = this.LAYOUTS[path]
         if (layout) {
-          res = layout.default(res, createHeadTag(head))
+          res = layout.default(c, { children: res, head: head?.createHeadTag() })
         }
       }
-      return c.html(addDocType(render(res)), status)
+      return c.html(addDocType(res), status)
     }
 
     const defaultLayout = this.LAYOUTS[this.root + '/_layout.tsx']
     if (defaultLayout) {
-      return c.html(addDocType(render(defaultLayout.default(res, createHeadTag(head)))), status)
+      return c.html(
+        addDocType(defaultLayout.default(c, { children: res, head: head?.createHeadTag() })),
+        status
+      )
     }
 
-    return c.html(render(res), status)
+    return c.html(res, status)
   }
 
   createApp = <E extends Env>(options?: { app?: Hono }): Hono<E> => {
@@ -132,7 +131,7 @@ export class Server {
 
         if (typeof fileDefault === 'function') {
           subApp.get(path, (c) => {
-            const res = fileDefault(c, head)
+            const res = fileDefault(c, { head })
             return this.toWebResponse(c, res, 200, head, layoutPaths)
           })
         }
@@ -159,14 +158,14 @@ export class Server {
             if (notFound) {
               const notFoundHandler = notFound.default as NotFoundHandler
               subApp.get('*', (c) =>
-                this.toWebResponse(c, notFoundHandler(c, head), 404, head, layoutPaths)
+                this.toWebResponse(c, notFoundHandler(c, { head }), 404, head, layoutPaths)
               )
             }
             const error = content['_error.tsx']
             if (error) {
               const errorHandler = error.default as ErrorHandler
-              subApp.onError((e, c) =>
-                this.toWebResponse(c, errorHandler(e, c, head), 500, head, layoutPaths)
+              subApp.onError((error, c) =>
+                this.toWebResponse(c, errorHandler(c, { error, head }), 500, head, layoutPaths)
               )
             }
           }
@@ -183,13 +182,15 @@ export class Server {
       const defaultNotFound = this.preservedMap[this.root]['_404.tsx']
       if (defaultNotFound) {
         const notFoundHandler = defaultNotFound.default as NotFoundHandler
-        app.notFound((c) => this.toWebResponse(c, notFoundHandler(c, head), 404, head))
+        app.notFound((c) => this.toWebResponse(c, notFoundHandler(c, { head }), 404, head))
       }
 
       const defaultError = this.preservedMap[this.root]['_error.tsx']
       if (defaultError) {
         const errorHandler = defaultError.default as ErrorHandler
-        app.onError((e, c) => this.toWebResponse(c, errorHandler(e, c, head), 500, head))
+        app.onError((error, c) =>
+          this.toWebResponse(c, errorHandler(c, { error, head }), 500, head)
+        )
       }
     }
 

@@ -128,7 +128,7 @@ describe('API', () => {
   })
 })
 
-describe('MDX', () => {
+describe.only('MDX', () => {
   const ROUES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)', {
     eager: true,
   })

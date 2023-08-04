@@ -4,7 +4,6 @@ import { getRequestListener } from '@hono/node-server'
 
 export type DevServerOptions = {
   entry: string
-  client?: string
   passThrough?: string[]
 }
 
@@ -54,8 +53,6 @@ export function devServer(options: DevServerOptions): Plugin[] {
                 if (response.headers.get('content-type')?.match(/^text\/html/)) {
                   let body =
                     (await response.text()) + '<script type="module" src="/@vite/client"></script>'
-                  if (options.client)
-                    body = `${body}<script type="module" src="${options.client}"></script>`
                   const headers = new Headers(response.headers)
                   headers.delete('content-length')
                   return new Response(body, {

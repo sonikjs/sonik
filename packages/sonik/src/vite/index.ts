@@ -1,5 +1,4 @@
 import type { PluginOption } from 'vite'
-import { islandComponentsPlugin } from './island-components'
 import { minifyEs } from './minify-es'
 import { devServer } from './dev-server'
 import type { DevServerOptions } from './dev-server'
@@ -12,7 +11,7 @@ type SonikOptions = {
   BuildOptions
 
 function sonik(options: SonikOptions): PluginOption[] {
-  const plugins: PluginOption[] = [islandComponentsPlugin()]
+  const plugins: PluginOption[] = []
   if (options && options.minify === true) {
     plugins.push(minifyEs())
   }

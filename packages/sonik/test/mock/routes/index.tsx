@@ -1,7 +1,7 @@
 import type { Route } from '../../../src'
 
 export default {
-  GET: (_c, head) => {
+  GET: (_, { head }) => {
     head.set({
       title: 'This is a title',
       meta: [{ name: 'description', content: 'This is a description' }],

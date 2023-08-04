@@ -11,7 +11,7 @@
       "vite/client",
     ],
     "jsx": "react-jsx",
-    "jsxImportSource": "preact",
+    "jsxImportSource": "hono/jsx",
     "outDir": "./dist/",
   },
 }

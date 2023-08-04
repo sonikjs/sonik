@@ -1,23 +1,24 @@
 import type { Context, Env, Hono, Next } from 'hono'
-import { VNode } from 'preact'
 export type { Hono, Context } from 'hono'
 import type { Head } from './server/head'
 export type { Head }
 
-export type HandlerResponse = VNode | Promise<VNode> | Response | Promise<Response>
+export type HandlerResponse = string | Promise<string> | Response | Promise<Response>
 
 export type Handler<E extends Env = Env> = (
   c: Context<E>,
-  head: Head,
-  next: Next
+  props: {
+    head: Head
+    next: Next
+  }
 ) => HandlerResponse
-export type NotFoundHandler = (c: Context, head: Head) => HandlerResponse
-export type ErrorHandler = (e: Error, c: Context, head: Head) => HandlerResponse
-export type LayoutHandler = (children: VNode, head?: VNode) => VNode
+export type NotFoundHandler = (c: Context, props: { head: Head }) => HandlerResponse
+export type ErrorHandler = (c: Context, props: { error: Error; head: Head }) => HandlerResponse
+export type LayoutHandler = (c: Context, props: { children: string; head?: string }) => string
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AppHandler<E extends Env = Env> = (app: Hono<E, any, any>) => void
 
-export type FC = (c: Context, head: Head) => VNode
+export type FC = (c: Context, props: { head: Head }) => string
 
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 

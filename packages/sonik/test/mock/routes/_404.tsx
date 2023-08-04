@@ -1,6 +1,6 @@
 import type { Handler } from '../../../src'
 
-const handler: Handler = (c) => {
+const handler: Handler = () => {
   return <h1>Not Found</h1>
 }
 
