@@ -5,8 +5,6 @@ export default defineConfig({
   plugins: [
     sonik({
       entry: './_worker.ts',
-      client: '/app/client.ts',
-      passThrough: ['/static/client.js'],
     }),
   ],
 })

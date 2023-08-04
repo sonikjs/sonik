@@ -13,6 +13,6 @@
       "node",
     ],
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "hono/jsx"
   },
 }

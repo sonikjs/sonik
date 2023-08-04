@@ -1,12 +1,12 @@
 import type { LayoutHandler } from 'sonik'
 
-const handler: LayoutHandler = (children, head) => {
+const handler: LayoutHandler = (_, { children, head }) => {
   return (
     <html lang='ja'>
       <head>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link href='/static/global.css' rel='stylesheet' />
-        {head}
+        {head.createHeadTag()}
       </head>
       <body>
         <div class='wrapper'>
@@ -21,7 +21,6 @@ const handler: LayoutHandler = (children, head) => {
           </footer>
         </div>
       </body>
-      <script src='/static/client.js'></script>
     </html>
   )
 }

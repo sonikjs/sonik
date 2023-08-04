@@ -4,18 +4,18 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "vite build && vite build --mode client",
+    "build": "vite build --mode client && vite build",
     "dev": "vite",
     "dev:pages": "wrangler pages dev --compatibility-date=2023-07-01 --live-reload ./dist",
     "deploy": "$npm_execpath build && wrangler pages deploy ./dist"
   },
   "dependencies": {
-    "@preact/signals": "^1.1.5",
-    "sonik": "^0.0.40"
+    "hono": "^3.3.4",
+    "sonik": "^0.0.41"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
     "vite": "^4.4.6",
-    "wrangler": "^3.3.0"
+    "wrangler": "^3.4.0"
   }
 }
