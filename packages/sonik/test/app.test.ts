@@ -25,8 +25,7 @@ describe('Basic', () => {
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
-    /* eslint-disable quotes */
-    expect(await res.text()).toBe("<p>It's me</p><b>My name is me</b>")
+    expect(await res.text()).toBe('<p>It&#39;s me</p><b>My name is me</b>')
   })
 
   it('Should return 200 response /page', async () => {
@@ -51,7 +50,7 @@ describe('With preserved', () => {
     eager: true,
   })
 
-  const LAYOUTS = import.meta.glob('/test/mock/routes/_layout.tsx', {
+  const LAYOUTS = import.meta.glob('/test/mock/routes/**/_layout.tsx', {
     eager: true,
   })
 
@@ -83,9 +82,8 @@ describe('With preserved', () => {
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
-    /* eslint-disable quotes */
     expect(await res.text()).toBe(
-      "<!doctype html><html><head><title>me</title></head><body><p>It's me</p><b>My name is me</b></body></html>"
+      '<!doctype html><html><head><title>me</title></head><body><main><p>It&#39;s me</p><b>My name is me</b></main></body></html>'
     )
   })
 
@@ -127,7 +125,7 @@ describe('API', () => {
   })
 })
 
-describe.only('MDX', () => {
+describe('MDX', () => {
   const ROUES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)', {
     eager: true,
   })
