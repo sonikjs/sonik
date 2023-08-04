@@ -16,6 +16,7 @@ npm:
 ```
 npm run install
 npm run dev
+npm run build
 npm run deploy
 ```
 
@@ -24,6 +25,7 @@ yarn:
 ```
 yarn install
 yarn dev
+yarn build
 yarn deploy
 ```
 

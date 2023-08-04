@@ -7,7 +7,7 @@
     "build": "vite build",
     "dev": "vite",
     "dev:pages": "wrangler pages dev --compatibility-date=2023-07-01 --live-reload ./dist",
-    "deploy": "$npm_execpath build && wrangler pages deploy ./dist"
+    "deploy": "wrangler pages deploy ./dist"
   },
   "dependencies": {
     "hono": "^3.3.4",
