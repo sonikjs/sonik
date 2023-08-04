@@ -31,12 +31,12 @@ const addDocType = (html: string) => {
 }
 
 export class Server {
-  readonly PRESERVED: Record<string, PreservedFile>
-  readonly LAYOUTS: Record<string, LayoutFile>
-  readonly preservedMap: PreservedMap
-  readonly layoutList: LayoutList
-  readonly routesMap: RouteMap
-  readonly root: string
+  private PRESERVED: Record<string, PreservedFile>
+  private LAYOUTS: Record<string, LayoutFile>
+  private preservedMap: PreservedMap
+  private layoutList: LayoutList
+  private routesMap: RouteMap
+  private root: string
 
   constructor(options?: ServerOptions) {
     // `import.meta.glob` can only use literals
@@ -114,11 +114,11 @@ export class Server {
     for (const [dir, content] of Object.entries(this.routesMap)) {
       const subApp = new Hono()
 
-      let layoutPaths = this.layoutList[dir]
+      let layouts = this.layoutList[dir]
 
       const getLayoutPaths = (paths: string[]) => {
-        layoutPaths = this.layoutList[paths.join('/')]
-        if (!layoutPaths) {
+        layouts = this.layoutList[paths.join('/')]
+        if (!layouts) {
           paths.pop()
           if (paths.length) {
             getLayoutPaths(paths)
@@ -126,7 +126,7 @@ export class Server {
         }
       }
 
-      if (!layoutPaths) {
+      if (!layouts) {
         const dirPaths = dir.split('/')
         getLayoutPaths(dirPaths)
       }
@@ -138,10 +138,17 @@ export class Server {
         const path = filePathToPath(filename)
         const head = new Head()
 
+        const options = {
+          layouts,
+          head,
+          filename,
+        }
+
+        // Function Component
         if (typeof routeDefault === 'function') {
           subApp.get(path, (c) => {
             const res = routeDefault(c, { head })
-            return this.toWebResponse(c, res, 200, { layouts: layoutPaths, head, filename })
+            return this.toWebResponse(c, res, 200, options)
           })
         }
 
@@ -154,8 +161,8 @@ export class Server {
           } else {
             if (handler) {
               subApp.on(method, path, async (c, next) => {
-                const res = await handler(c, { head, next })
-                return this.toWebResponse(c, res, 200, { layouts: layoutPaths, head, filename })
+                const res = await (handler as Handler)(c, { head, next })
+                return this.toWebResponse(c, res, 200, options)
               })
             }
           }
@@ -167,22 +174,14 @@ export class Server {
             if (notFound) {
               const notFoundHandler = notFound.default as NotFoundHandler
               subApp.get('*', (c) =>
-                this.toWebResponse(c, notFoundHandler(c, { head }), 404, {
-                  layouts: layoutPaths,
-                  head,
-                  filename,
-                })
+                this.toWebResponse(c, notFoundHandler(c, { head }), 404, options)
               )
             }
             const error = content[ERROR_FILENAME]
             if (error) {
               const errorHandler = error.default as ErrorHandler
               subApp.onError((error, c) =>
-                this.toWebResponse(c, errorHandler(c, { error, head }), 500, {
-                  layouts: layoutPaths,
-                  head,
-                  filename,
-                })
+                this.toWebResponse(c, errorHandler(c, { error, head }), 500, options)
               )
             }
           }
