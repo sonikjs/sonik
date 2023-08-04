@@ -17,13 +17,13 @@ export type ServerOptions = Partial<{
 type Dir = string
 type FileName = string
 
-export type RouteFile = { default: FC & Route }
+type RouteFile = { default: FC & Route }
 type RouteMap = Record<Dir, Record<FileName, RouteFile>>
 
-export type LayoutFile = { default: LayoutHandler }
+type LayoutFile = { default: LayoutHandler }
 type LayoutList = Record<Dir, FileName[]>
 
-export type PreservedFile = { default: ErrorHandler | Handler }
+type PreservedFile = { default: ErrorHandler | Handler }
 type PreservedMap = Record<Dir, Record<FileName, PreservedFile>>
 
 const addDocType = (html: string) => {
