@@ -27,7 +27,7 @@ export class Head {
     this.#link = records
   }
 
-  createHeadTag() {
+  createTags() {
     return (
       <>
         {this.#title ? <title>{this.#title}</title> : <></>}
