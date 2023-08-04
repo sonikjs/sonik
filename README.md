@@ -1,6 +1,6 @@
 # Sonik
 
-[WIP] Supersonik web framework for the Edges.
+[WIP] Server-Side-Only web framework.
 
 ## Quick Start
 
