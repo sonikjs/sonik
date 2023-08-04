@@ -4,6 +4,9 @@ import type { Route, ErrorHandler, Handler, FC, LayoutHandler, NotFoundHandler }
 import { Head } from './head'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils'
 
+const NOTFOUND_FILENAME = '_404.tsx'
+const ERROR_FILENAME = '_error.tsx'
+
 export type ServerOptions = Partial<{
   PRESERVED: Record<string, PreservedFile>
   LAYOUTS: Record<string, LayoutFile>
@@ -64,8 +67,15 @@ export class Server {
     c: Context,
     res: string | Promise<string> | Response | Promise<Response>,
     status: number = 200,
-    head?: Head,
-    layouts?: string[]
+    {
+      layouts,
+      head,
+      filename,
+    }: {
+      head: Head
+      layouts?: string[]
+      filename: string
+    }
   ) => {
     if (res instanceof Promise) res = await res
     if (res instanceof Response) return res
@@ -81,7 +91,7 @@ export class Server {
       for (const path of layouts) {
         const layout = this.LAYOUTS[path]
         if (layout) {
-          res = layout.default(c, { children: res, head: head?.createHeadTag() })
+          res = await layout.default(c, { children: res, head, filename })
         }
       }
       return c.html(addDocType(res), status)
@@ -90,7 +100,7 @@ export class Server {
     const defaultLayout = this.LAYOUTS[this.root + '/_layout.tsx']
     if (defaultLayout) {
       return c.html(
-        addDocType(defaultLayout.default(c, { children: res, head: head?.createHeadTag() })),
+        addDocType(await defaultLayout.default(c, { children: res, head, filename })),
         status
       )
     }
@@ -121,32 +131,31 @@ export class Server {
         getLayoutPaths(dirPaths)
       }
 
-      for (const [fileName, file] of Object.entries(content)) {
-        const fileDefault = file.default
-        if (!fileDefault) continue
+      for (const [filename, route] of Object.entries(content)) {
+        const routeDefault = route.default
+        if (!routeDefault) continue
 
-        const path = filePathToPath(fileName)
-
+        const path = filePathToPath(filename)
         const head = new Head()
 
-        if (typeof fileDefault === 'function') {
+        if (typeof routeDefault === 'function') {
           subApp.get(path, (c) => {
-            const res = fileDefault(c, { head })
-            return this.toWebResponse(c, res, 200, head, layoutPaths)
+            const res = routeDefault(c, { head })
+            return this.toWebResponse(c, res, 200, { layouts: layoutPaths, head, filename })
           })
         }
 
-        for (const [method, handler] of Object.entries(fileDefault)) {
+        for (const [method, handler] of Object.entries(routeDefault)) {
           if (method === 'APP') {
-            const appHandler = fileDefault['APP']
+            const appHandler = routeDefault['APP']
             if (appHandler) {
               appHandler(subApp.use(path))
             }
           } else {
             if (handler) {
               subApp.on(method, path, async (c, next) => {
-                const res = await handler(c, head, next)
-                return this.toWebResponse(c, res, 200, head, layoutPaths)
+                const res = await handler(c, { head, next })
+                return this.toWebResponse(c, res, 200, { layouts: layoutPaths, head, filename })
               })
             }
           }
@@ -154,18 +163,26 @@ export class Server {
 
         for (const [preservedDir, content] of Object.entries(this.preservedMap)) {
           if (dir !== this.root && dir === preservedDir) {
-            const notFound = content['_404.tsx']
+            const notFound = content[NOTFOUND_FILENAME]
             if (notFound) {
               const notFoundHandler = notFound.default as NotFoundHandler
               subApp.get('*', (c) =>
-                this.toWebResponse(c, notFoundHandler(c, { head }), 404, head, layoutPaths)
+                this.toWebResponse(c, notFoundHandler(c, { head }), 404, {
+                  layouts: layoutPaths,
+                  head,
+                  filename,
+                })
               )
             }
-            const error = content['_error.tsx']
+            const error = content[ERROR_FILENAME]
             if (error) {
               const errorHandler = error.default as ErrorHandler
               subApp.onError((error, c) =>
-                this.toWebResponse(c, errorHandler(c, { error, head }), 500, head, layoutPaths)
+                this.toWebResponse(c, errorHandler(c, { error, head }), 500, {
+                  layouts: layoutPaths,
+                  head,
+                  filename,
+                })
               )
             }
           }
@@ -179,17 +196,25 @@ export class Server {
     const head = new Head()
 
     if (this.preservedMap[this.root]) {
-      const defaultNotFound = this.preservedMap[this.root]['_404.tsx']
+      const defaultNotFound = this.preservedMap[this.root][NOTFOUND_FILENAME]
       if (defaultNotFound) {
         const notFoundHandler = defaultNotFound.default as NotFoundHandler
-        app.notFound((c) => this.toWebResponse(c, notFoundHandler(c, { head }), 404, head))
+        app.notFound((c) =>
+          this.toWebResponse(c, notFoundHandler(c, { head }), 404, {
+            head,
+            filename: NOTFOUND_FILENAME,
+          })
+        )
       }
 
-      const defaultError = this.preservedMap[this.root]['_error.tsx']
+      const defaultError = this.preservedMap[this.root][ERROR_FILENAME]
       if (defaultError) {
         const errorHandler = defaultError.default as ErrorHandler
         app.onError((error, c) =>
-          this.toWebResponse(c, errorHandler(c, { error, head }), 500, head)
+          this.toWebResponse(c, errorHandler(c, { error, head }), 500, {
+            head,
+            filename: ERROR_FILENAME,
+          })
         )
       }
     }

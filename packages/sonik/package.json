@@ -64,7 +64,7 @@
   "homepage": "https://github.com/yusukebe/sonik",
   "dependencies": {
     "@hono/node-server": "^1.1.0",
-    "hono": "^3.3.2"
+    "hono": "^3.3.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

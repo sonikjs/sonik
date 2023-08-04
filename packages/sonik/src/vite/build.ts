@@ -7,7 +7,7 @@ export type BuildOptions = {
 
 export function build(options: BuildOptions): Plugin {
   return {
-    name: 'sonik-vite-client',
+    name: 'sonik-vite-build',
     config: (): UserConfig => {
       return {
         ssr: {
