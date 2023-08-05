@@ -2,7 +2,7 @@ import type { LayoutHandler } from 'sonik'
 
 const handler: LayoutHandler = (_, { children, head }) => {
   return (
-    <html lang='ja'>
+    <html lang='en'>
       <head>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link href='/static/global.css' rel='stylesheet' />
