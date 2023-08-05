@@ -10,10 +10,7 @@ type CreateAppOptions = Partial<{
 export function createApp(options?: CreateAppOptions) {
   const server = options
     ? new Server({
-        ROUTES: options.ROUTES,
-        PRESERVED: options.PRESERVED,
-        LAYOUTS: options.LAYOUTS,
-        root: options.root,
+        ...options,
       })
     : new Server()
   return server.createApp({ app: options?.app })

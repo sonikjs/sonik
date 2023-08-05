@@ -3,7 +3,10 @@ export type { Hono, Context } from 'hono'
 import type { Head } from './server/head'
 export type { Head }
 
-export type HandlerResponse = string | Promise<string> | Response | Promise<Response>
+const tag = <></>
+
+export type Node = typeof tag
+export type HandlerResponse = Node | Promise<Node> | Response | Promise<Response>
 
 export type Handler<E extends Env = Env> = (
   c: Context<E>,
@@ -16,12 +19,12 @@ export type NotFoundHandler = (c: Context, props: { head: Head }) => HandlerResp
 export type ErrorHandler = (c: Context, props: { error: Error; head: Head }) => HandlerResponse
 export type LayoutHandler = (
   c: Context,
-  props: { children: string; head: Head; filename: string }
-) => string | Promise<string>
+  props: { children: Node; head: Head; filename: string }
+) => Node | Promise<Node>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AppHandler<E extends Env = Env> = (app: Hono<E, any, any>) => void
 
-export type FC = (c: Context, props: { head: Head }) => string
+export type FC = (c: Context, props: { head: Head }) => Node
 
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 

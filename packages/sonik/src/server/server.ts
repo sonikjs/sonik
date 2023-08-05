@@ -1,6 +1,14 @@
 import type { Context, Env } from 'hono'
 import { Hono } from 'hono'
-import type { Route, ErrorHandler, Handler, FC, LayoutHandler, NotFoundHandler } from '../types'
+import type {
+  ErrorHandler,
+  FC,
+  Handler,
+  LayoutHandler,
+  Node,
+  NotFoundHandler,
+  Route,
+} from '../types'
 import { Head } from './head'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils'
 
@@ -12,7 +20,10 @@ export type ServerOptions = Partial<{
   LAYOUTS: Record<string, LayoutFile>
   ROUTES: Record<string, RouteFile>
   root: string
+  renderToString: RenderToString
 }>
+
+type RenderToString = (node: Node) => string
 
 type Dir = string
 type FileName = string
@@ -37,6 +48,7 @@ export class Server {
   private layoutList: LayoutList
   private routesMap: RouteMap
   private root: string
+  private render: RenderToString
 
   constructor(options?: ServerOptions) {
     // `import.meta.glob` can only use literals
@@ -65,11 +77,17 @@ export class Server {
     this.routesMap = groupByDirectory(ROUTES)
 
     this.root = options?.root ?? '/app/routes'
+
+    if (options?.renderToString) {
+      this.render = options?.renderToString
+    } else {
+      this.render = (node: Node) => node.toString()
+    }
   }
 
   private toWebResponse = async (
     c: Context,
-    res: string | Promise<string> | Response | Promise<Response>,
+    res: Node | Promise<Node> | Response | Promise<Response>,
     status: number = 200,
     {
       layouts,
@@ -94,18 +112,18 @@ export class Server {
           res = await layout.default(c, { children: res, head, filename })
         }
       }
-      return c.html(addDocType(res), status)
+      const html = this.render(res)
+      return c.html(addDocType(html), status)
     }
 
     const defaultLayout = this.LAYOUTS[this.root + '/_layout.tsx']
     if (defaultLayout) {
-      return c.html(
-        addDocType(await defaultLayout.default(c, { children: res, head, filename })),
-        status
-      )
+      const html = this.render(await defaultLayout.default(c, { children: res, head, filename }))
+      return c.html(addDocType(html), status)
     }
 
-    return c.html(res, status)
+    const html = this.render(res)
+    return c.html(html, status)
   }
 
   createApp = <E extends Env>(options?: { app?: Hono }): Hono<E> => {
