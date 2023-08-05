@@ -14,7 +14,7 @@ cd my-app
 npm:
 
 ```
-npm run install
+npm install
 npm run dev
 npm run build
 npm run deploy
