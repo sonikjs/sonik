@@ -1,6 +1,6 @@
 # Sonik
 
-[WIP] Server-Side-Only web framework.
+[WIP] Supersonik web framework.
 
 ## Quick Start
 
@@ -27,6 +27,15 @@ yarn install
 yarn dev
 yarn build
 yarn deploy
+```
+
+## Preact preset
+
+A Preact preset is available.
+
+```
+npx degit yusukebe/sonik/examples/preact preact-app
+cd preact-app
 ```
 
 ## Author
