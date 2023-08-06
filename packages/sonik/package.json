@@ -21,6 +21,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./client": {
+      "types": "./dist/client/index.d.ts",
+      "import": "./dist/client/index.js"
+    },
     "./vite": {
       "types": "./dist/vite/index.d.ts",
       "import": "./dist/vite/index.js"
@@ -28,6 +32,9 @@
   },
   "typesVersions": {
     "*": {
+      "client": [
+        "./dist/client"
+      ],
       "vite": [
         "./dist/vite"
       ]
