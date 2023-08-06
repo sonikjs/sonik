@@ -1,6 +1,7 @@
 import type http from 'http'
-import type { Plugin, ViteDevServer, Connect } from 'vite'
 import { getRequestListener } from '@hono/node-server'
+// eslint-disable-next-line node/no-extraneous-import
+import type { Plugin, ViteDevServer, Connect } from 'vite'
 
 export type DevServerOptions = {
   entry: string
@@ -53,13 +54,12 @@ export function devServer(options: DevServerOptions): Plugin[] {
 
               const response = await app.fetch(request)
               if (response.headers.get('content-type')?.match(/^text\/html/)) {
-                let body =
-                  (await response.text()) + '<script type="module" src="/@vite/client"></script>'
+                const body = (await response.text()) + '<script type="module" src="/@vite/client"></script>'
                 const headers = new Headers(response.headers)
                 headers.delete('content-length')
                 return new Response(body, {
                   status: response.status,
-                  headers,
+                  headers
                 })
               }
               return response
@@ -68,8 +68,8 @@ export function devServer(options: DevServerOptions): Plugin[] {
         }
 
         server.middlewares.use(await createMiddleware(server))
-      },
-    },
+      }
+    }
   ]
   return plugins
 }

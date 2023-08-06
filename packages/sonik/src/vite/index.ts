@@ -1,10 +1,11 @@
+// eslint-disable-next-line node/no-extraneous-import
 import type { PluginOption } from 'vite'
-import { minifyEs } from './minify-es.js'
-import { devServer } from './dev-server.js'
-import { islandComponents } from './island-components.js'
-import type { DevServerOptions } from './dev-server.js'
 import type { BuildOptions } from './build.js'
 import { build } from './build.js'
+import { devServer } from './dev-server.js'
+import type { DevServerOptions } from './dev-server.js'
+import { islandComponents } from './island-components.js'
+import { minifyEs } from './minify-es.js'
 
 type SonikOptions = {
   minify?: boolean

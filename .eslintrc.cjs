@@ -52,7 +52,7 @@ module.exports = defineConfig({
     'node/no-unpublished-require': 'off',
     'node/no-unsupported-features/es-syntax': 'off',
 
-    '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions'] }],
+    '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/no-var-requires': 'off',

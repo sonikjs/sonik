@@ -14,14 +14,15 @@ import {
   jsxElement,
   jsxIdentifier,
   jsxOpeningElement,
-  stringLiteral,
+  stringLiteral
 } from '@babel/types'
+// eslint-disable-next-line node/no-extraneous-import
 import type { Plugin } from 'vite'
 
 export const transformJsxTags = (contents: string, componentName: string) => {
   const ast = parse(contents, {
     sourceType: 'module',
-    plugins: ['typescript', 'jsx'],
+    plugins: ['typescript', 'jsx']
   })
 
   if (ast) {
@@ -31,10 +32,7 @@ export const transformJsxTags = (contents: string, componentName: string) => {
       JSXElement(path) {
         if (isFirstJSXElement) {
           const node = path.node
-          const componentNameAttribute = jsxAttribute(
-            jsxIdentifier('component-name'),
-            stringLiteral(componentName)
-          )
+          const componentNameAttribute = jsxAttribute(jsxIdentifier('component-name'), stringLiteral(componentName))
           node.openingElement.attributes.push(componentNameAttribute)
           const wrappingDiv = jsxElement(
             jsxOpeningElement(
@@ -49,7 +47,7 @@ export const transformJsxTags = (contents: string, componentName: string) => {
           path.replaceWith(wrappingDiv)
           isFirstJSXElement = false
         }
-      },
+      }
     })
 
     const { code } = generate(ast)
@@ -68,10 +66,10 @@ export function islandComponents(): Plugin {
         if (code) {
           return {
             code,
-            map: null,
+            map: null
           }
         }
       }
-    },
+    }
   }
 }

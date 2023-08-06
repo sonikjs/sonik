@@ -1,16 +1,8 @@
 import type { Context, Env } from 'hono'
 import { Hono } from 'hono'
-import type {
-  ErrorHandler,
-  FC,
-  Handler,
-  LayoutHandler,
-  Node,
-  NotFoundHandler,
-  Route,
-} from '../types.js'
-import { Head } from './head.js'
+import type { ErrorHandler, FC, Handler, Node, LayoutHandler, NotFoundHandler, Route } from '../types.js'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils/index.js'
+import { Head } from './head.js'
 
 const NOTFOUND_FILENAME = '_404.tsx'
 const ERROR_FILENAME = '_error.tsx'
@@ -24,7 +16,7 @@ export type ServerOptions = Partial<{
   app: Hono
 }>
 
-type RenderToString = (node: Node) => string
+type RenderToString<N = Node> = (node: N) => string
 type RouteFile = { default: FC & Route }
 type LayoutFile = { default: LayoutHandler }
 type PreservedFile = { default: ErrorHandler | Handler }
@@ -43,7 +35,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
   const PRESERVED =
     options?.PRESERVED ??
     import.meta.glob('/app/routes/**/(_error|_404).(tsx)', {
-      eager: true,
+      eager: true
     })
 
   const preservedMap = groupByDirectory(PRESERVED)
@@ -51,7 +43,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
   const LAYOUTS =
     options?.LAYOUTS ??
     import.meta.glob('/app/routes/**/_layout.tsx', {
-      eager: true,
+      eager: true
     })
 
   const layoutList = listByDirectory(LAYOUTS)
@@ -59,7 +51,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
   const ROUTES =
     options?.ROUTES ??
     import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx|mdx)', {
-      eager: true,
+      eager: true
     })
 
   const routesMap = groupByDirectory(ROUTES)
@@ -71,12 +63,12 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
   if (options?.renderToString) {
     render = options?.renderToString
   } else {
-    render = (node: Node) => node.toString()
+    render = (node) => node.toString()
   }
 
   const toWebResponse = async (
     c: Context,
-    res: Node | Promise<Node> | Response | Promise<Response>,
+    res: string | Promise<string> | Node | Promise<Node> | Response | Promise<Response>,
     status: number = 200,
     { layouts, head, filename }: ToWebOptions
   ) => {
@@ -139,7 +131,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
       const options = {
         layouts,
         head,
-        filename,
+        filename
       }
 
       // Function Component
@@ -176,9 +168,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
           const error = content[ERROR_FILENAME]
           if (error) {
             const errorHandler = error.default as ErrorHandler
-            subApp.onError((error, c) =>
-              toWebResponse(c, errorHandler(c, { error, head }), 500, options)
-            )
+            subApp.onError((error, c) => toWebResponse(c, errorHandler(c, { error, head }), 500, options))
           }
         }
       }
@@ -197,7 +187,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
       app.notFound((c) =>
         toWebResponse(c, notFoundHandler(c, { head }), 404, {
           head,
-          filename: NOTFOUND_FILENAME,
+          filename: NOTFOUND_FILENAME
         })
       )
     }
@@ -208,7 +198,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
       app.onError((error, c) =>
         toWebResponse(c, errorHandler(c, { error, head }), 500, {
           head,
-          filename: ERROR_FILENAME,
+          filename: ERROR_FILENAME
         })
       )
     }

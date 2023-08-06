@@ -1,3 +1,4 @@
+/* eslint-disable node/no-extraneous-import */
 import { transform } from 'esbuild'
 import type { Plugin } from 'vite'
 
@@ -11,7 +12,7 @@ export function minifyEs(): Plugin {
           return await transform(code, { minify: true })
         }
         return code
-      },
-    },
+      }
+    }
   }
 }
