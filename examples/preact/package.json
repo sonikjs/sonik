@@ -1,15 +1,17 @@
 {
-  "name": "sonik-example-basic",
+  "name": "sonik-example-preact",
   "version": "0.0.0",
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && vite build --mode client",
     "dev": "vite",
     "deploy": "wrangler pages deploy ./dist"
   },
   "dependencies": {
     "hono": "^3.3.4",
+    "preact": "^10.16.0",
+    "preact-render-to-string": "^6.2.0",
     "sonik": "^0.0.44"
   },
   "devDependencies": {
