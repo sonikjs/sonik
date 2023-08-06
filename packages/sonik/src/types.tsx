@@ -1,6 +1,6 @@
 import type { Context, Env, Hono, Next } from 'hono'
 export type { Hono, Context } from 'hono'
-import type { Head } from './server/head'
+import type { Head } from './server/head.js'
 export type { Head }
 
 const tag = <></>

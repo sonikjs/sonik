@@ -1,4 +1,4 @@
-import { SERIALIZE_KEY } from '../constants'
+import { SERIALIZE_KEY } from '../constants.js'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const deserialize = async (value: any) => {

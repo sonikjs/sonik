@@ -1,6 +1,6 @@
-import { deserialize } from './deserializer'
-import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants'
-import type { Node } from '../types'
+import { deserialize } from './deserializer.js'
+import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants.js'
+import type { Node } from '../types.js'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FileCallback = () => Promise<{ default: Promise<any> }>

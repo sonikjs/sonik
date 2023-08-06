@@ -1,10 +1,10 @@
 import type { PluginOption } from 'vite'
-import { minifyEs } from './minify-es'
-import { devServer } from './dev-server'
-import { islandComponents } from './island-components'
-import type { DevServerOptions } from './dev-server'
-import type { BuildOptions } from './build'
-import { build } from './build'
+import { minifyEs } from './minify-es.js'
+import { devServer } from './dev-server.js'
+import { islandComponents } from './island-components.js'
+import type { DevServerOptions } from './dev-server.js'
+import type { BuildOptions } from './build.js'
+import { build } from './build.js'
 
 type SonikOptions = {
   minify?: boolean

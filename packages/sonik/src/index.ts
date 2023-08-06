@@ -1,2 +1,2 @@
-export { createApp } from './server'
-export type * from './types'
+export { createApp } from './server/index.js'
+export type * from './types.js'

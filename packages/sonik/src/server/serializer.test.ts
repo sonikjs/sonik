@@ -1,6 +1,6 @@
 import { expect, describe, it } from 'vitest'
-import { SERIALIZE_KEY, DEFAULT_PROPS } from '../constants'
-import { serialize } from './serializer'
+import { SERIALIZE_KEY, DEFAULT_PROPS } from '../constants.js'
+import { serialize } from './serializer.js'
 
 describe('Serializer', () => {
   it('Should correctly serialize properties that are not signals', () => {

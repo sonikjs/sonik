@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { transformJsxTags } from './island-components'
+import { transformJsxTags } from './island-components.js'
 
 describe('transformJsxTags', () => {
   it('Should add component-wrapper and component-name attribute', () => {

@@ -8,9 +8,9 @@ import type {
   Node,
   NotFoundHandler,
   Route,
-} from '../types'
-import { Head } from './head'
-import { filePathToPath, groupByDirectory, listByDirectory } from '../utils'
+} from '../types.js'
+import { Head } from './head.js'
+import { filePathToPath, groupByDirectory, listByDirectory } from '../utils/index.js'
 
 const NOTFOUND_FILENAME = '_404.tsx'
 const ERROR_FILENAME = '_error.tsx'

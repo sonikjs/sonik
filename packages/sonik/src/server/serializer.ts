@@ -1,4 +1,4 @@
-import { DEFAULT_PROPS, SERIALIZE_KEY } from '../constants'
+import { DEFAULT_PROPS, SERIALIZE_KEY } from '../constants.js'
 
 export const serialize = (props: Record<string, unknown>) => {
   const data: Record<string, unknown> = {}

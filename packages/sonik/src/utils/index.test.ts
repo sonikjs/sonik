@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { filePathToPath, groupByDirectory, listByDirectory } from '.'
+import { filePathToPath, groupByDirectory, listByDirectory } from './index.js'
 
 describe('filePathToPath', () => {
   it('Should return a correct path', () => {

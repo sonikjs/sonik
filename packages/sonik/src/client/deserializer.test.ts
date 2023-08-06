@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { SERIALIZE_KEY } from '../constants'
-import { deserialize } from './deserializer'
+import { SERIALIZE_KEY } from '../constants.js'
+import { deserialize } from './deserializer.js'
 
 describe('deserialize', () => {
   it('Should correctly deserialize non-signal serialized properties', async () => {
