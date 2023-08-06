@@ -1,19 +1,27 @@
 import type { Context, Env } from 'hono'
 import { Hono } from 'hono'
-import type { ErrorHandler, FC, Handler, Node, LayoutHandler, NotFoundHandler, Route } from '../types.js'
+import type {
+  ErrorHandler,
+  FC,
+  Handler,
+  Node,
+  LayoutHandler,
+  NotFoundHandler,
+  Route,
+} from '../types.js'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils/index.js'
 import { Head } from './head.js'
 
 const NOTFOUND_FILENAME = '_404.tsx'
 const ERROR_FILENAME = '_error.tsx'
 
-export type ServerOptions = Partial<{
+export type ServerOptions<E extends Env = Env> = Partial<{
   PRESERVED: Record<string, PreservedFile>
   LAYOUTS: Record<string, LayoutFile>
   ROUTES: Record<string, RouteFile>
   root: string
   renderToString: RenderToString
-  app: Hono
+  app: Hono<E>
 }>
 
 type RenderToString<N = Node> = (node: N) => string
@@ -31,11 +39,11 @@ const addDocType = (html: string) => {
   return `<!doctype html>${html}`
 }
 
-export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
+export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> => {
   const PRESERVED =
     options?.PRESERVED ??
     import.meta.glob('/app/routes/**/(_error|_404).(tsx)', {
-      eager: true
+      eager: true,
     })
 
   const preservedMap = groupByDirectory(PRESERVED)
@@ -43,7 +51,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
   const LAYOUTS =
     options?.LAYOUTS ??
     import.meta.glob('/app/routes/**/_layout.tsx', {
-      eager: true
+      eager: true,
     })
 
   const layoutList = listByDirectory(LAYOUTS)
@@ -51,7 +59,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
   const ROUTES =
     options?.ROUTES ??
     import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx|mdx)', {
-      eager: true
+      eager: true,
     })
 
   const routesMap = groupByDirectory(ROUTES)
@@ -131,7 +139,7 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
       const options = {
         layouts,
         head,
-        filename
+        filename,
       }
 
       // Function Component
@@ -168,7 +176,9 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
           const error = content[ERROR_FILENAME]
           if (error) {
             const errorHandler = error.default as ErrorHandler
-            subApp.onError((error, c) => toWebResponse(c, errorHandler(c, { error, head }), 500, options))
+            subApp.onError((error, c) =>
+              toWebResponse(c, errorHandler(c, { error, head }), 500, options)
+            )
           }
         }
       }
@@ -183,22 +193,22 @@ export const createApp = <E extends Env>(options?: ServerOptions): Hono<E> => {
   if (preservedMap[root]) {
     const defaultNotFound = preservedMap[root][NOTFOUND_FILENAME]
     if (defaultNotFound) {
-      const notFoundHandler = defaultNotFound.default as NotFoundHandler
+      const notFoundHandler = defaultNotFound.default as unknown as NotFoundHandler<E>
       app.notFound((c) =>
         toWebResponse(c, notFoundHandler(c, { head }), 404, {
           head,
-          filename: NOTFOUND_FILENAME
+          filename: NOTFOUND_FILENAME,
         })
       )
     }
 
     const defaultError = preservedMap[root][ERROR_FILENAME]
     if (defaultError) {
-      const errorHandler = defaultError.default as ErrorHandler
+      const errorHandler = defaultError.default as unknown as ErrorHandler<E>
       app.onError((error, c) =>
         toWebResponse(c, errorHandler(c, { error, head }), 500, {
           head,
-          filename: ERROR_FILENAME
+          filename: ERROR_FILENAME,
         })
       )
     }

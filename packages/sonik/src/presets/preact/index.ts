@@ -11,10 +11,12 @@ import type * as types from '../../types.js'
 
 type Node = VNode
 
-export const createApp = <E extends Env = Env>(options?: Omit<ServerOptions, 'renderToString'>) => {
+export const createApp = <E extends Env = Env>(
+  options?: Omit<ServerOptions<E>, 'renderToString'>
+) => {
   return baseCreateApp<E>({
     renderToString: render,
-    ...options
+    ...options,
   })
 }
 
