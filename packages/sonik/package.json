@@ -7,10 +7,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest --run",
-    "build:server": "esbuild --bundle --format=esm --minify --external:hono --tsconfig=tsconfig.build.json --outfile=dist/index.js src/index.ts",
-    "build:vite-plugins": "esbuild --bundle --format=esm --platform=node --minify --external:@hono/node-server --external:esbuild --external:vite --tsconfig=tsconfig.build.json --outdir=dist/vite src/vite/index.ts",
-    "build": "rimraf dist && yarn build:server && yarn build:vite-plugins && tsc --emitDeclarationOnly --declaration --project tsconfig.build.json && publint",
-    "watch": "concurrently \"yarn build:server --watch\" \"yarn build:vite-plugins --watch\"",
+    "build": "rimraf dist && tsx ./build.ts && publint",
+    "watch": "tsx ./build.ts --watch",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
     "release": "yarn build && yarn test && cp ../../README.md ./ && release-it && rm ./README.md"
@@ -59,12 +57,15 @@
   "devDependencies": {
     "@mdx-js/rollup": "^2.3.0",
     "@types/babel__core": "^7.20.1",
+    "@types/glob": "^8.1.0",
+    "arg": "^5.0.2",
     "concurrently": "^8.2.0",
     "esbuild": "^0.18.0",
     "hono": "^3.3.4",
     "publint": "^0.1.12",
     "release-it": "^16.1.3",
     "rimraf": "^5.0.1",
+    "tsx": "^3.12.7",
     "typescript": "5.0",
     "vitest": "^0.31.4"
   },
