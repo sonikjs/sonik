@@ -29,6 +29,10 @@
       "types": "./dist/vite/index.d.ts",
       "import": "./dist/vite/index.js"
     },
+    "./preact": {
+      "types": "./dist/presets/preact/index.d.ts",
+      "import": "./dist/presets/preact/index.js"
+    },
     "./preact/*": {
       "types": "./dist/presets/preact/*.d.ts",
       "import": "./dist/presets/preact/*.js"
@@ -41,6 +45,9 @@
       ],
       "vite": [
         "./dist/vite"
+      ],
+      "preact": [
+        "./dist/presets/preact"
       ],
       "preact/*": [
         "./dist/presets/preact/*"
