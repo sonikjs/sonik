@@ -1,4 +1,5 @@
 import { deserialize } from './deserializer'
+import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants'
 import type { Node } from '../types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,14 +20,14 @@ export const createClient = async (options: ClientOptions) => {
     const filePromises = Object.keys(FILES).map(async (filePath) => {
       const componentName = filePath.replace(/.*\/app\/islands\//, '')
 
-      const elements = document.querySelectorAll(`[component-name="${componentName}"]`)
+      const elements = document.querySelectorAll(`[${COMPONENT_NAME}="${componentName}"]`)
       if (elements) {
         const elementPromises = Array.from(elements).map(async (element) => {
           const fileCallback = FILES[filePath] as FileCallback
           const file = await fileCallback()
           const Component = await file.default
 
-          const serializedProps = element.attributes.getNamedItem('data-serialized-props')?.value
+          const serializedProps = element.attributes.getNamedItem(DATA_SERIALIZED_PROPS)?.value
 
           const obj = JSON.parse(serializedProps ?? '{}') as Record<string, unknown>
 
