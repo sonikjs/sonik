@@ -1,6 +1,6 @@
 import type { LayoutHandler } from 'sonik'
 
-const handler: LayoutHandler = (_, { children, head }) => {
+const handler: LayoutHandler = ({ children, head }) => {
   return (
     <html lang='en'>
       <head>
