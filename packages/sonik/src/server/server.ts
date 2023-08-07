@@ -1,4 +1,4 @@
-import type { Context, Env } from 'hono'
+import type { Env } from 'hono'
 import { Hono } from 'hono'
 import type {
   ErrorHandler,
@@ -43,6 +43,14 @@ const addDocType = (html: string) => {
   return `<!doctype html>${html}`
 }
 
+const returnHtml = (html: string, status: number = 200) =>
+  new Response(html, {
+    status: status,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+    },
+  })
+
 export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => {
   const PRESERVED =
     options.PRESERVED ??
@@ -73,7 +81,6 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
   const render = options.renderToString
 
   const toWebResponse = async (
-    c: Context,
     res: string | Promise<string> | Node | Promise<Node> | Response | Promise<Response>,
     status: number = 200,
     { layouts, head, filename }: ToWebOptions
@@ -88,21 +95,21 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       for (const path of layouts) {
         const layout = LAYOUTS[path]
         if (layout) {
-          res = await layout.default(c, { children: res, head, filename })
+          res = await layout.default({ children: res, head, filename })
         }
       }
       const html = render(res)
-      return c.html(addDocType(html), status)
+      return returnHtml(addDocType(html), status)
     }
 
     const defaultLayout = LAYOUTS[root + '/_layout.tsx']
     if (defaultLayout) {
-      const html = render(await defaultLayout.default(c, { children: res, head, filename }))
-      return c.html(addDocType(html), status)
+      const html = render(await defaultLayout.default({ children: res, head, filename }))
+      return returnHtml(addDocType(html), status)
     }
 
     const html = render(res)
-    return c.html(html, status)
+    return returnHtml(html, status)
   }
 
   const app = options?.app ?? new Hono()
@@ -147,7 +154,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       if (typeof routeDefault === 'function') {
         subApp.get(path, (c) => {
           const res = routeDefault(c, { head })
-          return toWebResponse(c, res, 200, resOptions)
+          return toWebResponse(res, 200, resOptions)
         })
       }
 
@@ -155,13 +162,18 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         if (method === 'APP') {
           const appHandler = routeDefault['APP']
           if (appHandler) {
-            appHandler(subApp.use(path))
+            appHandler(subApp.use(path), {
+              head,
+              render: (node, status) => {
+                return toWebResponse(node, status, resOptions)
+              },
+            })
           }
         } else {
           if (handler) {
             subApp.on(method, path, async (c, next) => {
               const res = await (handler as Handler)(c, { head, next })
-              return toWebResponse(c, res, 200, resOptions)
+              return toWebResponse(res, 200, resOptions)
             })
           }
         }
@@ -172,13 +184,13 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
           const notFound = content[NOTFOUND_FILENAME]
           if (notFound) {
             const notFoundHandler = notFound.default as NotFoundHandler
-            subApp.get('*', (c) => toWebResponse(c, notFoundHandler(c, { head }), 404, resOptions))
+            subApp.get('*', (c) => toWebResponse(notFoundHandler(c, { head }), 404, resOptions))
           }
           const error = content[ERROR_FILENAME]
           if (error) {
             const errorHandler = error.default as ErrorHandler
             subApp.onError((error, c) =>
-              toWebResponse(c, errorHandler(c, { error, head }), 500, resOptions)
+              toWebResponse(errorHandler(c, { error, head }), 500, resOptions)
             )
           }
         }
@@ -199,7 +211,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
     if (defaultNotFound) {
       const notFoundHandler = defaultNotFound.default as unknown as NotFoundHandler<E>
       app.notFound((c) =>
-        toWebResponse(c, notFoundHandler(c, { head }), 404, {
+        toWebResponse(notFoundHandler(c, { head }), 404, {
           head,
           filename: NOTFOUND_FILENAME,
         })
@@ -210,7 +222,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
     if (defaultError) {
       const errorHandler = defaultError.default as unknown as ErrorHandler<E>
       app.onError((error, c) =>
-        toWebResponse(c, errorHandler(c, { error, head }), 500, {
+        toWebResponse(errorHandler(c, { error, head }), 500, {
           head,
           filename: ERROR_FILENAME,
         })
