@@ -1,6 +1,6 @@
 import type { LayoutHandler } from '../../../../src'
 
-const handler: LayoutHandler = (_, { children }) => {
+const handler: LayoutHandler = ({ children }) => {
   return <main>{children}</main>
 }
 

@@ -1,6 +1,6 @@
 import type { LayoutHandler } from '../../../src'
 
-const handler: LayoutHandler = (_, { children, head }) => {
+const handler: LayoutHandler = ({ children, head }) => {
   return (
     <html>
       <head>{head.createTags()}</head>
