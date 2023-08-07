@@ -6,7 +6,12 @@ import type { Head } from './server/head.js'
 /** Internal */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Node = any
-export type HandlerResponse<N = Node> = N | Promise<N> | Response | Promise<Response>
+export type HandlerResponse<N = Node> =
+  | N
+  | Promise<N>
+  | Response
+  | Promise<Response>
+  | Promise<Response | N>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AppHandler<E extends Env = Env> = (app: Hono<E, any, any>) => void
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
