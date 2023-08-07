@@ -1,13 +1,9 @@
 import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants.js'
-import type { Node } from '../types.js'
+import type { CreateElement, Hydrate } from '../types.js'
 import { deserialize } from './deserializer.js'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FileCallback = () => Promise<{ default: Promise<any> }>
-
-type Hydrate = (children: Node, parent: HTMLElement) => void
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type CreateElement = (type: any, props: any) => Node
 
 export type ClientOptions = {
   hydrate: Hydrate

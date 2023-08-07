@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-export type { Env, Context }
-import type { Env, Context } from 'hono'
-import { h, options as preactOptions } from 'preact'
+import type { Env } from 'hono'
+import { Fragment, createElement, h, options as preactOptions } from 'preact'
 import type { VNode } from 'preact'
 import { render } from 'preact-render-to-string'
 import { createApp as baseCreateApp } from '../../server/index.js'
@@ -12,10 +11,12 @@ import type * as types from '../../types.js'
 type Node = VNode
 
 export const createApp = <E extends Env = Env>(
-  options?: Omit<ServerOptions<E>, 'renderToString'>
+  options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>
 ) => {
   return baseCreateApp<E>({
     renderToString: render,
+    createElement: createElement,
+    fragment: Fragment,
     ...options,
   })
 }

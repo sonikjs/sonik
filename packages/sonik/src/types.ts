@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type { Head }
 export type { Hono, Context } from 'hono'
 import type { Context, Env, Hono, Next } from 'hono'
@@ -17,11 +18,17 @@ export type AppHandler<E extends Env = Env> = (app: Hono<E, any, any>) => void
 export type ReservedHandler = Handler | ErrorHandler | LayoutHandler
 export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
+/** JSX */
+export type CreateElement = (type: any, props: any, ...children: any[]) => Node
+export type FragmentType = any
+export type RenderToString<N = Node> = (node: N) => string
+export type Hydrate = (children: Node, parent: HTMLElement) => void
+
 /** external */
 export type Handler<E extends Env = Env, N = Node> = (
   c: Context<E>,
   props: {
-    head: Head
+    head: Head<N>
     next: Next
   }
 ) => HandlerResponse<N>
@@ -29,21 +36,21 @@ export type Handler<E extends Env = Env, N = Node> = (
 /** Preserved */
 export type NotFoundHandler<E extends Env = Env, N = Node> = (
   c: Context<E>,
-  props: { head: Head }
+  props: { head: Head<N> }
 ) => HandlerResponse<N>
 
 export type ErrorHandler<E extends Env = Env, N = Node> = (
   c: Context<E>,
-  props: { error: Error; head: Head }
+  props: { error: Error; head: Head<N> }
 ) => HandlerResponse<N>
 
 export type LayoutHandler<E extends Env = Env, N = Node> = (
   c: Context<E>,
-  props: { children: N | string; head: Head; filename: string }
+  props: { children: N | string; head: Head<N>; filename: string }
 ) => N | string | Promise<N | string>
 
 /** Function Component */
-export type FC<E extends Env = Env, N = Node> = (c: Context<E>, props: { head: Head }) => N
+export type FC<E extends Env = Env, N = Node> = (c: Context<E>, props: { head: Head<N> }) => N
 
 /** Route */
 export type Route<E extends Env = Env, N = Node> = Partial<{ [Key in Methods]: Handler<E, N> }> &

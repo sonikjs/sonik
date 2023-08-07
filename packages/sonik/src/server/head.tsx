@@ -1,13 +1,28 @@
+import type { Node, CreateElement, FragmentType } from '../types'
+
 type HeadData = {
   title?: string
   meta?: Record<string, string>[]
   link?: Record<string, string>[]
 }
 
-export class Head {
+export class Head<N = Node> {
   #title?: string
   #meta?: Record<string, string>[]
   #link?: Record<string, string>[]
+  #createElement: CreateElement
+  #fragment: FragmentType
+
+  constructor({
+    createElement,
+    fragment,
+  }: {
+    createElement: CreateElement
+    fragment: FragmentType
+  }) {
+    this.#createElement = createElement
+    this.#fragment = fragment
+  }
 
   set(data: HeadData) {
     this.#title = data.title
@@ -27,25 +42,13 @@ export class Head {
     this.#link = records
   }
 
-  createTags() {
-    return (
-      <>
-        {this.#title ? <title>{this.#title}</title> : <></>}
-        {this.#meta ? (
-          this.#meta.map((attr) => {
-            return <meta {...attr} />
-          })
-        ) : (
-          <></>
-        )}
-        {this.#link ? (
-          this.#link.map((attr) => {
-            return <link {...attr} />
-          })
-        ) : (
-          <></>
-        )}
-      </>
+  createTags(): N {
+    return this.#createElement(
+      this.#fragment,
+      {},
+      this.#title ? this.#createElement('title', {}, this.#title) : null,
+      this.#meta ? this.#meta.map((attr) => this.#createElement('meta', attr)) : null,
+      this.#link ? this.#link.map((attr) => this.#createElement('link', attr)) : null
     )
   }
 }

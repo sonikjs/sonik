@@ -8,6 +8,9 @@ import type {
   LayoutHandler,
   NotFoundHandler,
   Route,
+  RenderToString,
+  CreateElement,
+  FragmentType,
 } from '../types.js'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils/index.js'
 import { Head } from './head.js'
@@ -15,16 +18,17 @@ import { Head } from './head.js'
 const NOTFOUND_FILENAME = '_404.tsx'
 const ERROR_FILENAME = '_error.tsx'
 
-export type ServerOptions<E extends Env = Env> = Partial<{
-  PRESERVED: Record<string, PreservedFile>
-  LAYOUTS: Record<string, LayoutFile>
-  ROUTES: Record<string, RouteFile>
-  root: string
+export type ServerOptions<E extends Env = Env> = {
+  PRESERVED?: Record<string, PreservedFile>
+  LAYOUTS?: Record<string, LayoutFile>
+  ROUTES?: Record<string, RouteFile>
+  root?: string
   renderToString: RenderToString
-  app: Hono<E>
-}>
+  createElement: CreateElement
+  fragment: FragmentType
+  app?: Hono<E>
+}
 
-type RenderToString<N = Node> = (node: N) => string
 type RouteFile = { default: FC & Route }
 type LayoutFile = { default: LayoutHandler }
 type PreservedFile = { default: ErrorHandler | Handler }
@@ -39,9 +43,9 @@ const addDocType = (html: string) => {
   return `<!doctype html>${html}`
 }
 
-export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> => {
+export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => {
   const PRESERVED =
-    options?.PRESERVED ??
+    options.PRESERVED ??
     import.meta.glob('/app/routes/**/(_error|_404).(tsx)', {
       eager: true,
     })
@@ -49,7 +53,7 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
   const preservedMap = groupByDirectory(PRESERVED)
 
   const LAYOUTS =
-    options?.LAYOUTS ??
+    options.LAYOUTS ??
     import.meta.glob('/app/routes/**/_layout.tsx', {
       eager: true,
     })
@@ -57,22 +61,16 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
   const layoutList = listByDirectory(LAYOUTS)
 
   const ROUTES =
-    options?.ROUTES ??
+    options.ROUTES ??
     import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx|mdx)', {
       eager: true,
     })
 
   const routesMap = groupByDirectory(ROUTES)
 
-  const root = options?.root ?? '/app/routes'
+  const root = options.root ?? '/app/routes'
 
-  let render: RenderToString
-
-  if (options?.renderToString) {
-    render = options?.renderToString
-  } else {
-    render = (node) => node.toString()
-  }
+  const render = options.renderToString
 
   const toWebResponse = async (
     c: Context,
@@ -134,9 +132,12 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
       if (!routeDefault) continue
 
       const path = filePathToPath(filename)
-      const head = new Head()
+      const head = new Head({
+        createElement: options?.createElement,
+        fragment: options?.fragment,
+      })
 
-      const options = {
+      const resOptions = {
         layouts,
         head,
         filename,
@@ -146,7 +147,7 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
       if (typeof routeDefault === 'function') {
         subApp.get(path, (c) => {
           const res = routeDefault(c, { head })
-          return toWebResponse(c, res, 200, options)
+          return toWebResponse(c, res, 200, resOptions)
         })
       }
 
@@ -160,7 +161,7 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
           if (handler) {
             subApp.on(method, path, async (c, next) => {
               const res = await (handler as Handler)(c, { head, next })
-              return toWebResponse(c, res, 200, options)
+              return toWebResponse(c, res, 200, resOptions)
             })
           }
         }
@@ -171,13 +172,13 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
           const notFound = content[NOTFOUND_FILENAME]
           if (notFound) {
             const notFoundHandler = notFound.default as NotFoundHandler
-            subApp.get('*', (c) => toWebResponse(c, notFoundHandler(c, { head }), 404, options))
+            subApp.get('*', (c) => toWebResponse(c, notFoundHandler(c, { head }), 404, resOptions))
           }
           const error = content[ERROR_FILENAME]
           if (error) {
             const errorHandler = error.default as ErrorHandler
             subApp.onError((error, c) =>
-              toWebResponse(c, errorHandler(c, { error, head }), 500, options)
+              toWebResponse(c, errorHandler(c, { error, head }), 500, resOptions)
             )
           }
         }
@@ -188,7 +189,10 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
     }
   }
 
-  const head = new Head()
+  const head = new Head({
+    createElement: options?.createElement,
+    fragment: options?.fragment,
+  })
 
   if (preservedMap[root]) {
     const defaultNotFound = preservedMap[root][NOTFOUND_FILENAME]
