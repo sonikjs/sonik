@@ -38,6 +38,10 @@ npx degit yusukebe/sonik/examples/preact preact-app
 cd preact-app
 ```
 
+## Examples
+
+- [Sonik Blog](https://github.com/yusukebe/sonik-blog)
+
 ## Author
 
 Yusuke Wada <https://github.com/yusukebe>
