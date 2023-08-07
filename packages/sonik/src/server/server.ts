@@ -112,7 +112,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
     return returnHtml(html, status)
   }
 
-  const app = options?.app ?? new Hono()
+  const app = options.app ?? new Hono()
 
   for (const [dir, content] of Object.entries(routesMap)) {
     const subApp = new Hono()
@@ -140,8 +140,8 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
 
       const path = filePathToPath(filename)
       const head = new Head({
-        createElement: options?.createElement,
-        fragment: options?.fragment,
+        createElement: options.createElement,
+        fragment: options.fragment,
       })
 
       const resOptions = {
@@ -202,8 +202,8 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
   }
 
   const head = new Head({
-    createElement: options?.createElement,
-    fragment: options?.fragment,
+    createElement: options.createElement,
+    fragment: options.fragment,
   })
 
   if (preservedMap[root]) {
