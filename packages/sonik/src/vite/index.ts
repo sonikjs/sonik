@@ -15,14 +15,14 @@ type SonikOptions = {
 
 function sonik(options: SonikOptions): PluginOption[] {
   const plugins: PluginOption[] = []
-  if (options) {
-    if (options.minify === true) {
-      plugins.push(minifyEs())
-    }
-    if (options.islands !== false) {
-      plugins.push(islandComponents())
-    }
+
+  if (options.minify === true) {
+    plugins.push(minifyEs())
   }
+  if (options.islands !== false) {
+    plugins.push(islandComponents())
+  }
+
   plugins.push(devServer(options), build(options))
   return plugins
 }
