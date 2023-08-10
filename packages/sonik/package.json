@@ -7,6 +7,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest --run",
+    "test:all": "yarn test && yarn test:preact",
+    "test:preact": "vitest --run -c ./test-presets/preact/vitest.config.ts ./test-presets/preact",
     "build": "rimraf dist && tsup && publint",
     "watch": "tsup --watch",
     "lint": "eslint src/**.ts",
@@ -77,6 +79,7 @@
   },
   "devDependencies": {
     "@mdx-js/rollup": "^2.3.0",
+    "@preact/preset-vite": "^2.5.0",
     "@types/babel__core": "^7.20.1",
     "@types/glob": "^8.1.0",
     "hono": "^3.3.4",
