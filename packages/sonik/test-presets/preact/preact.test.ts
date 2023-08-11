@@ -110,7 +110,7 @@ describe('With islands', () => {
   it('Should return 200 response - /with_island', async () => {
     const res = await app.request('/with_island')
     expect(res.status).toBe(200)
-    const serializedString = '{"count":{"K":"l","v":10},"__done":{"K":"l","v":true}}'
+    const serializedString = '{"count":{"K":"l","v":10}}'
     expect(await res.text()).toBe(
       `<p><div component-wrapper="true"><b component-name="/islands/Counter.tsx" __done data-serialized-props="${serializedString.replaceAll(
         '"',
