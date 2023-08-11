@@ -63,8 +63,6 @@ describe('With preserved', () => {
     LAYOUTS: LAYOUTS as any,
   })
 
-  app.showRoutes()
-
   it('Should return 200 response - /', async () => {
     const res = await app.request('/')
     expect(res.status).toBe(200)
@@ -95,6 +93,25 @@ describe('With preserved', () => {
     expect(res.status).toBe(500)
     expect(await res.text()).toBe(
       '<!doctype html><html><head></head><body><h1>Custom Error Message: Foo</h1></body></html>'
+    )
+  })
+})
+
+describe('With islands', () => {
+  const ROUTES = import.meta.glob('/test-presets/preact/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+    eager: true,
+  })
+
+  const app = createApp({
+    root: '/test-presets/preact/mock/routes',
+    ROUTES: ROUTES as any,
+  })
+
+  it('Should return 200 response - /with_island', async () => {
+    const res = await app.request('/with_island')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toBe(
+      '<p><div component-wrapper="true"><b data-serialized-props="/islands/Counter.tsx">Count: 10</b></div></p>'
     )
   })
 })

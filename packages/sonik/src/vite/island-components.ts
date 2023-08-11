@@ -14,15 +14,16 @@ import {
   jsxElement,
   jsxIdentifier,
   jsxOpeningElement,
-  stringLiteral
+  stringLiteral,
 } from '@babel/types'
 // eslint-disable-next-line node/no-extraneous-import
 import type { Plugin } from 'vite'
+import { DATA_SERIALIZED_PROPS } from '../constants'
 
 export const transformJsxTags = (contents: string, componentName: string) => {
   const ast = parse(contents, {
     sourceType: 'module',
-    plugins: ['typescript', 'jsx']
+    plugins: ['typescript', 'jsx'],
   })
 
   if (ast) {
@@ -32,7 +33,10 @@ export const transformJsxTags = (contents: string, componentName: string) => {
       JSXElement(path) {
         if (isFirstJSXElement) {
           const node = path.node
-          const componentNameAttribute = jsxAttribute(jsxIdentifier('component-name'), stringLiteral(componentName))
+          const componentNameAttribute = jsxAttribute(
+            jsxIdentifier(DATA_SERIALIZED_PROPS),
+            stringLiteral(componentName)
+          )
           node.openingElement.attributes.push(componentNameAttribute)
           const wrappingDiv = jsxElement(
             jsxOpeningElement(
@@ -47,7 +51,7 @@ export const transformJsxTags = (contents: string, componentName: string) => {
           path.replaceWith(wrappingDiv)
           isFirstJSXElement = false
         }
-      }
+      },
     })
 
     const { code } = generate(ast)
@@ -59,17 +63,19 @@ export function islandComponents(): Plugin {
   return {
     name: 'transform-island-components',
     async load(id) {
-      if (/islands\/.+\.tsx/.test(id)) {
-        const componentName = id.replace(/^.*app\/islands\//, '')
+      const match = id.match(/(\/islands\/.+?\.tsx)$/)
+      if (match) {
+        const componentName = match[1]
+        console.log(componentName)
         const contents = await fs.readFile(id, 'utf-8')
         const code = transformJsxTags(contents, componentName)
         if (code) {
           return {
             code,
-            map: null
+            map: null,
           }
         }
       }
-    }
+    },
   }
 }
