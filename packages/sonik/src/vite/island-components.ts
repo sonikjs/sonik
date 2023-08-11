@@ -18,7 +18,7 @@ import {
 } from '@babel/types'
 // eslint-disable-next-line node/no-extraneous-import
 import type { Plugin } from 'vite'
-import { DATA_SERIALIZED_PROPS } from '../constants'
+import { COMPONENT_NAME } from '../constants'
 
 export const transformJsxTags = (contents: string, componentName: string) => {
   const ast = parse(contents, {
@@ -34,7 +34,7 @@ export const transformJsxTags = (contents: string, componentName: string) => {
         if (isFirstJSXElement) {
           const node = path.node
           const componentNameAttribute = jsxAttribute(
-            jsxIdentifier(DATA_SERIALIZED_PROPS),
+            jsxIdentifier(COMPONENT_NAME),
             stringLiteral(componentName)
           )
           node.openingElement.attributes.push(componentNameAttribute)
@@ -66,7 +66,6 @@ export function islandComponents(): Plugin {
       const match = id.match(/(\/islands\/.+?\.tsx)$/)
       if (match) {
         const componentName = match[1]
-        console.log(componentName)
         const contents = await fs.readFile(id, 'utf-8')
         const code = transformJsxTags(contents, componentName)
         if (code) {

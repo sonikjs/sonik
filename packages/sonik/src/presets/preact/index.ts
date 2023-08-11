@@ -3,6 +3,7 @@ import type { Env } from 'hono'
 import { Fragment, createElement, h, options as preactOptions } from 'preact'
 import type { VNode } from 'preact'
 import { render } from 'preact-render-to-string'
+import { DATA_SERIALIZED_PROPS } from '../../constants.js'
 import { createApp as baseCreateApp } from '../../server/index.js'
 import { serialize } from '../../server/serializer.js'
 import type { ServerOptions } from '../../server/server.js'
@@ -47,8 +48,10 @@ preactOptions.vnode = (vnode) => {
   if (vnode.props['component-name'] && !vnode.props['__done']) {
     const originalType = vnode.type
     vnode.type = (props) => {
+      const serializedData: Record<string, string> = {}
+      serializedData[DATA_SERIALIZED_PROPS] = JSON.stringify(data)
       // @ts-ignore
-      return h(originalType, { ...props, 'data-serialized-props': JSON.stringify(data) })
+      return h(originalType, { ...props, ...serializedData })
     }
     // @ts-ignore
     vnode.props['__done'] = true
