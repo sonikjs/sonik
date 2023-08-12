@@ -31,8 +31,7 @@ export function devServer(options: DevServerOptions): Plugin[] {
               passThough === false &&
               (req.url?.endsWith('.ts') ||
                 req.url?.startsWith('/app/') || // TODO: to be fixed
-                req.url?.startsWith('/@vite/client') ||
-                req.url?.startsWith('/@fs/') ||
+                req.url?.startsWith('/@') ||
                 req.url?.startsWith('/static') ||
                 req.url?.startsWith('/node_modules'))
             ) {
@@ -54,12 +53,13 @@ export function devServer(options: DevServerOptions): Plugin[] {
 
               const response = await app.fetch(request)
               if (response.headers.get('content-type')?.match(/^text\/html/)) {
-                const body = (await response.text()) + '<script type="module" src="/@vite/client"></script>'
+                const body =
+                  (await response.text()) + '<script type="module" src="/@vite/client"></script>'
                 const headers = new Headers(response.headers)
                 headers.delete('content-length')
                 return new Response(body, {
                   status: response.status,
-                  headers
+                  headers,
                 })
               }
               return response
@@ -68,8 +68,8 @@ export function devServer(options: DevServerOptions): Plugin[] {
         }
 
         server.middlewares.use(await createMiddleware(server))
-      }
-    }
+      },
+    },
   ]
   return plugins
 }

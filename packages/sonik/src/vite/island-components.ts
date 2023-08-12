@@ -9,16 +9,78 @@ import _traverse from '@babel/traverse'
 // @ts-ignore
 const traverse = (_traverse.default as typeof _traverse) ?? _traverse
 import {
+  identifier,
   jsxAttribute,
   jsxClosingElement,
   jsxElement,
   jsxIdentifier,
   jsxOpeningElement,
   stringLiteral,
+  callExpression,
+  variableDeclarator,
+  variableDeclaration,
+  functionExpression,
+  blockStatement,
+  returnStatement,
+  arrowFunctionExpression,
+  jsxSpreadAttribute,
+  jsxExpressionContainer,
+  exportDefaultDeclaration,
 } from '@babel/types'
 // eslint-disable-next-line node/no-extraneous-import
 import type { Plugin } from 'vite'
-import { COMPONENT_NAME } from '../constants'
+import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants'
+
+const wrapWithHOC = (funcIdentifierName: string, componentName: string) => {
+  return arrowFunctionExpression(
+    [identifier('props')],
+    blockStatement([
+      variableDeclaration('const', [
+        variableDeclarator(
+          identifier('serializedProps'),
+          callExpression(identifier('JSON.stringify'), [identifier('props')])
+        ),
+      ]),
+      returnStatement(
+        jsxElement(
+          jsxOpeningElement(
+            jsxIdentifier('div'),
+            [jsxAttribute(jsxIdentifier('component-wrapper'))],
+            false
+          ),
+          jsxClosingElement(jsxIdentifier('div')),
+          [
+            jsxElement(
+              jsxOpeningElement(
+                jsxIdentifier('div'),
+                [
+                  jsxAttribute(jsxIdentifier(COMPONENT_NAME), stringLiteral(componentName)),
+                  jsxAttribute(
+                    jsxIdentifier(DATA_SERIALIZED_PROPS),
+                    jsxExpressionContainer(identifier('serializedProps'))
+                  ),
+                ],
+                false
+              ),
+              jsxClosingElement(jsxIdentifier('div')),
+              [
+                jsxElement(
+                  jsxOpeningElement(
+                    jsxIdentifier(funcIdentifierName),
+                    [jsxSpreadAttribute(identifier('props'))],
+                    false
+                  ),
+                  jsxClosingElement(jsxIdentifier(funcIdentifierName)),
+                  []
+                ),
+              ]
+            ),
+          ]
+        )
+      ),
+    ])
+  )
+}
 
 export const transformJsxTags = (contents: string, componentName: string) => {
   const ast = parse(contents, {
@@ -27,29 +89,28 @@ export const transformJsxTags = (contents: string, componentName: string) => {
   })
 
   if (ast) {
-    let isFirstJSXElement = true
-
     traverse(ast, {
-      JSXElement(path) {
-        if (isFirstJSXElement) {
-          const node = path.node
-          const componentNameAttribute = jsxAttribute(
-            jsxIdentifier(COMPONENT_NAME),
-            stringLiteral(componentName)
+      ExportDefaultDeclaration(path) {
+        if (path.node.declaration.type === 'FunctionDeclaration') {
+          const functionId = path.node.declaration.id
+          if (!functionId) return
+          const originalFunctionId = identifier(functionId.name + 'Original')
+
+          path.insertBefore(
+            variableDeclaration('const', [
+              variableDeclarator(
+                originalFunctionId,
+                functionExpression(null, path.node.declaration.params, path.node.declaration.body)
+              ),
+            ])
           )
-          node.openingElement.attributes.push(componentNameAttribute)
-          const wrappingDiv = jsxElement(
-            jsxOpeningElement(
-              jsxIdentifier('div'),
-              [jsxAttribute(jsxIdentifier('component-wrapper'), stringLiteral('true'))],
-              false
-            ),
-            jsxClosingElement(jsxIdentifier('div')),
-            [node],
-            false
+
+          const hocWrapper = wrapWithHOC(originalFunctionId.name, componentName)
+          const wrappedFunctionId = identifier('Wrapped' + functionId.name)
+          path.replaceWith(
+            variableDeclaration('const', [variableDeclarator(wrappedFunctionId, hocWrapper)])
           )
-          path.replaceWith(wrappingDiv)
-          isFirstJSXElement = false
+          path.insertAfter(exportDefaultDeclaration(wrappedFunctionId))
         }
       },
     })
@@ -63,7 +124,7 @@ export function islandComponents(): Plugin {
   return {
     name: 'transform-island-components',
     async load(id) {
-      const match = id.match(/(\/islands\/.+?\.tsx)$/)
+      const match = id.match(/\/islands\/(.+?\.tsx)$/)
       if (match) {
         const componentName = match[1]
         const contents = await fs.readFile(id, 'utf-8')

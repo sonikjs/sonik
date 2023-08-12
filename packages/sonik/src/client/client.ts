@@ -1,6 +1,5 @@
 import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants.js'
 import type { CreateElement, Hydrate } from '../types.js'
-import { deserialize } from './deserializer.js'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FileCallback = () => Promise<{ default: Promise<any> }>
@@ -16,7 +15,6 @@ export const createClient = async (options: ClientOptions) => {
   const hydrateComponent = async () => {
     const filePromises = Object.keys(FILES).map(async (filePath) => {
       const componentName = filePath.replace(/.*\/app\/islands\//, '')
-
       const elements = document.querySelectorAll(`[${COMPONENT_NAME}="${componentName}"]`)
       if (elements) {
         const elementPromises = Array.from(elements).map(async (element) => {
@@ -25,20 +23,7 @@ export const createClient = async (options: ClientOptions) => {
           const Component = await file.default
 
           const serializedProps = element.attributes.getNamedItem(DATA_SERIALIZED_PROPS)?.value
-
-          const obj = JSON.parse(serializedProps ?? '{}') as Record<string, unknown>
-
-          const promises = Object.keys(obj).map(async (key) => {
-            const value = await deserialize(obj[key])
-            return { key, value }
-          })
-
-          const results = await Promise.all(promises)
-
-          const props: Record<string, unknown> = {}
-          results.forEach((result) => {
-            props[result.key] = result.value
-          })
+          const props = JSON.parse(serializedProps ?? '{}') as Record<string, unknown>
 
           const hydrate = options.hydrate
           const createElement = options.createElement

@@ -30,9 +30,6 @@ export function build(options: BuildOptions): Plugin {
         }
       } else {
         return {
-          ssr: {
-            noExternal: true,
-          },
           build: {
             ssr: options.entry,
             rollupOptions: {

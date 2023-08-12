@@ -26,6 +26,7 @@ export type ServerOptions<E extends Env = Env> = {
   renderToString: RenderToString
   createElement: CreateElement
   fragment: FragmentType
+  createHead?: () => Head
   app?: Hono<E>
 }
 
@@ -139,10 +140,16 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       if (!routeDefault) continue
 
       const path = filePathToPath(filename)
-      const head = new Head({
-        createElement: options.createElement,
-        fragment: options.fragment,
-      })
+
+      let head: Head
+      if (options.createHead) {
+        head = options.createHead()
+      } else {
+        head = new Head({
+          createElement: options.createElement,
+          fragment: options.fragment,
+        })
+      }
 
       const resOptions = {
         layouts,
