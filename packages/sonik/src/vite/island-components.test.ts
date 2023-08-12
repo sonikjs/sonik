@@ -7,7 +7,6 @@ describe('transformJsxTags', () => {
       return <h1>Hello</h1>
     }`
     const result = transformJsxTags(code, 'Badge.tsx')
-    console.log(result)
     expect(result).toBe(
       `const BadgeOriginal = function () {
   return <h1>Hello</h1>;
