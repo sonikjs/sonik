@@ -34,24 +34,12 @@ export class Head<N = Node> {
     this.#title = value
   }
 
-  get title(): string | undefined {
-    return this.#title
-  }
-
   set meta(records: Record<string, string>[]) {
     this.#meta = records
   }
 
-  get meta(): Record<string, string>[] | undefined {
-    return this.#meta
-  }
-
   set link(records: Record<string, string>[]) {
     this.#link = records
-  }
-
-  get link(): Record<string, string>[] | undefined {
-    return this.#link
   }
 
   createTags(): N {
