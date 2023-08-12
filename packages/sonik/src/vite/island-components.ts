@@ -29,7 +29,7 @@ import {
 } from '@babel/types'
 // eslint-disable-next-line node/no-extraneous-import
 import type { Plugin } from 'vite'
-import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants'
+import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants.js'
 
 const wrapWithHOC = (funcIdentifierName: string, componentName: string) => {
   return arrowFunctionExpression(

@@ -1,4 +1,4 @@
-import type { Node, CreateElement, FragmentType } from '../types'
+import type { Node, CreateElement, FragmentType } from '../types.js'
 
 type HeadData = {
   title?: string
