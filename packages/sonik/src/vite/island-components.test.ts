@@ -13,7 +13,7 @@ describe('transformJsxTags', () => {
 };
 const WrappedBadge = props => {
   const serializedProps = JSON.stringify(props);
-  return <div component-wrapper><div component-name="Badge.tsx" data-serialized-props={serializedProps}><BadgeOriginal {...props}></BadgeOriginal></div></div>;
+  return <div component-wrapper="true"><div component-name="Badge.tsx" data-serialized-props={serializedProps}><BadgeOriginal {...props}></BadgeOriginal></div></div>;
 };
 export default WrappedBadge;`
     )

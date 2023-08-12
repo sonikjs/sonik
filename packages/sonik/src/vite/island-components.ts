@@ -45,7 +45,7 @@ const wrapWithHOC = (funcIdentifierName: string, componentName: string) => {
         jsxElement(
           jsxOpeningElement(
             jsxIdentifier('div'),
-            [jsxAttribute(jsxIdentifier('component-wrapper'))],
+            [jsxAttribute(jsxIdentifier('component-wrapper'), stringLiteral('true'))],
             false
           ),
           jsxClosingElement(jsxIdentifier('div')),
