@@ -11,7 +11,7 @@ export default defineConfig({
   dts: true,
   tsconfig: './tsconfig.build.json',
   splitting: false,
-  minify: true,
+  minify: false,
   format: ['esm'],
   bundle: false,
   platform: 'node',
