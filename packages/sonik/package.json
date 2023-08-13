@@ -7,13 +7,14 @@
   "type": "module",
   "scripts": {
     "test": "vitest --run",
-    "test:all": "yarn test && yarn test:preact",
+    "test:all": "yarn test && yarn test:react && yarn test:preact",
+    "test:react": "vitest --run -c ./test-presets/react/vitest.config.ts ./test-presets/react",
     "test:preact": "vitest --run -c ./test-presets/preact/vitest.config.ts ./test-presets/preact",
     "build": "rimraf dist && tsup && publint",
     "watch": "tsup --watch",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
-    "release": "yarn build && yarn test && cp ../../README.md ./ && release-it && rm ./README.md"
+    "release": "yarn build && yarn test:all && cp ../../README.md ./ && release-it && rm ./README.md"
   },
   "files": [
     "dist"
@@ -82,10 +83,15 @@
     "@preact/preset-vite": "^2.5.0",
     "@types/babel__core": "^7.20.1",
     "@types/glob": "^8.1.0",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.4",
     "hono": "^3.3.4",
     "preact": "^10.16.0",
     "preact-render-to-string": "^6.2.0",
     "publint": "^0.1.12",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "release-it": "^16.1.3",
     "rimraf": "^5.0.1",
     "tsup": "^7.2.0",
