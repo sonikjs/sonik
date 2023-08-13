@@ -49,6 +49,14 @@
     "./preact/client": {
       "types": "./dist/presets/preact/client.d.ts",
       "import": "./dist/presets/preact/client.js"
+    },
+    "./solid": {
+      "types": "./dist/presets/solid/index.d.ts",
+      "import": "./dist/presets/solid/index.js"
+    },
+    "./solid/client": {
+      "types": "./dist/presets/solid/client.d.ts",
+      "import": "./dist/presets/solid/client.js"
     }
   },
   "typesVersions": {
@@ -70,6 +78,12 @@
       ],
       "preact/client": [
         "./dist/presets/preact/client"
+      ],
+      "solid": [
+        "./dist/presets/solid"
+      ],
+      "solid/client": [
+        "./dist/presets/solid/client"
       ]
     }
   },
