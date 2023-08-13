@@ -1,12 +1,11 @@
-import { createElement } from 'react'
-import { hydrateRoot } from 'react-dom/client'
+import { hydrate, createComponent } from 'solid-js/web'
 import { createClient as baseCreateClient } from '../../client/index.js'
 import type { ClientOptions } from '../../client/index.js'
 
 export const createClient = (options?: Omit<ClientOptions, 'createElement' | 'hydrate'>) => {
   return baseCreateClient({
-    hydrate: (elem, root) => hydrateRoot(root, elem),
-    createElement,
+    hydrate: (fn, node) => hydrate(fn(), node),
+    createElement: (type, props) => createComponent(() => type, props),
     ...options,
   })
 }

@@ -8,6 +8,10 @@ import { Head } from './head.js'
 
 type Node = JSX.Element
 
+function fragment(props: { children: JSX.Element }) {
+  return props.children
+}
+
 export const createApp = <E extends Env = Env>(
   options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>
 ) => {
@@ -15,7 +19,7 @@ export const createApp = <E extends Env = Env>(
     renderToString: (Comp) => renderToString(() => Comp),
     createElement: (type, props) => createComponent(() => type, props),
     createHead: () => new Head(),
-    fragment: <></>,
+    fragment: () => fragment,
     ...options,
   })
 }

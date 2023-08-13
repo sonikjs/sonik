@@ -11,7 +11,7 @@ export default defineConfig({
     islandComponents(),
     {
       ...mdx({
-        jsxImportSource: 'solid-js',
+        jsxImportSource: 'solid-js/h',
       }),
     },
   ],

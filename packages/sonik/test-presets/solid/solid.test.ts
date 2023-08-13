@@ -69,7 +69,7 @@ describe('With preserved', () => {
     const res = await app.request('/')
     expect(res.status).toBe(200)
     expect(await res.text()).toBe(
-      '<!doctype html><html><head><title>This is a title</title><meta name="description" content="This is a description"/></head><body><h1>Hello</h1></body></html>'
+      '<!doctype html><html><head><title>This is a title</title><meta name="description" content="This is a description" /></head><body><h1>Hello</h1></body></html>'
     )
   })
 

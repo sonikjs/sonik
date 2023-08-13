@@ -12,7 +12,7 @@ import type {
   CreateElement,
   FragmentType,
 } from '../types.js'
-import { filePathToPath, groupByDirectory, listByDirectory } from '../utils/index.js'
+import { filePathToPath, groupByDirectory, listByDirectory } from '../utils/file.js'
 import { Head } from './head.js'
 
 const NOTFOUND_FILENAME = '_404.tsx'
@@ -208,10 +208,15 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
     }
   }
 
-  const head = new Head({
-    createElement: options.createElement,
-    fragment: options.fragment,
-  })
+  let head: Head
+  if (options.createHead) {
+    head = options.createHead()
+  } else {
+    head = new Head({
+      createElement: options.createElement,
+      fragment: options.fragment,
+    })
+  }
 
   if (preservedMap[root]) {
     const defaultNotFound = preservedMap[root][NOTFOUND_FILENAME]
