@@ -58,10 +58,10 @@
         "./dist/vite"
       ],
       "react": [
-        "./dist/presets/preact"
+        "./dist/presets/react"
       ],
       "react/client": [
-        "./dist/presets/preact/client"
+        "./dist/presets/react/client"
       ],
       "preact": [
         "./dist/presets/preact"
