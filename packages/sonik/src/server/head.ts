@@ -7,9 +7,9 @@ type HeadData = {
 }
 
 export class Head<N = Node> {
-  #title?: string
-  #meta?: Record<string, string>[]
-  #link?: Record<string, string>[]
+  title?: string
+  meta: Record<string, string>[] = []
+  link: Record<string, string>[] = []
   #createElement: CreateElement
   #fragment: FragmentType
 
@@ -25,30 +25,18 @@ export class Head<N = Node> {
   }
 
   set(data: HeadData) {
-    this.#title = data.title
-    this.#meta = data.meta
-    this.#link = data.link
-  }
-
-  set title(value: string) {
-    this.#title = value
-  }
-
-  set meta(records: Record<string, string>[]) {
-    this.#meta = records
-  }
-
-  set link(records: Record<string, string>[]) {
-    this.#link = records
+    this.title = data.title
+    this.meta = data.meta ?? []
+    this.link = data.link ?? []
   }
 
   createTags(): N {
     return this.#createElement(
       this.#fragment,
       {},
-      this.#title ? this.#createElement('title', {}, this.#title) : null,
-      this.#meta ? this.#meta.map((attr) => this.#createElement('meta', attr)) : null,
-      this.#link ? this.#link.map((attr) => this.#createElement('link', attr)) : null
+      this.title ? this.#createElement('title', {}, this.title) : null,
+      this.meta ? this.meta.map((attr) => this.#createElement('meta', attr)) : null,
+      this.link ? this.link.map((attr) => this.#createElement('link', attr)) : null
     )
   }
 }
