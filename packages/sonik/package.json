@@ -32,13 +32,21 @@
       "types": "./dist/vite/index.d.ts",
       "import": "./dist/vite/index.js"
     },
+    "./react": {
+      "types": "./dist/presets/react/index.d.ts",
+      "import": "./dist/presets/react/index.js"
+    },
+    "./react/client": {
+      "types": "./dist/presets/react/client.d.ts",
+      "import": "./dist/presets/react/client.js"
+    },
     "./preact": {
       "types": "./dist/presets/preact/index.d.ts",
       "import": "./dist/presets/preact/index.js"
     },
-    "./preact/*": {
-      "types": "./dist/presets/preact/*.d.ts",
-      "import": "./dist/presets/preact/*.js"
+    "./preact/client": {
+      "types": "./dist/presets/preact/client.d.ts",
+      "import": "./dist/presets/preact/client.js"
     }
   },
   "typesVersions": {
@@ -49,11 +57,17 @@
       "vite": [
         "./dist/vite"
       ],
+      "react": [
+        "./dist/presets/preact"
+      ],
+      "react/client": [
+        "./dist/presets/preact/client"
+      ],
       "preact": [
         "./dist/presets/preact"
       ],
-      "preact/*": [
-        "./dist/presets/preact/*"
+      "preact/client": [
+        "./dist/presets/preact/client"
       ]
     }
   },
