@@ -45,7 +45,7 @@ npx degit yusukebe/sonik/examples/react react-app
 cd react-app
 ```
 
-Solid
+Solid:
 
 ```
 npx degit yusukebe/sonik/examples/solid solid-app
