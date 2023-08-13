@@ -1,0 +1,22 @@
+{
+  "name": "sonik-example-solid",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "vite build && vite build --mode client",
+    "dev": "vite",
+    "deploy": "wrangler pages deploy ./dist"
+  },
+  "dependencies": {
+    "hono": "^3.3.4",
+    "solid-js": "^1.7.11",
+    "sonik": "^0.0.52"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230518.0",
+    "vite": "^4.4.6",
+    "vite-plugin-solid": "^2.7.0",
+    "wrangler": "^3.4.0"
+  }
+}
