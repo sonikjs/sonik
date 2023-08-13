@@ -1,7 +1,7 @@
 import type { Env } from 'hono'
 import type { JSX } from 'react'
 import { Fragment, createElement } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { createApp as baseCreateApp } from '../../server/index.js'
 import type { ServerOptions } from '../../server/server.js'
 import type * as types from '../../types.js'
@@ -12,7 +12,7 @@ export const createApp = <E extends Env = Env>(
   options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>
 ) => {
   return baseCreateApp<E>({
-    renderToString: renderToStaticMarkup,
+    renderToString: renderToString,
     createElement: createElement,
     fragment: Fragment,
     ...options,

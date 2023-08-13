@@ -27,7 +27,7 @@ describe('Basic', () => {
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
-    expect(await res.text()).toBe('<p>It&#x27;s me</p><b>My name is me</b>')
+    expect(await res.text()).toBe('<p>It&#x27;s <!-- -->me</p><b>My name is <!-- -->me</b>')
   })
 
   it('Should return 200 response /page', async () => {
@@ -83,7 +83,7 @@ describe('With preserved', () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
     expect(await res.text()).toBe(
-      '<!doctype html><html><head><title>me</title></head><body><main><p>It&#x27;s me</p><b>My name is me</b></main></body></html>'
+      '<!doctype html><html><head><title>me</title></head><body><main><p>It&#x27;s <!-- -->me</p><b>My name is <!-- -->me</b></main></body></html>'
     )
   })
 
@@ -91,7 +91,7 @@ describe('With preserved', () => {
     const res = await app.request('/throw_error')
     expect(res.status).toBe(500)
     expect(await res.text()).toBe(
-      '<!doctype html><html><head></head><body><h1>Custom Error Message: Foo</h1></body></html>'
+      '<!doctype html><html><head></head><body><h1>Custom Error Message: <!-- -->Foo</h1></body></html>'
     )
   })
 })
@@ -110,7 +110,7 @@ describe('With islands', () => {
     const res = await app.request('/with_island')
     expect(res.status).toBe(200)
     expect(await res.text()).toBe(
-      `<p><div component-name="Counter.tsx" data-serialized-props="{&quot;count&quot;:10}"><b>Count: 10</b></div></p>`
+      `<p><div component-name="Counter.tsx" data-serialized-props="{&quot;count&quot;:10}"><b>Count: <!-- -->10</b></div></p>`
     )
   })
 })
