@@ -22,64 +22,55 @@ import {
   functionExpression,
   blockStatement,
   returnStatement,
-  arrowFunctionExpression,
   jsxSpreadAttribute,
   jsxExpressionContainer,
   exportDefaultDeclaration,
+  conditionalExpression,
+  memberExpression,
 } from '@babel/types'
 // eslint-disable-next-line node/no-extraneous-import
 import type { Plugin } from 'vite'
 import { COMPONENT_NAME, DATA_SERIALIZED_PROPS } from '../constants.js'
 
-const wrapWithHOC = (funcIdentifierName: string, componentName: string) => {
-  return arrowFunctionExpression(
-    [identifier('props')],
-    blockStatement([
-      variableDeclaration('const', [
-        variableDeclarator(
-          identifier('serializedProps'),
-          callExpression(identifier('JSON.stringify'), [identifier('props')])
-        ),
-      ]),
-      returnStatement(
-        jsxElement(
-          jsxOpeningElement(
-            jsxIdentifier('div'),
-            [jsxAttribute(jsxIdentifier('component-wrapper'), stringLiteral('true'))],
-            false
-          ),
-          jsxClosingElement(jsxIdentifier('div')),
-          [
-            jsxElement(
-              jsxOpeningElement(
-                jsxIdentifier('div'),
-                [
-                  jsxAttribute(jsxIdentifier(COMPONENT_NAME), stringLiteral(componentName)),
-                  jsxAttribute(
-                    jsxIdentifier(DATA_SERIALIZED_PROPS),
-                    jsxExpressionContainer(identifier('serializedProps'))
-                  ),
-                ],
-                false
-              ),
-              jsxClosingElement(jsxIdentifier('div')),
-              [
-                jsxElement(
-                  jsxOpeningElement(
-                    jsxIdentifier(funcIdentifierName),
-                    [jsxSpreadAttribute(identifier('props'))],
-                    false
-                  ),
-                  jsxClosingElement(jsxIdentifier(funcIdentifierName)),
-                  []
-                ),
-              ]
-            ),
-          ]
-        )
-      ),
-    ])
+function addSSRCheck(funcName: string, componentName: string) {
+  const isSSR = memberExpression(
+    memberExpression(identifier('import'), identifier('meta')),
+    identifier('env.SSR')
   )
+
+  const serializedProps = callExpression(identifier('JSON.stringify'), [identifier('props')])
+
+  const ssrElement = jsxElement(
+    jsxOpeningElement(
+      jsxIdentifier('div'),
+      [
+        jsxAttribute(jsxIdentifier(COMPONENT_NAME), stringLiteral(componentName)),
+        jsxAttribute(jsxIdentifier(DATA_SERIALIZED_PROPS), jsxExpressionContainer(serializedProps)),
+      ],
+      false
+    ),
+    jsxClosingElement(jsxIdentifier('div')),
+    [
+      jsxElement(
+        jsxOpeningElement(
+          jsxIdentifier(funcName),
+          [jsxSpreadAttribute(identifier('props'))],
+          false
+        ),
+        jsxClosingElement(jsxIdentifier(funcName)),
+        []
+      ),
+    ]
+  )
+
+  const clientElement = jsxElement(
+    jsxOpeningElement(jsxIdentifier(funcName), [jsxSpreadAttribute(identifier('props'))], false),
+    jsxClosingElement(jsxIdentifier(funcName)),
+    []
+  )
+
+  const returnStmt = returnStatement(conditionalExpression(isSSR, ssrElement, clientElement))
+  return functionExpression(null, [identifier('props')], blockStatement([returnStmt]))
 }
 
 export const transformJsxTags = (contents: string, componentName: string) => {
@@ -105,10 +96,10 @@ export const transformJsxTags = (contents: string, componentName: string) => {
             ])
           )
 
-          const hocWrapper = wrapWithHOC(originalFunctionId.name, componentName)
+          const wrappedFunction = addSSRCheck(originalFunctionId.name, componentName)
           const wrappedFunctionId = identifier('Wrapped' + functionId.name)
           path.replaceWith(
-            variableDeclaration('const', [variableDeclarator(wrappedFunctionId, hocWrapper)])
+            variableDeclaration('const', [variableDeclarator(wrappedFunctionId, wrappedFunction)])
           )
           path.insertAfter(exportDefaultDeclaration(wrappedFunctionId))
         }

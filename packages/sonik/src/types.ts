@@ -28,7 +28,7 @@ export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'
 export type CreateElement = (type: any, props: any, ...children: any[]) => Node
 export type FragmentType = any
 export type RenderToString<N = Node> = (node: N) => string
-export type Hydrate = (children: Node, parent: HTMLElement) => void
+export type Hydrate = (children: Node, parent: Element) => void
 
 /** external */
 export type Handler<E extends Env = Env, N = Node> = (

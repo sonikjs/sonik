@@ -28,13 +28,8 @@ export const createClient = async (options: ClientOptions) => {
           const hydrate = options.hydrate
           const createElement = options.createElement
 
-          const wrapper = element.parentElement
-          const temp = document.createElement('div')
-          if (wrapper && wrapper.parentElement) {
-            wrapper.parentElement.replaceChild(temp, wrapper)
-            const newElem = createElement(Component, props)
-            hydrate(newElem, temp)
-          }
+          const newElem = createElement(Component, props)
+          hydrate(newElem, element)
         })
         await Promise.all(elementPromises)
       }
