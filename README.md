@@ -29,13 +29,27 @@ yarn build
 yarn deploy
 ```
 
-## Preact preset
+## Presets
 
-A Preact preset is available.
+Preact:
 
 ```
 npx degit yusukebe/sonik/examples/preact preact-app
 cd preact-app
+```
+
+React:
+
+```
+npx degit yusukebe/sonik/examples/react react-app
+cd react-app
+```
+
+Solid
+
+```
+npx degit yusukebe/sonik/examples/solid solid-app
+cd solid-app
 ```
 
 ## Examples
