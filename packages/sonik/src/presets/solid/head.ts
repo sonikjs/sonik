@@ -15,6 +15,8 @@ export class Head extends BaseHead {
     let str: string = ''
     if (this.title) str += `<title>${escape(this.title)}</title>`
     if (this.meta.length > 0) str += createTagString('meta', this.meta)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return createComponent(() => ssr(str), {})
   }
 }
