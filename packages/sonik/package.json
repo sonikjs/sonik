@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest --run",
-    "test:all": "yarn test && yarn test:react && yarn test:preact",
+    "test:all": "yarn test && yarn test:hono-jsx && yarn test:react && yarn test:preact",
+    "test:hono-jsx": "vitest run -c test-presets/hono-jsx/vitest.config.ts ./test-presets/hono-jsx",
     "test:react": "vitest --run -c ./test-presets/react/vitest.config.ts ./test-presets/react",
     "test:preact": "vitest --run -c ./test-presets/preact/vitest.config.ts ./test-presets/preact",
     "build": "rimraf dist && tsup && publint",

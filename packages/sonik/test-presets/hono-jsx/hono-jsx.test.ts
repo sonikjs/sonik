@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from 'vitest'
-import { createApp } from '../src'
+import { createApp } from '../../src'
 
 describe('Basic', () => {
-  const ROUTES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
-    eager: true,
-  })
+  const ROUTES = import.meta.glob(
+    '/test-presets/hono-jsx/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)',
+    {
+      eager: true,
+    }
+  )
 
   const app = createApp({
-    root: '/test/mock/routes',
+    root: '/test-presets/hono-jsx/mock/routes',
     ROUTES: ROUTES as any,
   })
 
@@ -44,20 +47,23 @@ describe('Basic', () => {
 })
 
 describe('With preserved', () => {
-  const ROUTES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const ROUTES = import.meta.glob(
+    '/test-presets/hono-jsx/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)',
+    {
+      eager: true,
+    }
+  )
+
+  const PRESERVED = import.meta.glob('/test-presets/hono-jsx/mock/routes/(_error|_404).tsx', {
     eager: true,
   })
 
-  const PRESERVED = import.meta.glob('/test/mock/routes/(_error|_404).tsx', {
-    eager: true,
-  })
-
-  const LAYOUTS = import.meta.glob('/test/mock/routes/**/_layout.tsx', {
+  const LAYOUTS = import.meta.glob('/test-presets/hono-jsx/mock/routes/**/_layout.tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test/mock/routes',
+    root: '/test-presets/hono-jsx/mock/routes',
     ROUTES: ROUTES as any,
     PRESERVED: PRESERVED as any,
     LAYOUTS: LAYOUTS as any,
@@ -100,12 +106,15 @@ describe('With preserved', () => {
 })
 
 describe('API', () => {
-  const ROUES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
-    eager: true,
-  })
+  const ROUES = import.meta.glob(
+    '/test-presets/hono-jsx/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)',
+    {
+      eager: true,
+    }
+  )
 
   const app = createApp({
-    root: '/test/mock/routes',
+    root: '/test-presets/hono-jsx/mock/routes',
     ROUTES: ROUES as any,
   })
 
@@ -129,16 +138,19 @@ describe('API', () => {
 })
 
 describe('MDX', () => {
-  const ROUES = import.meta.glob('/test/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)', {
-    eager: true,
-  })
+  const ROUES = import.meta.glob(
+    '/test-presets/hono-jsx/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)',
+    {
+      eager: true,
+    }
+  )
 
-  const LAYOUTS = import.meta.glob('/test/mock/routes/_layout.tsx', {
+  const LAYOUTS = import.meta.glob('/test-presets/hono-jsx/mock/routes/_layout.tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test/mock/routes',
+    root: '/test-presets/hono-jsx/mock/routes',
     ROUTES: ROUES as any,
     LAYOUTS: LAYOUTS as any,
   })
