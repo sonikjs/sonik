@@ -12,7 +12,7 @@
     "hono": "^3.3.4",
     "preact": "^10.16.0",
     "preact-render-to-string": "^6.2.0",
-    "sonik": "^0.0.53"
+    "sonik": "^0.0.55"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

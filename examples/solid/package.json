@@ -11,7 +11,7 @@
   "dependencies": {
     "hono": "^3.3.4",
     "solid-js": "^1.7.11",
-    "sonik": "^0.0.53"
+    "sonik": "^0.0.55"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
