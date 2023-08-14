@@ -30,7 +30,7 @@ export type ServerOptions<E extends Env = Env> = {
   app?: Hono<E>
 }
 
-type RouteFile = { default: FC & Route }
+type RouteFile = { default: FC & Route & Hono }
 type LayoutFile = { default: LayoutHandler }
 type PreservedFile = { default: ErrorHandler | Handler }
 
@@ -55,7 +55,7 @@ const returnHtml = (html: string, status: number = 200) =>
 export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => {
   const PRESERVED =
     options.PRESERVED ??
-    import.meta.glob('/app/routes/**/(_error|_404).(tsx)', {
+    import.meta.glob('/app/routes/**/(_error|_404).(ts|tsx)', {
       eager: true,
     })
 
@@ -71,7 +71,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
 
   const ROUTES =
     options.ROUTES ??
-    import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(tsx|mdx)', {
+    import.meta.glob('/app/routes/**/[a-z0-9[-][a-z0-9[_-]*.(ts|tsx|mdx)', {
       eager: true,
     })
 
@@ -140,6 +140,15 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       if (!routeDefault) continue
 
       const path = filePathToPath(filename)
+      const regExp = new RegExp(`^${root}`)
+      const rootPath = dir.replace(regExp, '')
+
+      // Instance of Hono
+      if (routeDefault.constructor.name === 'Hono') {
+        subApp.route(path, routeDefault)
+        app.route(rootPath, subApp)
+        continue
+      }
 
       let head: Head
       if (options.createHead) {
@@ -165,6 +174,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         })
       }
 
+      // export default {} satisfies Route
       for (const [method, handler] of Object.entries(routeDefault)) {
         if (method === 'APP') {
           const appHandler = routeDefault['APP']
@@ -203,8 +213,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         }
       }
 
-      const regExp = new RegExp(`^${root}`)
-      app.route(dir.replace(regExp, ''), subApp)
+      app.route(rootPath, subApp)
     }
   }
 

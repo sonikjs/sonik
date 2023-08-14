@@ -4063,10 +4063,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:^3.3.4":
-  version: 3.3.4
-  resolution: "hono@npm:3.3.4"
-  checksum: b0c32bbe067a88bdceaea822301013e6238efcd4d41cab838f1ec7bb498b13b081997c0781da874555295e4fc97b1064555e4844066964e27f5f19ada4c49e50
+"hono@npm:^3.4.3":
+  version: 3.4.3
+  resolution: "hono@npm:3.4.3"
+  checksum: 027842b71ed8f0dbd1203f9f440bebcb8a1d8508c2b4aabf5a22c8764429979dfd8bd6ef0cc05c776fcfdaf2f228e93711590fbd7e734976a2bca0fc76c7c07f
   languageName: node
   linkType: hard
 
@@ -7442,7 +7442,7 @@ __metadata:
     "@types/react": ^18.2.20
     "@types/react-dom": ^18.2.7
     "@vitejs/plugin-react": ^4.0.4
-    hono: ^3.3.4
+    hono: ^3.4.3
     jsdom: ^22.1.0
     preact: ^10.16.0
     preact-render-to-string: ^6.2.0
