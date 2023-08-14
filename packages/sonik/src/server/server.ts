@@ -144,7 +144,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       const rootPath = dir.replace(regExp, '')
 
       // Instance of Hono
-      if (routeDefault.constructor.name === 'Hono') {
+      if ('fetch' in routeDefault) {
         subApp.route(path, routeDefault)
         app.route(rootPath, subApp)
         continue
@@ -169,7 +169,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       // Function Component
       if (typeof routeDefault === 'function') {
         subApp.get(path, (c) => {
-          const res = routeDefault(c, { head })
+          const res = (routeDefault as FC)(c, { head })
           return toWebResponse(res, 200, resOptions)
         })
       }
@@ -177,7 +177,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       // export default {} satisfies Route
       for (const [method, handler] of Object.entries(routeDefault)) {
         if (method === 'APP') {
-          const appHandler = routeDefault['APP']
+          const appHandler = (routeDefault as Route)['APP']
           if (appHandler) {
             appHandler(subApp.use(path), {
               head,
