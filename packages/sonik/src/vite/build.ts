@@ -2,8 +2,10 @@
 import type { Plugin, UserConfig } from 'vite'
 
 export type BuildOptions = {
-  entry: string
-  outFile?: string
+  ssr?: {
+    entry?: string
+    outFile?: string
+  }
   client?: {
     entry?: string
     name?: string
@@ -34,11 +36,11 @@ export function build(options: BuildOptions): Plugin {
             noExternal: true,
           },
           build: {
-            ssr: options.entry,
+            ssr: options.ssr?.entry ?? './entry.ts',
             rollupOptions: {
-              input: options.entry,
+              input: options.ssr?.entry ?? './entry.ts',
               output: {
-                file: options.outFile ?? undefined,
+                file: options.ssr?.outFile ?? undefined,
               },
             },
           },

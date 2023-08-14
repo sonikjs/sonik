@@ -10,8 +10,9 @@ import { minifyEs } from './minify-es.js'
 type SonikOptions = {
   minify?: boolean
   islands?: boolean
-} & DevServerOptions &
-  BuildOptions
+} & DevServerOptions & {
+    build?: BuildOptions
+  }
 
 function sonik(options: SonikOptions): PluginOption[] {
   const plugins: PluginOption[] = []
@@ -23,7 +24,7 @@ function sonik(options: SonikOptions): PluginOption[] {
     plugins.push(islandComponents())
   }
 
-  plugins.push(devServer(options), build(options))
+  plugins.push(devServer(options), build(options.build ?? {}))
   return plugins
 }
 

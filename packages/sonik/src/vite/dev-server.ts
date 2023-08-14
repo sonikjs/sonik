@@ -4,7 +4,7 @@ import { getRequestListener } from '@hono/node-server'
 import type { Plugin, ViteDevServer, Connect } from 'vite'
 
 export type DevServerOptions = {
-  entry: string
+  entry?: string
   passThrough?: string[]
 }
 
@@ -38,7 +38,7 @@ export function devServer(options: DevServerOptions): Plugin[] {
               return next()
             }
 
-            const appModule = await server.ssrLoadModule(options.entry)
+            const appModule = await server.ssrLoadModule(options.entry ?? './app/server.ts')
             const app = appModule['default']
 
             if (!app) {
