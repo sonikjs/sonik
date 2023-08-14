@@ -1,0 +1,6 @@
+name = "sonik-example-api"
+compatibility_date = "2023-01-01"
+
+[build]
+command = "vite build"
+watch_dir = "app"
