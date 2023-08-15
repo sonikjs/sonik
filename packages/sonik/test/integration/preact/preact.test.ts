@@ -1,15 +1,15 @@
 /* eslint-disable quotes */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from 'vitest'
-import { createApp } from '../../src/presets/preact'
+import { createApp } from '../../../src/presets/preact'
 
 describe('Basic', () => {
-  const ROUTES = import.meta.glob('/test-presets/preact/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+  const ROUTES = import.meta.glob('../../mock/preact/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/preact/mock/routes',
+    root: '../../mock/preact/routes',
     ROUTES: ROUTES as any,
   })
 
@@ -44,20 +44,20 @@ describe('Basic', () => {
 })
 
 describe('With preserved', () => {
-  const ROUTES = import.meta.glob('/test-presets/preact/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const ROUTES = import.meta.glob('../../mock/preact/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
-  const PRESERVED = import.meta.glob('/test-presets/preact/mock/routes/(_error|_404).tsx', {
+  const PRESERVED = import.meta.glob('../../mock/preact/routes/(_error|_404).tsx', {
     eager: true,
   })
 
-  const LAYOUTS = import.meta.glob('/test-presets/preact/mock/routes/**/_layout.tsx', {
+  const LAYOUTS = import.meta.glob('../../mock/preact/routes/**/_layout.tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/preact/mock/routes',
+    root: '../../mock/preact/routes',
     ROUTES: ROUTES as any,
     PRESERVED: PRESERVED as any,
     LAYOUTS: LAYOUTS as any,
@@ -97,12 +97,12 @@ describe('With preserved', () => {
 })
 
 describe('With islands', () => {
-  const ROUTES = import.meta.glob('/test-presets/preact/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const ROUTES = import.meta.glob('../../mock/preact/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/preact/mock/routes',
+    root: '../../mock/preact/routes',
     ROUTES: ROUTES as any,
   })
 
@@ -116,12 +116,12 @@ describe('With islands', () => {
 })
 
 describe('API', () => {
-  const ROUES = import.meta.glob('/test-presets/preact/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const ROUES = import.meta.glob('../../mock/preact/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/preact/mock/routes',
+    root: '../../mock/preact/routes',
     ROUTES: ROUES as any,
   })
 
@@ -145,16 +145,16 @@ describe('API', () => {
 })
 
 describe('MDX', () => {
-  const ROUES = import.meta.glob('/test-presets/preact/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)', {
+  const ROUES = import.meta.glob('../../mock/preact/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)', {
     eager: true,
   })
 
-  const LAYOUTS = import.meta.glob('/test-presets/preact/mock/routes/_layout.tsx', {
+  const LAYOUTS = import.meta.glob('../../mock/preact/routes/_layout.tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/preact/mock/routes',
+    root: '../../mock/preact/routes',
     ROUTES: ROUES as any,
     LAYOUTS: LAYOUTS as any,
   })

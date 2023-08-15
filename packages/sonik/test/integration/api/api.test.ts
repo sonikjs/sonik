@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from 'vitest'
-import { createApp } from '../../src'
+import { createApp } from '../../../src'
 
 describe('Basic', () => {
-  const ROUTES = import.meta.glob('/test-presets/api/mock/routes/**/[a-z[-][a-z[_-]*.ts', {
+  const ROUTES = import.meta.glob('../../mock/api/routes/**/[a-z[-][a-z[_-]*.ts', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/api/mock/routes',
+    root: '../../mock/api/routes',
     ROUTES: ROUTES as any,
   })
 

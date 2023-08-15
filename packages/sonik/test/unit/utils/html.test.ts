@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { createTagString, escape } from './html.js'
+import { createTagString, escape } from '../../../src/utils/html.js'
 
 describe('escape', () => {
   it('Should escape the strings', () => {

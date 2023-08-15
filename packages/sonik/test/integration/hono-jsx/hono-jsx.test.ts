@@ -1,15 +1,14 @@
-/* eslint-disable quotes */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from 'vitest'
-import { createApp } from '../../src/presets/solid'
+import { createApp } from '../../../src'
 
 describe('Basic', () => {
-  const ROUTES = import.meta.glob('/test-presets/solid/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+  const ROUTES = import.meta.glob('../../mock/hono-jsx/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/solid/mock/routes',
+    root: '../../mock/hono-jsx/routes',
     ROUTES: ROUTES as any,
   })
 
@@ -27,9 +26,8 @@ describe('Basic', () => {
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
-    expect(await res.text()).toBe(
-      "<p>It's <!--#-->me<!--/--></p><b>My name is <!--#-->me<!--/--></b>"
-    )
+    // hono/jsx escape a single quote to &#39;
+    expect(await res.text()).toBe('<p>It&#39;s me</p><b>My name is me</b>')
   })
 
   it('Should return 200 response /page', async () => {
@@ -46,30 +44,32 @@ describe('Basic', () => {
 })
 
 describe('With preserved', () => {
-  const ROUTES = import.meta.glob('/test-presets/solid/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const ROUTES = import.meta.glob('../../mock/hono-jsx/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
-  const PRESERVED = import.meta.glob('/test-presets/solid/mock/routes/(_error|_404).tsx', {
+  const PRESERVED = import.meta.glob('../../mock/hono-jsx/routes/(_error|_404).tsx', {
     eager: true,
   })
 
-  const LAYOUTS = import.meta.glob('/test-presets/solid/mock/routes/**/_layout.tsx', {
+  const LAYOUTS = import.meta.glob('../../mock/hono-jsx/routes/**/_layout.tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/solid/mock/routes',
+    root: '../../mock/hono-jsx/routes',
     ROUTES: ROUTES as any,
     PRESERVED: PRESERVED as any,
     LAYOUTS: LAYOUTS as any,
   })
 
+  app.showRoutes()
+
   it('Should return 200 response - /', async () => {
     const res = await app.request('/')
     expect(res.status).toBe(200)
     expect(await res.text()).toBe(
-      '<!doctype html><html><head><title>This is a title</title><meta name="description" content="This is a description" /></head><body><h1>Hello</h1></body></html>'
+      '<!doctype html><html><head><title>This is a title</title><meta name="description" content="This is a description"/></head><body><h1>Hello</h1></body></html>'
     )
   })
 
@@ -84,8 +84,9 @@ describe('With preserved', () => {
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
+    // hono/jsx escape a single quote to &#39;
     expect(await res.text()).toBe(
-      "<!doctype html><html><head><title>me</title></head><body><main><p>It's <!--#-->me<!--/--></p><b>My name is <!--#-->me<!--/--></b></main></body></html>"
+      '<!doctype html><html><head><title>me</title></head><body><main><p>It&#39;s me</p><b>My name is me</b></main></body></html>'
     )
   })
 
@@ -93,37 +94,18 @@ describe('With preserved', () => {
     const res = await app.request('/throw_error')
     expect(res.status).toBe(500)
     expect(await res.text()).toBe(
-      '<!doctype html><html><head></head><body><h1>Custom Error Message: <!--#-->Foo<!--/--></h1></body></html>'
-    )
-  })
-})
-
-describe('With islands', () => {
-  const ROUTES = import.meta.glob('/test-presets/solid/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
-    eager: true,
-  })
-
-  const app = createApp({
-    root: '/test-presets/solid/mock/routes',
-    ROUTES: ROUTES as any,
-  })
-
-  it('Should return 200 response - /with_island', async () => {
-    const res = await app.request('/with_island')
-    expect(res.status).toBe(200)
-    expect(await res.text()).toBe(
-      `<p><div component-name="Counter.tsx" data-serialized-props="{&quot;count&quot;:10}"><b>Count: <!--#-->10<!--/--></b></div></p>`
+      '<!doctype html><html><head></head><body><h1>Custom Error Message: Foo</h1></body></html>'
     )
   })
 })
 
 describe('API', () => {
-  const ROUES = import.meta.glob('/test-presets/solid/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+  const ROUES = import.meta.glob('../../mock/hono-jsx/routes//**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/solid/mock/routes',
+    root: '../../mock/hono-jsx/routes',
     ROUTES: ROUES as any,
   })
 
@@ -143,5 +125,29 @@ describe('API', () => {
       ok: true,
       message: 'created',
     })
+  })
+})
+
+describe('MDX', () => {
+  const ROUES = import.meta.glob('../../mock/hono-jsx/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)', {
+    eager: true,
+  })
+
+  const LAYOUTS = import.meta.glob('../../mock/hono-jsx/routes/_layout.tsx', {
+    eager: true,
+  })
+
+  const app = createApp({
+    root: '../../mock/hono-jsx/routes',
+    ROUTES: ROUES as any,
+    LAYOUTS: LAYOUTS as any,
+  })
+
+  it('Should return 200 response with MDX', async () => {
+    const res = await app.request('/post')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toBe(
+      '<!doctype html><html><head></head><body><h2>Hello MDX!</h2></body></html>'
+    )
   })
 })

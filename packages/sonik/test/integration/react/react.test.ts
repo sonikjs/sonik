@@ -1,17 +1,15 @@
+/* eslint-disable quotes */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from 'vitest'
-import { createApp } from '../../src'
+import { createApp } from '../../../src/presets/react'
 
 describe('Basic', () => {
-  const ROUTES = import.meta.glob(
-    '/test-presets/hono-jsx/mock/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)',
-    {
-      eager: true,
-    }
-  )
+  const ROUTES = import.meta.glob('../../mock/react/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
+    eager: true,
+  })
 
   const app = createApp({
-    root: '/test-presets/hono-jsx/mock/routes',
+    root: '../../mock/react/routes',
     ROUTES: ROUTES as any,
   })
 
@@ -29,8 +27,7 @@ describe('Basic', () => {
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
-    // hono/jsx escape a single quote to &#39;
-    expect(await res.text()).toBe('<p>It&#39;s me</p><b>My name is me</b>')
+    expect(await res.text()).toBe('<p>It&#x27;s <!-- -->me</p><b>My name is <!-- -->me</b>')
   })
 
   it('Should return 200 response /page', async () => {
@@ -47,29 +44,24 @@ describe('Basic', () => {
 })
 
 describe('With preserved', () => {
-  const ROUTES = import.meta.glob(
-    '/test-presets/hono-jsx/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)',
-    {
-      eager: true,
-    }
-  )
-
-  const PRESERVED = import.meta.glob('/test-presets/hono-jsx/mock/routes/(_error|_404).tsx', {
+  const ROUTES = import.meta.glob('../../mock/react/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
     eager: true,
   })
 
-  const LAYOUTS = import.meta.glob('/test-presets/hono-jsx/mock/routes/**/_layout.tsx', {
+  const PRESERVED = import.meta.glob('../../mock/react/routes/(_error|_404).tsx', {
+    eager: true,
+  })
+
+  const LAYOUTS = import.meta.glob('../../mock/react/routes/**/_layout.tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/hono-jsx/mock/routes',
+    root: '../../mock/react/routes',
     ROUTES: ROUTES as any,
     PRESERVED: PRESERVED as any,
     LAYOUTS: LAYOUTS as any,
   })
-
-  app.showRoutes()
 
   it('Should return 200 response - /', async () => {
     const res = await app.request('/')
@@ -90,9 +82,8 @@ describe('With preserved', () => {
   it('Should return 200 response /about/me', async () => {
     const res = await app.request('/about/me')
     expect(res.status).toBe(200)
-    // hono/jsx escape a single quote to &#39;
     expect(await res.text()).toBe(
-      '<!doctype html><html><head><title>me</title></head><body><main><p>It&#39;s me</p><b>My name is me</b></main></body></html>'
+      '<!doctype html><html><head><title>me</title></head><body><main><p>It&#x27;s <!-- -->me</p><b>My name is <!-- -->me</b></main></body></html>'
     )
   })
 
@@ -100,21 +91,37 @@ describe('With preserved', () => {
     const res = await app.request('/throw_error')
     expect(res.status).toBe(500)
     expect(await res.text()).toBe(
-      '<!doctype html><html><head></head><body><h1>Custom Error Message: Foo</h1></body></html>'
+      '<!doctype html><html><head></head><body><h1>Custom Error Message: <!-- -->Foo</h1></body></html>'
+    )
+  })
+})
+
+describe('With islands', () => {
+  const ROUTES = import.meta.glob('../../mock/react/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+    eager: true,
+  })
+
+  const app = createApp({
+    root: '../../mock/react/routes',
+    ROUTES: ROUTES as any,
+  })
+
+  it('Should return 200 response - /with_island', async () => {
+    const res = await app.request('/with_island')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toBe(
+      `<p><div component-name="Counter.tsx" data-serialized-props="{&quot;count&quot;:10}"><b>Count: <!-- -->10</b></div></p>`
     )
   })
 })
 
 describe('API', () => {
-  const ROUES = import.meta.glob(
-    '/test-presets/hono-jsx/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)',
-    {
-      eager: true,
-    }
-  )
+  const ROUES = import.meta.glob('../../mock/react/routes/**/[a-z[-][a-z-_[]*.(tsx|ts)', {
+    eager: true,
+  })
 
   const app = createApp({
-    root: '/test-presets/hono-jsx/mock/routes',
+    root: '../../mock/react/routes',
     ROUTES: ROUES as any,
   })
 
@@ -138,19 +145,16 @@ describe('API', () => {
 })
 
 describe('MDX', () => {
-  const ROUES = import.meta.glob(
-    '/test-presets/hono-jsx/mock/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)',
-    {
-      eager: true,
-    }
-  )
+  const ROUES = import.meta.glob('../../mock/react/routes/**/[a-z[-][a-z-_[]*.(tsx|mdx)', {
+    eager: true,
+  })
 
-  const LAYOUTS = import.meta.glob('/test-presets/hono-jsx/mock/routes/_layout.tsx', {
+  const LAYOUTS = import.meta.glob('../../mock/react/routes/_layout.tsx', {
     eager: true,
   })
 
   const app = createApp({
-    root: '/test-presets/hono-jsx/mock/routes',
+    root: '../../mock/react/routes',
     ROUTES: ROUES as any,
     LAYOUTS: LAYOUTS as any,
   })

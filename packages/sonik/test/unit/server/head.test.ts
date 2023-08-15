@@ -1,6 +1,6 @@
 import { jsx, Fragment } from 'hono/jsx'
 import { describe, it, expect, beforeEach } from 'vitest'
-import { Head } from './head'
+import { Head } from '../../../src/server/head'
 
 describe('Head', () => {
   let head: Head
