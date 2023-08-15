@@ -30,6 +30,7 @@ export function devServer(options: DevServerOptions): Plugin[] {
             if (
               passThough === false &&
               (req.url?.endsWith('.ts') ||
+                req.url?.endsWith('.tsx') ||
                 req.url?.startsWith('/app/') || // TODO: to be fixed
                 req.url?.startsWith('/@') ||
                 req.url?.startsWith('/static') ||

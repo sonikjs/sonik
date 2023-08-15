@@ -4,6 +4,8 @@ yarn-error.log
 package-lock.json
 *.tgz
 sandbox
+test-results
+playwright-report
 
 # yarn
 .yarn/*

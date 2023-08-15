@@ -7,14 +7,17 @@ type FileCallback = () => Promise<{ default: Promise<any> }>
 export type ClientOptions = {
   hydrate: Hydrate
   createElement: CreateElement
+  ISLAND_FILES?: Record<string, () => Promise<unknown>>
+  island_root?: string
 }
 
 export const createClient = async (options: ClientOptions) => {
-  const FILES = import.meta.glob('/app/islands/**/[a-zA-Z0-9[-]+.(tsx|ts)')
+  const FILES = options.ISLAND_FILES ?? import.meta.glob('/app/islands/**/[a-zA-Z0-9[-]+.(tsx|ts)')
+  const root = options.island_root ?? '/app/islands/'
 
   const hydrateComponent = async () => {
     const filePromises = Object.keys(FILES).map(async (filePath) => {
-      const componentName = filePath.replace(/.*\/app\/islands\//, '')
+      const componentName = filePath.replace(root, '')
       const elements = document.querySelectorAll(`[${COMPONENT_NAME}="${componentName}"]`)
       if (elements) {
         const elementPromises = Array.from(elements).map(async (element) => {
