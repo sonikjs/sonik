@@ -21,6 +21,7 @@ const ERROR_FILENAME = '_error.tsx'
 export type ServerOptions<E extends Env = Env> = {
   PRESERVED?: Record<string, PreservedFile>
   LAYOUTS?: Record<string, LayoutFile>
+  NESTED_LAYOUTS?: Record<string, LayoutFile>
   ROUTES?: Record<string, RouteFile>
   root?: string
   renderToString: RenderToString
@@ -37,6 +38,7 @@ type PreservedFile = { default: ErrorHandler | Handler }
 type ToWebOptions = {
   head: Head
   layouts?: string[]
+  nestedLayouts?: string[]
   filename: string
 }
 
@@ -67,7 +69,14 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       eager: true,
     })
 
+  const NESTED_LAYOUTS =
+    options.NESTED_LAYOUTS ??
+    import.meta.glob('/app/routes/**/__layout.tsx', {
+      eager: true,
+    })
+
   const layoutList = listByDirectory(LAYOUTS)
+  const nestedLayoutList = listByDirectory(NESTED_LAYOUTS)
 
   const ROUTES =
     options.ROUTES ??
@@ -84,28 +93,36 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
   const toWebResponse = async (
     res: string | Promise<string> | Node | Promise<Node> | Response | Promise<Response>,
     status: number = 200,
-    { layouts, head, filename }: ToWebOptions
+    { layouts, head, filename, nestedLayouts }: ToWebOptions
   ) => {
     if (res instanceof Promise) res = await res
     if (res instanceof Response) return res
 
-    if (layouts && layouts.length) {
-      layouts = layouts.sort((a, b) => {
+    if (nestedLayouts && nestedLayouts.length) {
+      nestedLayouts = nestedLayouts.sort((a, b) => {
         return b.split('/').length - a.split('/').length
       })
-      for (const path of layouts) {
-        const layout = LAYOUTS[path]
+      for (const path of nestedLayouts) {
+        const layout = NESTED_LAYOUTS[path]
         if (layout) {
           res = await layout.default({ children: res, head, filename })
         }
       }
-      const html = render(res)
-      return returnHtml(addDocType(html), status)
     }
 
-    const defaultLayout = LAYOUTS[root + '/_layout.tsx']
+    let defaultLayout: LayoutFile | undefined
+    if (layouts && layouts.length) {
+      layouts = layouts.sort((a, b) => {
+        return b.split('/').length - a.split('/').length
+      })
+      defaultLayout = LAYOUTS[layouts[0]]
+    }
+
+    defaultLayout ??= LAYOUTS[root + '/_layout.tsx']
+
     if (defaultLayout) {
-      const html = render(await defaultLayout.default({ children: res, head, filename }))
+      res = await defaultLayout.default({ children: res, head, filename })
+      const html = render(res)
       return returnHtml(addDocType(html), status)
     }
 
@@ -119,19 +136,33 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
     const subApp = new Hono()
 
     let layouts = layoutList[dir]
+    let nestedLayouts = nestedLayoutList[dir]
 
-    const getLayoutPaths = (paths: string[]) => {
-      layouts = layoutList[paths.join('/')]
-      if (!layouts) {
-        paths.pop()
-        if (paths.length) {
-          getLayoutPaths(paths)
-        }
-      }
-    }
+    const dirPaths = dir.split('/')
 
     if (!layouts) {
-      const dirPaths = dir.split('/')
+      const getLayoutPaths = (paths: string[]) => {
+        layouts = layoutList[paths.join('/')]
+        if (!layouts) {
+          paths.pop()
+          if (paths.length) {
+            getLayoutPaths(paths)
+          }
+        }
+      }
+      getLayoutPaths(dirPaths)
+    }
+
+    if (!nestedLayouts) {
+      const getLayoutPaths = (paths: string[]) => {
+        nestedLayouts = nestedLayoutList[paths.join('/')]
+        if (!nestedLayouts) {
+          paths.pop()
+          if (paths.length) {
+            getLayoutPaths(paths)
+          }
+        }
+      }
       getLayoutPaths(dirPaths)
     }
 
@@ -141,7 +172,8 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
 
       const path = filePathToPath(filename)
       const regExp = new RegExp(`^${root}`)
-      const rootPath = dir.replace(regExp, '')
+      let rootPath = dir.replace(regExp, '')
+      rootPath = filePathToPath(rootPath)
 
       // Instance of Hono
       if ('fetch' in routeDefault) {
@@ -162,6 +194,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
 
       const resOptions = {
         layouts,
+        nestedLayouts,
         head,
         filename,
       }

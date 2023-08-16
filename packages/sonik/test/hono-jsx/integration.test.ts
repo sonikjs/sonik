@@ -56,14 +56,17 @@ describe('With preserved', () => {
     eager: true,
   })
 
+  const NESTED_LAYOUTS = import.meta.glob('./app/routes/**/__layout.tsx', {
+    eager: true,
+  })
+
   const app = createApp({
     root: './app/routes',
     ROUTES: ROUTES as any,
     PRESERVED: PRESERVED as any,
     LAYOUTS: LAYOUTS as any,
+    NESTED_LAYOUTS: NESTED_LAYOUTS as any,
   })
-
-  app.showRoutes()
 
   it('Should return 200 response - /', async () => {
     const res = await app.request('/')
@@ -86,7 +89,16 @@ describe('With preserved', () => {
     expect(res.status).toBe(200)
     // hono/jsx escape a single quote to &#39;
     expect(await res.text()).toBe(
-      '<!doctype html><html><head><title>me</title></head><body><main><p>It&#39;s me</p><b>My name is me</b></main></body></html>'
+      '<!doctype html><html><head><head><title>me</title></head></head><body><h1>About</h1><p>It&#39;s me</p><b>My name is me</b></body></html>'
+    )
+  })
+
+  it('Should return 200 response /about/me/address', async () => {
+    const res = await app.request('/about/me/address')
+    expect(res.status).toBe(200)
+    // hono/jsx escape a single quote to &#39;
+    expect(await res.text()).toBe(
+      '<!doctype html><html><head><head><title>me&#39;s address</title></head></head><body><h1>About</h1><address><b>me&#39;s address</b></address></body></html>'
     )
   })
 
