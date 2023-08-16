@@ -56,11 +56,16 @@ describe('With preserved', () => {
     eager: true,
   })
 
+  const NESTED_LAYOUTS = import.meta.glob('./app/routes/**/__layout.tsx', {
+    eager: true,
+  })
+
   const app = createApp({
     root: './app/routes',
     ROUTES: ROUTES as any,
     PRESERVED: PRESERVED as any,
     LAYOUTS: LAYOUTS as any,
+    NESTED_LAYOUTS: NESTED_LAYOUTS as any,
   })
 
   it('Should return 200 response - /', async () => {
