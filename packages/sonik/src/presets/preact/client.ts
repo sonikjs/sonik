@@ -6,6 +6,6 @@ export const createClient = (options?: Omit<ClientOptions, 'createElement' | 'hy
   return baseCreateClient({
     hydrate,
     createElement,
-    ...options
+    ...options,
   })
 }

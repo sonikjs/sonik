@@ -1,11 +1,10 @@
 import type { Env } from 'hono'
 import { jsx, Fragment } from 'hono/jsx'
-import type { HtmlEscapedString } from 'hono/utils/html'
 import { createApp as baseCreateApp } from '../../server/index.js'
 import type { ServerOptions } from '../../server/server.js'
 import type * as types from '../../types.js'
 
-type Node = HtmlEscapedString
+type Node = JSX.Element
 
 export const createApp = <E extends Env = Env>(
   options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>

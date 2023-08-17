@@ -115,7 +115,7 @@ describe('With islands', () => {
     const res = await app.request('/with_island')
     expect(res.status).toBe(200)
     expect(await res.text()).toBe(
-      `<p><div component-name="Counter.tsx" data-serialized-props="{&quot;count&quot;:10}"><b>Count: <!-- -->10</b></div></p>`
+      `<p><div component-name="Counter.tsx" data-serialized-props="{&quot;initial&quot;:10}"><div><p>Count: <!-- -->10</p><button>Increment</button></div></div></p>`
     )
   })
 })
