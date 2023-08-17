@@ -48,10 +48,6 @@
       "types": "./dist/presets/react/client.d.ts",
       "import": "./dist/presets/react/client.js"
     },
-    "./react/sonikify": {
-      "types": "./dist/presets/react/sonikify.d.ts",
-      "import": "./dist/presets/react/sonikify.js"
-    },
     "./preact": {
       "types": "./dist/presets/preact/index.d.ts",
       "import": "./dist/presets/preact/index.js"
@@ -82,9 +78,6 @@
       ],
       "react/client": [
         "./dist/presets/react/client"
-      ],
-      "react/sonikify": [
-        "./dist/presets/react/sonikify"
       ],
       "preact": [
         "./dist/presets/preact"

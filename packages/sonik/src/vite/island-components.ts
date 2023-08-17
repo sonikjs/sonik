@@ -81,17 +81,6 @@ export const transformJsxTags = (contents: string, componentName: string) => {
 
   if (ast) {
     traverse(ast, {
-      // sonikify
-      CallExpression(path) {
-        if ('name' in path.node.callee && path.node.callee.name === 'sonikify') {
-          const args = path.node.arguments
-          args.push(stringLiteral(componentName))
-          const newCallExpression = callExpression(path.node.callee, args)
-          path.replaceWith(newCallExpression)
-          path.stop()
-        }
-      },
-
       ExportDefaultDeclaration(path) {
         if (path.node.declaration.type === 'FunctionDeclaration') {
           const functionId = path.node.declaration.id
