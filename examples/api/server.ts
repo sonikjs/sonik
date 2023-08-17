@@ -1,4 +1,4 @@
-import { createApp } from '../../packages/sonik/src'
+import { createApp } from 'sonik'
 
 const app = createApp()
 
