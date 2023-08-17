@@ -12,16 +12,17 @@ export default defineConfig({
   },
   projects: [
     {
+      retries: 2,
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
     {
+      retries: 2,
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-
     {
+      retries: 2,
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },

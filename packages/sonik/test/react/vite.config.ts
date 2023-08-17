@@ -6,6 +6,9 @@ export default defineConfig({
   ssr: {
     external: ['react', 'react-dom'],
   },
+  server: {
+    hmr: false,
+  },
   plugins: [
     sonik({
       entry: './app/server.ts',
