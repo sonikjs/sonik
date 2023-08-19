@@ -17,6 +17,7 @@
     "test:e2e": "run-s 'test:e2e:*'",
     "test:e2e:preact": "yarn playwright test -c test/preact/playwright.config.ts test/preact/e2e.test.ts",
     "test:e2e:react": "yarn playwright test -c test/react/playwright.config.ts test/react/e2e.test.ts",
+    "test:e2e:solid": "yarn playwright test -c test/solid/playwright.config.ts test/solid/e2e.test.ts",
     "test:all": "yarn test && yarn test:e2e",
     "build": "rimraf dist && tsup && publint",
     "watch": "tsup --watch",

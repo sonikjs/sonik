@@ -105,7 +105,11 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       for (const path of nestedLayouts) {
         const layout = NESTED_LAYOUTS[path]
         if (layout) {
-          res = await layout.default({ children: res, head, filename })
+          try {
+            res = await layout.default({ children: res, head, filename })
+          } catch (e) {
+            console.trace(e)
+          }
         }
       }
     }
@@ -121,7 +125,11 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
     defaultLayout ??= LAYOUTS[root + '/_layout.tsx']
 
     if (defaultLayout) {
-      res = await defaultLayout.default({ children: res, head, filename })
+      try {
+        res = await defaultLayout.default({ children: res, head, filename })
+      } catch (e) {
+        console.trace(e)
+      }
       const html = render(res)
       return returnHtml(addDocType(html), status)
     }
