@@ -51,10 +51,12 @@ export function devServer(options: DevServerOptions): Plugin[] {
               if (passThough) {
                 return new Response(null)
               }
-
               const response = await app.fetch(request)
-              return response
-              if (response.headers.get('content-type')?.match(/^text\/html/)) {
+              if (
+                // If the response is a streaming, it does not inject the script:
+                !response.headers.get('transfer-encoding')?.match('chunked') &&
+                response.headers.get('content-type')?.match(/^text\/html/)
+              ) {
                 const body =
                   (await response.text()) + '<script type="module" src="/@vite/client"></script>'
                 const headers = new Headers(response.headers)

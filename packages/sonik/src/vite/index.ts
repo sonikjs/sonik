@@ -24,7 +24,17 @@ function sonik(options: SonikOptions): PluginOption[] {
     plugins.push(islandComponents())
   }
 
-  plugins.push(devServer(options), build(options.build ?? {}))
+  plugins.push(
+    devServer(options),
+    build(
+      {
+        ssr: {
+          entry: options.entry,
+        },
+        ...options.build,
+      } ?? {}
+    )
+  )
   return plugins
 }
 
