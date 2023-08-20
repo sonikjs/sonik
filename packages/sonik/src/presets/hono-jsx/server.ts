@@ -7,7 +7,10 @@ import type * as types from '../../types.js'
 type Node = JSX.Element
 
 export const createApp = <E extends Env = Env>(
-  options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>
+  options?: Omit<
+    ServerOptions<E>,
+    'renderToString' | 'renderToReadableStream' | 'createElement' | 'fragment'
+  >
 ) => {
   return baseCreateApp<E>({
     renderToString: (node: Node) => node.toString(),

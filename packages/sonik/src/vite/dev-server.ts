@@ -53,6 +53,7 @@ export function devServer(options: DevServerOptions): Plugin[] {
               }
 
               const response = await app.fetch(request)
+              return response
               if (response.headers.get('content-type')?.match(/^text\/html/)) {
                 const body =
                   (await response.text()) + '<script type="module" src="/@vite/client"></script>'

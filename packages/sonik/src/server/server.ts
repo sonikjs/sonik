@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Env } from 'hono'
 import { Hono } from 'hono'
 import type {
@@ -9,6 +10,7 @@ import type {
   NotFoundHandler,
   Route,
   RenderToString,
+  RenderToReadableStream,
   CreateElement,
   FragmentType,
 } from '../types.js'
@@ -25,9 +27,11 @@ export type ServerOptions<E extends Env = Env> = {
   ROUTES?: Record<string, RouteFile>
   root?: string
   renderToString: RenderToString
+  renderToReadableStream?: RenderToReadableStream
   createElement: CreateElement
   fragment: FragmentType
   createHead?: () => Head
+  streaming?: boolean
   app?: Hono<E>
 }
 
@@ -45,14 +49,6 @@ type ToWebOptions = {
 const addDocType = (html: string) => {
   return `<!doctype html>${html}`
 }
-
-const returnHtml = (html: string, status: number = 200) =>
-  new Response(html, {
-    status: status,
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-    },
-  })
 
 export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => {
   const PRESERVED =
@@ -88,7 +84,31 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
 
   const root = options.root ?? '/app/routes'
 
-  const render = options.renderToString
+  const render =
+    options.streaming && options.renderToReadableStream
+      ? options.renderToReadableStream
+      : options.renderToString
+
+  const returnHtml = async (res: any, status: number) => {
+    const contentType = 'text/html; charset=utf-8'
+    if (typeof res === 'string') {
+      return new Response(res, {
+        status,
+        headers: {
+          'Content-Type': contentType,
+        },
+      })
+    } else {
+      return new Response(await res, {
+        status,
+        headers: {
+          'Transfer-Encoding': 'chunked',
+          'X-Content-Type-Options': 'nosniff',
+          'Content-Type': contentType,
+        },
+      })
+    }
+  }
 
   const toWebResponse = async (
     res: string | Promise<string> | Node | Promise<Node> | Response | Promise<Response>,
@@ -131,7 +151,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         console.trace(e)
       }
       const html = render(res)
-      return returnHtml(addDocType(html), status)
+      return returnHtml(typeof html === 'string' ? addDocType(html) : html, status)
     }
 
     const html = render(res)
