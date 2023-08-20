@@ -1,4 +1,5 @@
 // eslint-disable-next-line node/no-extraneous-import
+import { builtinModules } from 'module'
 import type { Plugin, UserConfig } from 'vite'
 
 export type BuildOptions = {
@@ -38,6 +39,7 @@ export function build(options: BuildOptions): Plugin {
           build: {
             ssr: options.ssr?.entry ?? './entry.ts',
             rollupOptions: {
+              external: [...builtinModules, /^node:/],
               input: options.ssr?.entry ?? './entry.ts',
               output: {
                 file: options.ssr?.outFile ?? undefined,

@@ -1,19 +1,48 @@
 import type { Env } from 'hono'
 import type { ReactNode } from 'react'
 import { Fragment, createElement } from 'react'
-import { renderToString, renderToReadableStream } from 'react-dom/server'
+import type { PipeableStream } from 'react-dom/server'
+import { renderToString, renderToReadableStream, renderToPipeableStream } from 'react-dom/server'
 import { createApp as baseCreateApp } from '../../server/index.js'
 import type { ServerOptions } from '../../server/server.js'
 import type * as types from '../../types.js'
 
 type Node = ReactNode
 
+async function convertPipeableToReadable(pipeableStream: PipeableStream) {
+  const { PassThrough } = await import('node:stream')
+
+  const passThrough = new PassThrough()
+
+  pipeableStream.pipe(passThrough)
+
+  return new ReadableStream({
+    start(controller) {
+      passThrough.on('data', (chunk) => {
+        controller.enqueue(chunk)
+      })
+
+      passThrough.on('end', () => {
+        controller.close()
+      })
+
+      passThrough.on('error', (error) => {
+        controller.error(error)
+      })
+    },
+  })
+}
+
 export const createApp = <E extends Env = Env>(
   options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>
 ) => {
   return baseCreateApp<E>({
     renderToString: renderToString,
-    renderToReadableStream: renderToReadableStream,
+    renderToReadableStream: (comp) => {
+      if (renderToReadableStream) return renderToReadableStream
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return convertPipeableToReadable(renderToPipeableStream(comp)) as any
+    },
     createElement: createElement,
     fragment: Fragment,
     ...options,
