@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [
     sonik({
       entry: './_worker.ts',
-      islands: true,
+      minify: true,
     }),
   ],
 })

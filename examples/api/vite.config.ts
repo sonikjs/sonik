@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [
     sonik({
       entry: './server.ts',
+      minify: true,
     }),
   ],
 })

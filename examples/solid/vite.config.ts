@@ -12,6 +12,7 @@ export default defineConfig({
     }),
     sonik({
       entry: './_worker.ts',
+      minify: true,
     }),
   ],
 })
