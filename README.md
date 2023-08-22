@@ -432,7 +432,7 @@ export default defineConfig({
 Deploy command:
 
 ```plain
-wrangler deploy --compatibility-date 2023-08-01 --minify ./dist/index.js
+wrangler deploy --compatibility-date 2023-08-01 --minify ./dist/index.js --name my-app
 ```
 
 ## Examples
