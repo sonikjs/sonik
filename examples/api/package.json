@@ -6,11 +6,11 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "deploy": "wrangler deploy --minify ./dist/server.js"
+    "deploy": "wrangler deploy --minify ./dist/index.js"
   },
   "dependencies": {
     "hono": "^3.4.3",
-    "sonik": "^0.0.60"
+    "sonik": "^0.0.61"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
