@@ -1,8 +1,8 @@
 # Sonik
 
-Sonik is a simple and fast -_supersonic_- meta framework for creating websites with Server-Side Rendering. It stands on the shoulders of giants and is built on [Hono](https://hono.dev), [Vite](https://vitejs.dev), and JSX-based UI libraries.
+Sonik is a simple and fast -_supersonic_- meta framework for creating websites with Server-Side Rendering. It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](https://vitejs.dev), and JSX-based UI libraries.
 
-**Note:** _Sonik is currently a work in progress. Don't use it in production. However, feel free to try it in your hobby project and give us your feedback!_
+**Note:** _Sonik is currently a work in progress. TThere will be breaking changes without any announcement. Don't use it in production. However, feel free to try it in your hobby project and give us your feedback!_
 
 ## Features
 
@@ -27,6 +27,8 @@ cd my-app
 ```
 
 ### Usage
+
+_By default, it can be deployed to Cloudflare Pages._
 
 npm:
 
@@ -73,22 +75,24 @@ cd solid-app
 
 Below is a typical project structure for a Sonik application with Islands.
 
-```js
+```plain
 .
-├── _worker.ts // server entry file
 ├── app
-│   ├── client.ts // client entry file
-│   ├── islands
-│   │   └── counter.tsx // island component enabled for hydration
-│   ├── routes
-│   │   ├── _404.tsx // not found page
-│   │   ├── _error.tsx // error page
-│   │   ├── _layout.tsx // layout template
-│   │   ├── about
-│   │   │   └── [name].tsx // matches `/about/:name`
-│   │   └── index.tsx // matches `/`
-│   └── style.css
+│   ├── client.ts // client entry file
+│   ├── islands
+│   │   └── counter.tsx // island component
+│   ├── routes
+│   │   ├── _404.tsx // not found page
+│   │   ├── _error.tsx // error page
+│   │   ├── _layout.tsx // layout template
+│   │   ├── about
+│   │   │   └── [name].tsx // matches `/about/:name`
+│   │   └── index.tsx // matches `/`
+│   ├── server.ts // server entry file
+│   └── style.css
 ├── package.json
+├── public
+│   └── favicon.ico
 ├── tsconfig.json
 └── vite.config.ts
 ```
@@ -97,45 +101,25 @@ Below is a typical project structure for a Sonik application with Islands.
 
 ### Server Entry File
 
-A server entry file is required. The file is specified in `vite.config.ts`:
-
-```ts
-// vite.config.ts
-import { defineConfig } from 'vite'
-import sonik from 'sonik/vite'
-
-export default defineConfig({
-  plugins: [
-    sonik({
-      entry: './_worker.ts', // <--- specify the entry file
-    }),
-  ],
-})
-```
-
-This file is first called by the Vite dev server during the development or build phase.
+A server entry file is required. The file is should be placed at `src/server.ts`.
+This file is first called by the Vite during the development or build phase.
 
 In the entry file, simply initialize your app using the `createApp()` function. `app` will be an instance of Hono, so you can utilize Hono's middleware and the `app.showRoutes()` feature.
 
 ```ts
-// _worker.ts
+// app/server.ts
 import { createApp } from 'sonik'
-import { serveStatic } from 'hono/cloudflare-pages'
 
 const app = createApp()
 
-app.use('/static/*', serveStatic())
-
 app.showRoutes()
 
-export default app // Suitable for Cloudflare Workers/Pages and Bun.
+export default app
 ```
-
-"Same as Hono" implies that it functions on any JavaScript runtime. In this example, by using `export default app`, it is tailored to work on Cloudflare Workers/Pages and Bun.
 
 ### Presets
 
-You can construct pages with the TSX syntax using your favorite UI framework. Presets for hono/jsx, Preact, React, and Solid are available.
+You can construct pages with the JSX syntax using your favorite UI framework. Presets for hono/jsx, Preact, React, and Solid are available.
 
 If you prefer to use the Preact presets, simply import from `sonik/preact`:
 
@@ -193,7 +177,9 @@ type Route = {
 }
 ```
 
-### Function component
+`Context` is a Hono's `Context` object.
+
+#### Function component
 
 Just return JSX function:
 
@@ -202,6 +188,27 @@ Just return JSX function:
 export default function Home() {
   return <h1>Welcome!</h1>
 }
+```
+
+### Creating API
+
+You can write the API endpoints in the same syntax as Hono.
+
+```ts
+// app/routes/about/index.ts
+import { Hono } from 'hono'
+
+const app = new Hono()
+
+// matches `/about/:name`
+app.get('/:name', (c) => {
+  const name = c.req.param('name')
+  return c.json({
+    'your name is': name,
+  })
+})
+
+export default app
 ```
 
 ### Reserved Files
@@ -350,21 +357,92 @@ export default defineConfig({
 
 Sonik supports SSR Streaming, which, as of now, is exclusively available for React with `Suspense`.
 
-To enable is, set the `streaming` as `true` in the `createApp()`:
+To enable is, set the `streaming` as `true` and pass the `renderToReadableString()` method in the `createApp()`:
 
 ```ts
+import { renderToReadableStream } from 'react-dom/server'
+
 const app = createApp({
   streaming: true,
+  renderToReadableStream: renderToReadableStream,
 })
 ```
 
 ## Deployment
 
-Since a Sonik instance is essentially a Hono instance, it can be deployed on any platform that Hono supports. For further information, consult [Hono's official website](https://hono.dev/).
+Since a Sonik instance is essentially a Hono instance, it can be deployed on any platform that Hono supports.
+
+The following adapters for deploying to the platforms are available in the Sonik package.
+
+### Cloudflare Pages
+
+Setup the `vite.config.ts`:
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import sonik from 'sonik/vite'
+import pages from 'sonik/cloudflare-pages'
+
+export default defineConfig({
+  plugins: [sonik(), pages()],
+})
+```
+
+Deploy with the following commands after build. Ensure you have [Wrangler](https://developers.cloudflare.com/workers/wrangler/) installed:
+
+```plain
+wrangler pages deploy ./dist
+```
+
+### Vercel
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import sonik from 'sonik/vite'
+import vercel from 'sonik/vercel'
+
+export default defineConfig({
+  plugins: [sonik(), vercel()],
+})
+```
+
+Ensure you have [Vercel CLI](https://vercel.com/docs/cli) installed.
+
+```plain
+vercel --prebuilt
+```
+
+### Cloudflare Workers
+
+_The Cloudflare Workers adapter supports the "server" only and does not support the "client"._
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import sonik from 'sonik/vite'
+import workers from 'sonik/cloudflare-workers'
+
+export default defineConfig({
+  plugins: [sonik(), workers()],
+})
+```
+
+Deploy command:
+
+```plain
+wrangler deploy --compatibility-date 2023-08-01 --minify ./dist/index.js
+```
 
 ## Examples
 
 - [Sonik Blog](https://github.com/yusukebe/sonik-blog)
+
+## Related projects
+
+- [Hono](https://hono.dev)
+- [Vite](https://vitejs.dev/)
 
 ## Authors
 
