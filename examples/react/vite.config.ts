@@ -1,14 +1,15 @@
 import sonik from 'sonik/vite'
 import { defineConfig } from 'vite'
+import pages from 'sonik/cloudflare-pages'
 
 export default defineConfig({
-  ssr: {
-    external: ['react', 'react-dom'],
+  define: {
+    'process.env': process.env,
   },
   plugins: [
     sonik({
-      entry: './_worker.ts',
       minify: true,
     }),
+    pages(),
   ],
 })
