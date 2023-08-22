@@ -389,6 +389,12 @@ export default defineConfig({
 })
 ```
 
+Build command (including a client):
+
+```plain
+vite build && vite build --mode client
+```
+
 Deploy with the following commands after build. Ensure you have [Wrangler](https://developers.cloudflare.com/workers/wrangler/) installed:
 
 ```plain
@@ -406,6 +412,12 @@ import vercel from 'sonik/vercel'
 export default defineConfig({
   plugins: [sonik(), vercel()],
 })
+```
+
+Build command (including a client):
+
+```plain
+vite build && vite build --mode client
 ```
 
 Ensure you have [Vercel CLI](https://vercel.com/docs/cli) installed.
@@ -427,6 +439,12 @@ import workers from 'sonik/cloudflare-workers'
 export default defineConfig({
   plugins: [sonik(), workers()],
 })
+```
+
+Build command:
+
+```plain
+vite build
 ```
 
 Deploy command:
