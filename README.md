@@ -2,7 +2,7 @@
 
 Sonik is a simple and fast -_supersonic_- meta framework for creating websites with Server-Side Rendering. It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](https://vitejs.dev), and JSX-based UI libraries.
 
-**Note:** _Sonik is currently a work in progress. TThere will be breaking changes without any announcement. Don't use it in production. However, feel free to try it in your hobby project and give us your feedback!_
+**Note:** _Sonik is currently a work in progress. There will be breaking changes without any announcement. Don't use it in production. However, feel free to try it in your hobby project and give us your feedback!_
 
 ## Features
 
