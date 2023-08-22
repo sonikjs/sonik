@@ -1,6 +1,10 @@
-import type { Plugin, UserConfig } from 'vite'
 import { builtinModules } from 'module'
-import path from 'path'
+import path from 'node:path'
+import { fileURLToPath } from 'url'
+import type { Plugin, UserConfig } from 'vite'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const entry = path.join(__dirname, 'entry', '_worker.js')
 
@@ -15,21 +19,21 @@ const plugin = (): Plugin => {
               entry: './app/client.ts',
               formats: ['es'],
               fileName: 'client',
-              name: 'client'
+              name: 'client',
             },
             rollupOptions: {
               output: {
-                dir: './dist/static'
-              }
+                dir: './dist/static',
+              },
             },
-            copyPublicDir: false
-          }
+            copyPublicDir: false,
+          },
         }
       } else {
         return {
           ssr: {
             external: ['react', 'react-dom', 'solid-js', 'solid-js/web'],
-            noExternal: true
+            noExternal: true,
           },
           build: {
             emptyOutDir: true,
@@ -38,13 +42,13 @@ const plugin = (): Plugin => {
               external: [...builtinModules, /^node:/],
               input: entry,
               output: {
-                dir: './dist'
-              }
-            }
-          }
+                dir: './dist',
+              },
+            },
+          },
         }
       }
-    }
+    },
   }
 }
 

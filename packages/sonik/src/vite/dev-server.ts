@@ -8,7 +8,7 @@ export type DevServerOptions = {
   passThrough?: string[]
 }
 
-export function devServer(options: DevServerOptions): Plugin[] {
+export function devServer(options?: DevServerOptions): Plugin[] {
   const plugins: Plugin[] = [
     {
       name: 'sonik-dev-server',
@@ -39,11 +39,11 @@ export function devServer(options: DevServerOptions): Plugin[] {
               return next()
             }
 
-            const appModule = await server.ssrLoadModule(options.entry ?? './app/server.ts')
+            const appModule = await server.ssrLoadModule(options?.entry ?? './app/server.ts')
             const app = appModule['default']
 
             if (!app) {
-              console.error(`Failed to find a named export "default" from ${options.entry}`)
+              console.error(`Failed to find a named export "default" from ${options?.entry}`)
               return next()
             }
 

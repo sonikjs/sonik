@@ -1,7 +1,7 @@
 import type { JSX } from 'solid-js'
 import { createComponent, ssr } from 'solid-js/web'
 import { Head as BaseHead } from '../../server/head'
-import { escape, createTagString } from '../../utils/html'
+import { escape, createTagString } from '../../server/utils/html'
 
 export class Head extends BaseHead {
   constructor() {

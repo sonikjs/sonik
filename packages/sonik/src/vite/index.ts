@@ -10,17 +10,17 @@ type SonikOptions = {
   islands?: boolean
 } & DevServerOptions
 
-function sonik(options: SonikOptions): PluginOption[] {
+function sonik(options?: SonikOptions): PluginOption[] {
   const plugins: PluginOption[] = []
 
-  if (options.minify === true) {
+  if (options?.minify === true) {
     plugins.push(minifyEs())
   }
-  if (options.islands !== false) {
+  if (options?.islands !== false) {
     plugins.push(islandComponents())
   }
 
-  plugins.push(devServer(options))
+  plugins.push(devServer(options ?? {}))
   return plugins
 }
 
