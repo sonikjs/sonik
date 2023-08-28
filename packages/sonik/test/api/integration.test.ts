@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from 'vitest'
 import { createApp } from '../../src'
 
@@ -9,10 +8,42 @@ describe('Basic', () => {
 
   const app = createApp({
     root: './app/routes',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ROUTES: ROUTES as any,
   })
 
-  app.showRoutes()
+  it('Should have correct routes', () => {
+    const routes = [
+      {
+        path: '/about/:name',
+        method: 'GET',
+        handler: expect.anything(),
+      },
+      {
+        path: '/about/:name/address',
+        method: 'GET',
+        handler: expect.anything(),
+      },
+      { path: '/', method: 'GET', handler: expect.anything() },
+      { path: '/foo', method: 'GET', handler: expect.anything() },
+      {
+        path: '/middleware/*',
+        method: 'ALL',
+        handler: expect.anything(),
+      },
+      {
+        path: '/middleware',
+        method: 'GET',
+        handler: expect.anything(),
+      },
+      {
+        path: '/middleware/foo',
+        method: 'GET',
+        handler: expect.anything(),
+      },
+    ]
+    expect(app.routes).toEqual(routes)
+  })
 
   it('Should return 200 response - /', async () => {
     const res = await app.request('/')

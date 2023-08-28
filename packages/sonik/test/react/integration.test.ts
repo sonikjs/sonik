@@ -1,6 +1,6 @@
 /* eslint-disable quotes */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { createApp } from '../../src/presets/react'
 
 describe('Basic', () => {
@@ -11,6 +11,36 @@ describe('Basic', () => {
   const app = createApp({
     root: './app/routes',
     ROUTES: ROUTES as any,
+  })
+
+  it('Should have correct routes', () => {
+    const routes = [
+      {
+        path: '/about/:name',
+        method: 'GET',
+        handler: expect.anything(),
+      },
+      { path: '/api', method: 'GET', handler: expect.anything() },
+      { path: '/api', method: 'POST', handler: expect.anything() },
+      { path: '/', method: 'GET', handler: expect.anything() },
+      { path: '/page', method: 'GET', handler: expect.anything() },
+      {
+        path: '/throw_error',
+        method: 'GET',
+        handler: expect.anything(),
+      },
+      {
+        path: '/with_island',
+        method: 'GET',
+        handler: expect.anything(),
+      },
+      {
+        path: '/interaction',
+        method: 'GET',
+        handler: expect.anything(),
+      },
+    ]
+    expect(app.routes).toEqual(routes)
   })
 
   it('Should return 200 response - /', async () => {
@@ -37,6 +67,7 @@ describe('Basic', () => {
   })
 
   it('Should return 500 response /throw_error', async () => {
+    global.console.trace = vi.fn()
     const res = await app.request('/throw_error')
     expect(res.status).toBe(500)
     expect(await res.text()).toBe('Internal Server Error')

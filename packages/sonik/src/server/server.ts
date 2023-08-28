@@ -194,19 +194,19 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       getLayoutPaths(dirPaths)
     }
 
+    const regExp = new RegExp(`^${root}`)
+    let rootPath = dir.replace(regExp, '')
+    rootPath = filePathToPath(rootPath)
+
     for (const [filename, route] of Object.entries(content)) {
       const routeDefault = route.default
       if (!routeDefault) continue
 
       const path = filePathToPath(filename)
-      const regExp = new RegExp(`^${root}`)
-      let rootPath = dir.replace(regExp, '')
-      rootPath = filePathToPath(rootPath)
 
       // Instance of Hono
       if ('fetch' in routeDefault) {
         subApp.route(path, routeDefault)
-        app.route(rootPath, subApp)
         continue
       }
 
@@ -273,9 +273,8 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
           }
         }
       }
-
-      app.route(rootPath, subApp)
     }
+    app.route(rootPath, subApp)
   }
 
   let head: Head
