@@ -14,8 +14,8 @@ import type {
   CreateElement,
   FragmentType,
 } from '../types.js'
+import { filePathToPath, groupByDirectory, listByDirectory } from '../utils/file.js'
 import { Head } from './head.js'
-import { filePathToPath, groupByDirectory, listByDirectory } from './utils/file.js'
 
 const NOTFOUND_FILENAME = '_404.tsx'
 const ERROR_FILENAME = '_error.tsx'

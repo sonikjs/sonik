@@ -2,19 +2,21 @@
   "name": "sonik-monorepo",
   "version": "0.0.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "license": "MIT",
+  "engines": {
+    "node": ">=18.14.1",
+    "pnpm": ">=8.7.0"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "eslint": "^8.42.0",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^8.10.0",
     "eslint-define-config": "^1.20.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
-    "prettier": "^2.8.8"
-  },
-  "packageManager": "yarn@3.6.1"
+    "prettier": "^2.8.8",
+    "publint": "^0.1.12",
+    "@playwright/test": "^1.37.0"
+  }
 }
