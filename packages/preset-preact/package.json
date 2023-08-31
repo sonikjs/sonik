@@ -11,7 +11,7 @@
     "test:all": "pnpm test && pnpm test:e2e",
     "build": "rimraf dist && tsup && publint",
     "prepublishOnly": "pnpm run build && pnpm run test",
-    "release": "bumpp --tag \"@sonikjs/preact@v%s\" && pnpm publish"
+    "release": "bumpp --tag \"@sonikjs/preact@v%s\" --commit \"chore(preact): release v%s\" && pnpm publish"
   },
   "files": [
     "dist"

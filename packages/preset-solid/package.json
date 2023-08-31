@@ -11,7 +11,7 @@
     "test:all": "pnpm test && pnpm test:e2e",
     "build": "rimraf dist && tsup && publint",
     "prepublishOnly": "pnpm run build",
-    "release": "bumpp --tag \"@sonikjs/solid@v%s\" && pnpm publish"
+    "release": "bumpp --tag \"@sonikjs/solid@v%s\" --commit \"chore(solid): release v%s\" && pnpm publish"
   },
   "files": [
     "dist"
