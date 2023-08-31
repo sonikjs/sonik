@@ -15,7 +15,7 @@
     "watch": "tsup --watch",
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
-    "release": "pnpm run build && pnpm run test:all && cp ../../README.md ./ && release-it && rm ./README.md"
+    "release": "pnpm run build && pnpm run test && cp ../../README.md ./ && release-it && rm ./README.md"
   },
   "files": [
     "dist"
