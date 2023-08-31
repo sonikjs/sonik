@@ -1,6 +1,6 @@
-import { definedRoute } from '../../../src'
+import type { Route } from '../../../src'
 
-export default definedRoute({
+export default {
   APP: (app) => {
     app.get((c) => {
       c.header('X-Custom', 'Hello')
@@ -18,4 +18,4 @@ export default definedRoute({
       )
     })
   },
-})
+} satisfies Route

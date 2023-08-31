@@ -1,6 +1,6 @@
-import { definedRoute } from '../../../src'
+import type { Route } from '../../../src'
 
-export default definedRoute({
+export default {
   GET: (_, { head }) => {
     head.set({
       title: 'This is a title',
@@ -8,4 +8,4 @@ export default definedRoute({
     })
     return <h1>Hello</h1>
   },
-})
+} satisfies Route
