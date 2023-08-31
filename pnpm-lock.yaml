@@ -91,9 +91,6 @@ importers:
 
   packages/preset-preact:
     dependencies:
-      hono:
-        specifier: ^3.5.6
-        version: 3.5.6
       preact:
         specifier: ^10.17.1
         version: 10.17.1
@@ -113,6 +110,9 @@ importers:
       bumpp:
         specifier: ^9.2.0
         version: 9.2.0
+      hono:
+        specifier: ^3.5.6
+        version: 3.5.6
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -131,9 +131,6 @@ importers:
 
   packages/preset-react:
     dependencies:
-      hono:
-        specifier: ^3.5.6
-        version: 3.5.6
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -153,6 +150,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.7
         version: 18.2.7
+      hono:
+        specifier: ^3.5.6
+        version: 3.5.6
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -171,9 +171,6 @@ importers:
 
   packages/preset-solid:
     dependencies:
-      hono:
-        specifier: ^3.5.6
-        version: 3.5.6
       solid-js:
         specifier: ^1.7.11
         version: 1.7.11
@@ -184,6 +181,9 @@ importers:
       '@playwright/test':
         specifier: ^1.37.1
         version: 1.37.1
+      hono:
+        specifier: ^3.5.6
+        version: 3.5.6
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -3444,6 +3444,7 @@ packages:
   /hono@3.5.6:
     resolution: {integrity: sha512-ycTOpIZJ6yLbjzoE+ojsesC7G7ZXfGSoCIDyvqmzlHc5Mk4Aj48Ed9R5g7gw3v7rOkS81pjcYIvWef/karq1iA==}
     engines: {node: '>=16.0.0'}
+    dev: true
 
   /hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}

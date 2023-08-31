@@ -37,6 +37,7 @@
     "@playwright/test": "^1.37.1",
     "@preact/preset-vite": "^2.5.0",
     "bumpp": "^9.2.0",
+    "hono": "^3.5.6",
     "rimraf": "^5.0.1",
     "sonik": "workspace:*",
     "tsup": "^7.2.0",
@@ -44,7 +45,6 @@
     "vitest": "^0.31.4"
   },
   "dependencies": {
-    "hono": "^3.5.6",
     "preact": "^10.17.1",
     "preact-render-to-string": "^6.2.1"
   }
