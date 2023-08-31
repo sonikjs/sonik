@@ -41,6 +41,9 @@ importers:
 
   packages/adapter-cloudflare-pages:
     devDependencies:
+      bumpp:
+        specifier: ^9.2.0
+        version: 9.2.0
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1

@@ -7,7 +7,9 @@
   "type": "module",
   "scripts": {
     "build:entry": "tsup --no-config --format esm --external /app/server -d dist/entry ./src/entry/_worker.js",
-    "build": "rimraf dist && tsup && pnpm build:entry && publint"
+    "build": "rimraf dist && tsup && pnpm build:entry && publint",
+    "prepublishOnly": "pnpm run build && pnpm run test",
+    "release": "bumpp --tag \"@sonikjs/cloudflare-pages@v%s\" && pnpm publish"
   },
   "files": [
     "dist"
@@ -18,6 +20,9 @@
       "import": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Yusuke Wada <yusuke@kamawada.com> (https://github.com/yusukebe)",
   "license": "MIT",
   "repository": {
@@ -26,6 +31,7 @@
   },
   "homepage": "https://github.com/yusukebe/sonik",
   "devDependencies": {
+    "bumpp": "^9.2.0",
     "rimraf": "^5.0.1",
     "sonik": "workspace:*",
     "tsup": "^7.2.0",
