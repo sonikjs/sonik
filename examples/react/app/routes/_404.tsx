@@ -1,4 +1,4 @@
-import type { Handler } from 'sonik/react'
+import type { Handler } from '@sonikjs/react'
 
 const handler: Handler = () => {
   return <p>Not Found</p>

@@ -9,13 +9,15 @@
     "deploy": "wrangler pages deploy ./dist"
   },
   "dependencies": {
-    "hono": "^3.3.4",
+    "@sonikjs/react": "^0.0.1",
+    "hono": "^3.5.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sonik": "^0.0.62"
+    "sonik": "^0.0.63"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
+    "@sonikjs/cloudflare-pages": "^0.0.1",
     "vite": "^4.4.6",
     "wrangler": "^3.4.0"
   }

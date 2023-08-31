@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import sonik from 'sonik/vite'
-import workers from 'sonik/cloudflare-workers'
+import workers from '@sonikjs/cloudflare-workers'
 
 export default defineConfig({
   plugins: [sonik(), workers()],

@@ -1,4 +1,4 @@
-import { createClient } from 'sonik/react/client'
+import { createClient } from '@sonikjs/react/client'
 import './style.css'
 
 createClient()

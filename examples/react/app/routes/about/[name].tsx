@@ -1,4 +1,4 @@
-import type { Route } from 'sonik/react'
+import type { Route } from '@sonikjs/react'
 
 export default {
   GET: (c, { head }) => {

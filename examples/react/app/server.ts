@@ -1,4 +1,4 @@
-import { createApp } from 'sonik/react'
+import { createApp } from '@sonikjs/react'
 
 const app = createApp()
 

@@ -1,4 +1,4 @@
-import type { LayoutHandler } from 'sonik/react'
+import type { LayoutHandler } from '@sonikjs/react'
 
 const handler: LayoutHandler = ({ children, head }) => {
   return (

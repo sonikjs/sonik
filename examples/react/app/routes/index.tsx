@@ -1,4 +1,4 @@
-import type { Route } from 'sonik/react'
+import type { Route } from '@sonikjs/react'
 import Counter from '../islands/counter'
 
 export default {

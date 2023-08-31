@@ -10,9 +10,10 @@
   },
   "dependencies": {
     "hono": "^3.3.4",
-    "sonik": "^0.0.62"
+    "sonik": "^0.0.63"
   },
   "devDependencies": {
+    "@sonikjs/cloudflare-pages": "^0.0.1",
     "@cloudflare/workers-types": "^4.20230518.0",
     "vite": "^4.4.6",
     "wrangler": "^3.4.0"
