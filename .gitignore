@@ -1,16 +1,11 @@
 node_modules
 dist
-yarn-error.log
 package-lock.json
 *.tgz
 sandbox
 test-results
 playwright-report
 
-# yarn
 .yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+yarn.lock
+yarn-error.log
