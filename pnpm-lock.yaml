@@ -39,6 +39,51 @@ importers:
         specifier: ^0.1.12
         version: 0.1.16
 
+  packages/adapter-cloudflare-pages:
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
+      sonik:
+        specifier: workspace:*
+        version: link:../sonik
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(typescript@5.0.4)
+      vite:
+        specifier: ^4.4.9
+        version: 4.4.9(@types/node@20.5.7)
+
+  packages/adapter-cloudflare-workers:
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
+      sonik:
+        specifier: workspace:*
+        version: link:../sonik
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(typescript@5.0.4)
+      vite:
+        specifier: ^4.4.9
+        version: 4.4.9(@types/node@20.5.7)
+
+  packages/adapter-vercel:
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
+      sonik:
+        specifier: workspace:*
+        version: link:../sonik
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(typescript@5.0.4)
+      vite:
+        specifier: ^4.4.9
+        version: 4.4.9(@types/node@20.5.7)
+
   packages/create-sonik: {}
 
   packages/preset-preact:
@@ -62,6 +107,9 @@ importers:
       '@preact/preset-vite':
         specifier: ^2.5.0
         version: 2.5.0(@babel/core@7.22.11)(preact@10.17.1)(vite@4.4.9)
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
       sonik:
         specifier: workspace:*
         version: link:../sonik
@@ -99,6 +147,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.7
         version: 18.2.7
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
       sonik:
         specifier: workspace:*
         version: link:../sonik
@@ -127,12 +178,15 @@ importers:
       '@playwright/test':
         specifier: ^1.37.1
         version: 1.37.1
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
       sonik:
         specifier: workspace:*
         version: link:../sonik
       tsup:
         specifier: ^7.2.0
-        version: 7.2.0
+        version: 7.2.0(typescript@5.0.4)
       vite:
         specifier: ^4.4.9
         version: 4.4.9(@types/node@20.5.7)
@@ -141,7 +195,7 @@ importers:
         version: 2.7.0(solid-js@1.7.11)(vite@4.4.9)
       vitest:
         specifier: ^0.31.4
-        version: 0.31.4
+        version: 0.31.4(jsdom@22.1.0)
 
   packages/sonik:
     dependencies:
@@ -6053,41 +6107,6 @@ packages:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: true
 
-  /tsup@7.2.0:
-    resolution: {integrity: sha512-vDHlczXbgUvY3rWvqFEbSqmC1L7woozbzngMqTtL2PGBODTtWlRwGDDawhvWzr5c1QjKe4OAKqJGfE1xeXUvtQ==}
-    engines: {node: '>=16.14'}
-    hasBin: true
-    peerDependencies:
-      '@swc/core': ^1
-      postcss: ^8.4.12
-      typescript: '>=4.1.0'
-    peerDependenciesMeta:
-      '@swc/core':
-        optional: true
-      postcss:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      bundle-require: 4.0.1(esbuild@0.18.20)
-      cac: 6.7.14
-      chokidar: 3.5.3
-      debug: 4.3.4
-      esbuild: 0.18.20
-      execa: 5.1.1
-      globby: 11.1.0
-      joycon: 3.1.1
-      postcss-load-config: 4.0.1
-      resolve-from: 5.0.0
-      rollup: 3.28.1
-      source-map: 0.8.0-beta.0
-      sucrase: 3.34.0
-      tree-kill: 1.2.2
-    transitivePeerDependencies:
-      - supports-color
-      - ts-node
-    dev: true
-
   /tsup@7.2.0(typescript@5.0.4):
     resolution: {integrity: sha512-vDHlczXbgUvY3rWvqFEbSqmC1L7woozbzngMqTtL2PGBODTtWlRwGDDawhvWzr5c1QjKe4OAKqJGfE1xeXUvtQ==}
     engines: {node: '>=16.14'}
@@ -6484,72 +6503,6 @@ packages:
         optional: true
     dependencies:
       vite: 4.4.9(@types/node@20.5.7)
-    dev: true
-
-  /vitest@0.31.4:
-    resolution: {integrity: sha512-GoV0VQPmWrUFOZSg3RpQAPN+LPmHg2/gxlMNJlyxJihkz6qReHDV6b0pPDcqFLNEPya4tWJ1pgwUNP9MLmUfvQ==}
-    engines: {node: '>=v14.18.0'}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@vitest/browser': '*'
-      '@vitest/ui': '*'
-      happy-dom: '*'
-      jsdom: '*'
-      playwright: '*'
-      safaridriver: '*'
-      webdriverio: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-      playwright:
-        optional: true
-      safaridriver:
-        optional: true
-      webdriverio:
-        optional: true
-    dependencies:
-      '@types/chai': 4.3.5
-      '@types/chai-subset': 1.3.3
-      '@types/node': 20.5.7
-      '@vitest/expect': 0.31.4
-      '@vitest/runner': 0.31.4
-      '@vitest/snapshot': 0.31.4
-      '@vitest/spy': 0.31.4
-      '@vitest/utils': 0.31.4
-      acorn: 8.10.0
-      acorn-walk: 8.2.0
-      cac: 6.7.14
-      chai: 4.3.8
-      concordance: 5.0.4
-      debug: 4.3.4
-      local-pkg: 0.4.3
-      magic-string: 0.30.3
-      pathe: 1.1.1
-      picocolors: 1.0.0
-      std-env: 3.4.3
-      strip-literal: 1.3.0
-      tinybench: 2.5.0
-      tinypool: 0.5.0
-      vite: 4.4.9(@types/node@20.5.7)
-      vite-node: 0.31.4(@types/node@20.5.7)
-      why-is-node-running: 2.2.2
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
     dev: true
 
   /vitest@0.31.4(jsdom@22.1.0):

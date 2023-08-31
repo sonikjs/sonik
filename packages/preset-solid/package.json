@@ -30,6 +30,7 @@
   "devDependencies": {
     "@mdx-js/rollup": "^2.3.0",
     "@playwright/test": "^1.37.1",
+    "rimraf": "^5.0.1",
     "sonik": "workspace:*",
     "tsup": "^7.2.0",
     "vite": "^4.4.9",

@@ -44,10 +44,6 @@
     "./vite": {
       "types": "./dist/vite/index.d.ts",
       "import": "./dist/vite/index.js"
-    },
-    "./vercel": {
-      "types": "./dist/vite/adapter/vercel/index.d.ts",
-      "import": "./dist/vite/adapter/vercel/index.js"
     }
   },
   "typesVersions": {
@@ -66,9 +62,6 @@
       ],
       "vite": [
         "./dist/vite"
-      ],
-      "vercel": [
-        "./dist/vite/adapter/vercel"
       ]
     }
   },

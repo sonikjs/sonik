@@ -3,7 +3,7 @@ import { builtinModules } from 'module'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import type { Plugin, UserConfig } from 'vite'
-import { copyDirectory } from '../../utils/file.js'
+import { copyDirectory } from './utils/file'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
