@@ -9,7 +9,7 @@
     "deploy": "wrangler pages deploy ./dist"
   },
   "dependencies": {
-    "@sonikjs/react": "^0.0.1",
+    "@sonikjs/react": "^0.0.2",
     "hono": "^3.5.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
