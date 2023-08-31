@@ -49,10 +49,6 @@
       "types": "./dist/vite/adapter/cloudflare-pages/index.d.ts",
       "import": "./dist/vite/adapter/cloudflare-pages/index.js"
     },
-    "./cloudflare-workers": {
-      "types": "./dist/vite/adapter/cloudflare-workers/index.d.ts",
-      "import": "./dist/vite/adapter/cloudflare-workers/index.js"
-    },
     "./vercel": {
       "types": "./dist/vite/adapter/vercel/index.d.ts",
       "import": "./dist/vite/adapter/vercel/index.js"
@@ -77,9 +73,6 @@
       ],
       "cloudflare-pages": [
         "./dist/vite/adapter/cloudflare-pages"
-      ],
-      "cloudflare-workers": [
-        "./dist/vite/adapter/cloudflare-workers"
       ],
       "vercel": [
         "./dist/vite/adapter/vercel"
