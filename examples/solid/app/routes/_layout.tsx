@@ -1,4 +1,4 @@
-import type { LayoutHandler } from 'sonik/solid'
+import type { LayoutHandler } from '@sonikjs/solid'
 import { HydrationScript } from 'solid-js/web'
 
 const handler: LayoutHandler = ({ children, head }) => {

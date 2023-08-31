@@ -1,4 +1,4 @@
-import { createClient } from 'sonik/solid/client'
+import { createClient } from '@sonikjs/solid/client'
 import './style.css'
 
 createClient()
