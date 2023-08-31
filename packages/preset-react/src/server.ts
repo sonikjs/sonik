@@ -25,4 +25,3 @@ export type ErrorHandler<E extends Env = Env> = types.ErrorHandler<E, Node>
 export type LayoutHandler = types.LayoutHandler<Node>
 export type FC<E extends Env = Env> = types.FC<E, Node>
 export type Route<E extends Env = Env> = types.Route<E, Node>
-export const definedRoute = <E extends Env = Env>(route: Route<E>) => route
