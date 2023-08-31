@@ -1,7 +1,7 @@
-import type { Route } from '../../../../src'
+import { definedRoute } from '../../../../src'
 import Badge from '../../components/Badge'
 
-export default {
+export default definedRoute({
   GET: (c, { head }) => {
     const { name } = c.req.param()
     head.set({ title: name })
@@ -12,4 +12,4 @@ export default {
       </>
     )
   },
-} satisfies Route
+})
