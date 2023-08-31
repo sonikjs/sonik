@@ -8,7 +8,7 @@
   "scripts": {
     "build:entry": "tsup --no-config --format esm --external /app/server -d dist/entry ./src/entry/_worker.js",
     "build": "rimraf dist && tsup && pnpm build:entry && publint",
-    "prepublishOnly": "pnpm run build && pnpm run test",
+    "prepublishOnly": "pnpm run build",
     "release": "bumpp --tag \"@sonikjs/cloudflare-pages@v%s\" && pnpm publish"
   },
   "files": [
