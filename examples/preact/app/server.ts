@@ -1,4 +1,4 @@
-import { createApp } from 'sonik/preact'
+import { createApp } from '@sonikjs/preact'
 
 const app = createApp()
 
