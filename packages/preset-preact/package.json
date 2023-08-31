@@ -9,7 +9,9 @@
     "test": "vitest -c ./test/integration/vitest.config.ts --run ./test/integration",
     "test:e2e": "playwright test -c test/e2e/playwright.config.ts test/e2e/e2e.test.ts",
     "test:all": "pnpm test && pnpm test:e2e",
-    "build": "rimraf dist && tsup && publint"
+    "build": "rimraf dist && tsup && publint",
+    "prepublishOnly": "pnpm run build && pnpm run test",
+    "release": "bumpp && pnpm publish"
   },
   "files": [
     "dist"
@@ -31,6 +33,7 @@
     "@mdx-js/rollup": "^2.3.0",
     "@playwright/test": "^1.37.1",
     "@preact/preset-vite": "^2.5.0",
+    "bumpp": "^9.2.0",
     "rimraf": "^5.0.1",
     "sonik": "workspace:*",
     "tsup": "^7.2.0",
