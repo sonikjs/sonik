@@ -7,7 +7,9 @@
   "type": "module",
   "scripts": {
     "build:entry": "tsup --no-config --format esm --external /app/server -d dist/entry ./src/entry/index.js",
-    "build": "rimraf dist && tsup && pnpm build:entry && publint"
+    "build": "rimraf dist && tsup && pnpm build:entry && publint",
+    "prepublishOnly": "pnpm run build",
+    "release": "bumpp --tag \"@sonikjs/cloudflare-workers@v%s\" && pnpm publish"
   },
   "files": [
     "dist"
@@ -17,6 +19,9 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Yusuke Wada <yusuke@kamawada.com> (https://github.com/yusukebe)",
   "license": "MIT",

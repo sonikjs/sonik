@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@sonikjs/cloudflare-pages": "^0.0.1",
-    "@sonikjs/preact": "^0.0.2",
+    "@sonikjs/preact": "^0.0.3",
     "hono": "^3.5.6",
     "preact": "^10.17.1",
     "preact-render-to-string": "^6.2.1",
-    "sonik": "^0.0.62"
+    "sonik": "^0.0.63"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

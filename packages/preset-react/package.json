@@ -9,7 +9,9 @@
     "test": "vitest -c ./test/integration/vitest.config.ts --run ./test/integration",
     "test:e2e": "playwright test -c test/e2e/playwright.config.ts test/e2e/e2e.test.ts",
     "test:all": "pnpm test && pnpm test:e2e",
-    "build": "rimraf dist && tsup && publint"
+    "build": "rimraf dist && tsup && publint",
+    "prepublishOnly": "pnpm run build",
+    "release": "bumpp --tag \"@sonikjs/react@v%s\" && pnpm publish"
   },
   "files": [
     "dist"
@@ -19,6 +21,9 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Yusuke Wada <yusuke@kamawada.com> (https://github.com/yusukebe)",
   "license": "MIT",

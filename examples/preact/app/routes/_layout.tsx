@@ -1,4 +1,4 @@
-import type { LayoutHandler } from 'sonik/preact'
+import type { LayoutHandler } from '@sonikjs/preact'
 
 const handler: LayoutHandler = ({ children, head }) => {
   return (
