@@ -59,6 +59,9 @@ importers:
 
   packages/adapter-cloudflare-workers:
     devDependencies:
+      bumpp:
+        specifier: ^9.2.0
+        version: 9.2.0
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -74,6 +77,9 @@ importers:
 
   packages/adapter-vercel:
     devDependencies:
+      bumpp:
+        specifier: ^9.2.0
+        version: 9.2.0
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -150,6 +156,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.7
         version: 18.2.7
+      bumpp:
+        specifier: ^9.2.0
+        version: 9.2.0
       hono:
         specifier: ^3.5.6
         version: 3.5.6
@@ -181,6 +190,9 @@ importers:
       '@playwright/test':
         specifier: ^1.37.1
         version: 1.37.1
+      bumpp:
+        specifier: ^9.2.0
+        version: 9.2.0
       hono:
         specifier: ^3.5.6
         version: 3.5.6
