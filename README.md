@@ -1,6 +1,7 @@
 # Sonik
 
-Sonik is a simple and fast -_supersonic_- meta framework for creating websites with Server-Side Rendering. It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](https://vitejs.dev), and JSX-based UI libraries.
+Sonik is a simple and fast -_supersonic_- meta framework for creating web APIs and websites with Server-Side Rendering.
+It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](https://vitejs.dev), and JSX-based UI libraries.
 
 **Note:** _Sonik is currently a work in progress. There will be breaking changes without any announcement. Don't use it in production. However, feel free to try it in your hobby project and give us your feedback!_
 
@@ -138,46 +139,38 @@ The following presets are available:
 
 There are two syntaxes for creating a page.
 
-#### `Route` Component
+#### `AppRoute` Component
 
-Export the `Route` typed object as the default.
+Export the `AppRoute` typed object with `defineRoute()` as the default.
+The `app` is an instance of `Hono`.
 
 ```ts
-// app/about/[name].tsx
-import type { Route } from 'sonik'
+// app/index.tsx
+import { defineRoute } from 'sonik'
 
-export default {
-  GET: (c, { head }) => {
-    const name = c.req.param('name')
-    head.title = `About ${name}`
-    return <h2>It's {name}!</h2>
-  },
-} satisfies Route
+export default defineRoute((app) => {
+  app.get((c) => {
+    const res = c.render(<h1>Hello</h1>, {
+      title: 'This is a title',
+      meta: [{ name: 'description', content: 'This is a description' }],
+    })
+    return res
+  })
+})
 ```
 
-`Route` definition:
+You can use `c.render()` to return a HTML content with applying the layout is applied.
+The `Renderer` definition is the following:
 
 ```ts
-type Route = {
-  [Key in Methods]: (
-    c: Context,
-    props: {
-      head: Head
-      next: Next
-    }
-  ) => Node | Promise<Node> | Response | Promise<Response> | Promise<Response | Node>
-} & {
-  APP: {
-    app: Hono
-    props: {
-      head: Head
-      render: (node: Node, status?: number) => Response | Promise<Response>
-    }
+declare module 'hono' {
+  interface ContextRenderer {
+    (content: Node, head?: Partial<Pick<types.Head, 'title' | 'link' | 'meta'>>):
+      | Response
+      | Promise<Response>
   }
 }
 ```
-
-`Context` is a Hono's `Context` object.
 
 #### Function component
 
@@ -335,15 +328,17 @@ createClient()
 Integrate MDX using `@mdx-js/rollup` by configuring it in `vite.config.ts`:
 
 ```ts
+import devServer from '@hono/vite-dev-server'
 import mdx from '@mdx-js/rollup'
 import { defineConfig } from 'vite'
 import sonik from 'sonik/vite'
 
 export default defineConfig({
   plugins: [
-    sonik({
+    devServer({
       entry: './app/server.ts',
     }),
+    sonik(),
     {
       ...mdx({
         jsxImportSource: 'preact',

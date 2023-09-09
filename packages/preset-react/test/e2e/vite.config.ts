@@ -1,4 +1,3 @@
-import devServer from '@hono/vite-dev-server'
 import sonik from 'sonik/vite'
 import { defineConfig } from 'vite'
 
@@ -7,9 +6,8 @@ export default defineConfig({
     external: ['react', 'react-dom'],
   },
   plugins: [
-    devServer({
+    sonik({
       entry: './test/app/server.ts',
     }),
-    sonik(),
   ],
 })

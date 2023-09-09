@@ -255,6 +255,9 @@ importers:
         specifier: ^7.22.5
         version: 7.22.11
     devDependencies:
+      '@hono/vite-dev-server':
+        specifier: ^0.0.5
+        version: 0.0.5
       '@mdx-js/rollup':
         specifier: ^2.3.0
         version: 2.3.0(rollup@3.28.1)

@@ -90,9 +90,11 @@
     "@babel/types": "^7.22.5"
   },
   "peerDependencies": {
-    "hono": "3.x"
+    "hono": "3.x",
+    "@hono/vite-dev-server": "*"
   },
   "devDependencies": {
+    "@hono/vite-dev-server": "^0.0.5",
     "@mdx-js/rollup": "^2.3.0",
     "@playwright/test": "^1.37.0",
     "@types/babel__core": "^7.20.1",
