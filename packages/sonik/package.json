@@ -75,7 +75,7 @@
         "./dist/vite"
       ],
       "default": [
-        "./dist/default/hono-jsx"
+        "./dist/default"
       ]
     }
   },
