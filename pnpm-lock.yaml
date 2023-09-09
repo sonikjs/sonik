@@ -224,6 +224,9 @@ importers:
       bumpp:
         specifier: ^9.2.0
         version: 9.2.0
+      glob:
+        specifier: ^10.3.4
+        version: 10.3.4
       hono:
         specifier: 3.6.0-rc.2
         version: 3.6.0-rc.2

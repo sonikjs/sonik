@@ -48,6 +48,7 @@
     "@mdx-js/rollup": "^2.3.0",
     "@playwright/test": "^1.37.1",
     "bumpp": "^9.2.0",
+    "glob": "^10.3.4",
     "hono": "3.6.0-rc.2",
     "rimraf": "^5.0.1",
     "sonik": "workspace:*",
