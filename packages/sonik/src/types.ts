@@ -31,8 +31,7 @@ export type RenderToString<N = Node> = (node: N) => string
 export type RenderToReadableStream<N = Node> = (node: N, options?: any) => Promise<ReadableStream>
 export type Hydrate = (children: Node, parent: Element) => void
 
-/** external */
-export type Handler<E extends Env = Env, N = Node> = (
+type Handler<E extends Env = Env, N = Node> = (
   c: Context<E>,
   props: {
     head: Head<N>

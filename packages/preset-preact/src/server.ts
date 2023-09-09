@@ -6,7 +6,7 @@ import { createApp as baseCreateApp } from 'sonik/server'
 import type { ServerOptions } from 'sonik/server'
 import type * as types from 'sonik/types'
 
-type Node = VNode
+export type Node = VNode
 
 export const createApp = <E extends Env = Env>(
   options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>
@@ -19,9 +19,8 @@ export const createApp = <E extends Env = Env>(
   })
 }
 
-export type Handler<E extends Env = Env> = types.Handler<E, Node>
 export type NotFoundHandler<E extends Env = Env> = types.NotFoundHandler<E, Node>
 export type ErrorHandler<E extends Env = Env> = types.ErrorHandler<E, Node>
 export type LayoutHandler = types.LayoutHandler<Node>
-export type FC<E extends Env = Env> = types.FC<E, Node>
-export type Route<E extends Env = Env> = types.Route<E, Node>
+export type FC<Props extends {} = {}> = types.FC<Props, Node>
+export type FH<E extends Env = Env> = types.FH<E, Node>

@@ -7,9 +7,7 @@ export default defineConfig({
     external: ['react', 'react-dom'],
   },
   plugins: [
-    sonik({
-      entry: './app/server.ts',
-    }),
+    sonik(),
     {
       ...mdx({
         jsxImportSource: 'react',

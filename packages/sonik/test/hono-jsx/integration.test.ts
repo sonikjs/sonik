@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it, vi } from 'vitest'
-import { createApp } from '../../src/server'
+import { createApp } from '../../src/presets/hono-jsx'
 
 describe('Basic', () => {
   const ROUTES = import.meta.glob('./app/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
@@ -14,6 +14,11 @@ describe('Basic', () => {
 
   it('Should have correct routes', () => {
     const routes = [
+      {
+        path: '/*',
+        method: 'ALL',
+        handler: expect.anything(),
+      },
       {
         path: '/about/:name',
         method: 'GET',

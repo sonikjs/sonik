@@ -28,7 +28,6 @@ export const createApp = <E extends Env = Env>(
   })
 }
 
-export type Handler<E extends Env = Env> = types.Handler<E, Node>
 export type NotFoundHandler<E extends Env = Env> = types.NotFoundHandler<E, Node>
 export type ErrorHandler<E extends Env = Env> = types.ErrorHandler<E, Node>
 export type LayoutHandler = types.LayoutHandler<Node>

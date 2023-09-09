@@ -4,7 +4,6 @@ import { Hono } from 'hono'
 import type {
   ErrorHandler,
   FH,
-  Handler,
   Node,
   LayoutHandler,
   NotFoundHandler,
@@ -37,7 +36,7 @@ export type ServerOptions<E extends Env = Env> = {
 
 type RouteFile = { default: FH & AppRoute & Hono }
 type LayoutFile = { default: LayoutHandler }
-type PreservedFile = { default: ErrorHandler | Handler }
+type PreservedFile = { default: ErrorHandler }
 
 type ToWebOptions = {
   head: Head
@@ -154,6 +153,14 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
   }
 
   const app = options.app ?? new Hono()
+
+  // Default renderer
+  app.use('*', async (c, next) => {
+    c.setRenderer(async (node) => {
+      return createResponse(c, render(node))
+    })
+    await next()
+  })
 
   for (const [dir, content] of Object.entries(routesMap)) {
     const subApp = new Hono()

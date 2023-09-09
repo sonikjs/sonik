@@ -39,5 +39,8 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "hono": "3.6.0-rc.2"
   }
 }
