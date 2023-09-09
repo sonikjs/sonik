@@ -43,6 +43,10 @@
     "url": "https://github.com/yusukebe/sonik.git"
   },
   "homepage": "https://github.com/yusukebe/sonik",
+  "peerDependencies": {
+    "hono": "3.x",
+    "@hono/vite-dev-server": "*"
+  },
   "devDependencies": {
     "@hono/vite-dev-server": "^0.0.5",
     "@mdx-js/rollup": "^2.3.0",
