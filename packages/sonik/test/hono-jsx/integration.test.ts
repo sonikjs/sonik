@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it, vi } from 'vitest'
-import { createApp } from '../../src'
+import { createApp } from '../../src/server'
 
 describe('Basic', () => {
   const ROUTES = import.meta.glob('./app/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {
@@ -58,7 +58,7 @@ describe('Basic', () => {
   it('Should return 200 response /page', async () => {
     const res = await app.request('/page')
     expect(res.status).toBe(200)
-    expect(await res.text()).toBe('<h1>Function Component!</h1>')
+    expect(await res.text()).toBe('<h1>Function Handler!</h1>')
   })
 
   it('Should return 500 response /throw_error', async () => {

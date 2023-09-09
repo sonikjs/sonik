@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Env } from 'hono'
+import type { Env, Context } from 'hono'
 import { Hono } from 'hono'
 import type {
   ErrorHandler,
-  FC,
+  FH,
   Handler,
   Node,
   LayoutHandler,
   NotFoundHandler,
-  Route,
   RenderToString,
   RenderToReadableStream,
   CreateElement,
   FragmentType,
+  AppRoute,
 } from '../types.js'
 import { filePathToPath, groupByDirectory, listByDirectory } from '../utils/file.js'
 import { Head } from './head.js'
@@ -35,7 +35,7 @@ export type ServerOptions<E extends Env = Env> = {
   app?: Hono<E>
 }
 
-type RouteFile = { default: FC & Route & Hono }
+type RouteFile = { default: FH & AppRoute & Hono }
 type LayoutFile = { default: LayoutHandler }
 type PreservedFile = { default: ErrorHandler | Handler }
 
@@ -48,6 +48,21 @@ type ToWebOptions = {
 
 const addDocType = (html: string) => {
   return `<!doctype html>${html}`
+}
+
+const createResponse = async (
+  c: Context,
+  res: string | ReadableStream | Promise<ReadableStream>
+) => {
+  if (typeof res === 'string') {
+    return c.html(res)
+  } else {
+    return c.body(await res, undefined, {
+      'Transfer-Encoding': 'chunked',
+      'X-Content-Type-Options': 'nosniff',
+      'Content-Type': 'text/html; charset=utf-8',
+    })
+  }
 }
 
 export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => {
@@ -89,35 +104,10 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       ? options.renderToReadableStream
       : options.renderToString
 
-  const returnHtml = async (res: any, status: number) => {
-    const contentType = 'text/html; charset=utf-8'
-    if (typeof res === 'string') {
-      return new Response(res, {
-        status,
-        headers: {
-          'Content-Type': contentType,
-        },
-      })
-    } else {
-      return new Response(await res, {
-        status,
-        headers: {
-          'Transfer-Encoding': 'chunked',
-          'X-Content-Type-Options': 'nosniff',
-          'Content-Type': contentType,
-        },
-      })
-    }
-  }
-
-  const toWebResponse = async (
-    res: string | Promise<string> | Node | Promise<Node> | Response | Promise<Response>,
-    status: number = 200,
+  const renderContent = async (
+    innerContent: string | Promise<string> | Node | Promise<Node>,
     { layouts, head, filename, nestedLayouts }: ToWebOptions
   ) => {
-    if (res instanceof Promise) res = await res
-    if (res instanceof Response) return res
-
     if (nestedLayouts && nestedLayouts.length) {
       nestedLayouts = nestedLayouts.sort((a, b) => {
         return b.split('/').length - a.split('/').length
@@ -126,7 +116,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         const layout = NESTED_LAYOUTS[path]
         if (layout) {
           try {
-            res = await layout.default({ children: res, head, filename })
+            innerContent = await layout.default({ children: innerContent, head, filename })
           } catch (e) {
             console.trace(e)
           }
@@ -146,16 +136,21 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
 
     if (defaultLayout) {
       try {
-        res = await defaultLayout.default({ children: res, head, filename })
+        innerContent = await defaultLayout.default({ children: innerContent, head, filename })
       } catch (e) {
         console.trace(e)
       }
-      const html = render(res)
-      return returnHtml(typeof html === 'string' ? addDocType(html) : html, status)
     }
 
-    const html = render(res)
-    return returnHtml(html, status)
+    const content = render(innerContent)
+
+    if (typeof content === 'string') {
+      if (defaultLayout || layouts?.length) {
+        return addDocType(content)
+      }
+      return content
+    }
+    return content
   }
 
   const app = options.app ?? new Hono()
@@ -210,6 +205,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         continue
       }
 
+      // Create an instance of Head
       let head: Head
       if (options.createHead) {
         head = options.createHead()
@@ -220,56 +216,63 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         })
       }
 
-      const resOptions = {
+      // Options for the renderContent()
+      const renderOptions = {
         layouts,
         nestedLayouts,
         head,
         filename,
       }
 
-      // Function Component
-      if (typeof routeDefault === 'function') {
-        subApp.get(path, (c) => {
-          const res = (routeDefault as FC)(c, { head })
-          return toWebResponse(res, 200, resOptions)
+      // export default {} satisfies { APP: AppRoute }
+      const appRoute = routeDefault as { APP: AppRoute }
+
+      // Set a renderer
+      if (layouts && layouts.length) {
+        subApp.use('*', async (c, next) => {
+          c.setRenderer(async (node, headProps) => {
+            if (headProps) head.set(headProps)
+            const content = await renderContent(node, renderOptions)
+            return createResponse(c, content)
+          })
+          await next()
         })
       }
 
-      // export default {} satisfies Route
-      for (const [method, handler] of Object.entries(routeDefault)) {
-        if (method === 'APP') {
-          const appHandler = (routeDefault as Route)['APP']
-          if (appHandler) {
-            appHandler(subApp.use(path), {
-              head,
-              render: (node, status) => {
-                return toWebResponse(node, status, resOptions)
-              },
-            })
-          }
-        } else {
-          if (handler) {
-            subApp.on(method, path, async (c, next) => {
-              const res = await (handler as Handler)(c, { head, next })
-              return toWebResponse(res, 200, resOptions)
-            })
-          }
-        }
+      // Function Handler
+      if (typeof routeDefault === 'function') {
+        subApp.get(path, async (c) => {
+          const innerContent = (routeDefault as FH)(c, { head })
+          return c.render(innerContent, head)
+        })
+        continue
       }
+
+      appRoute['APP'](subApp.use(path))
 
       for (const [preservedDir, content] of Object.entries(preservedMap)) {
         if (dir !== root && dir === preservedDir) {
           const notFound = content[NOTFOUND_FILENAME]
           if (notFound) {
             const notFoundHandler = notFound.default as NotFoundHandler
-            subApp.get('*', (c) => toWebResponse(notFoundHandler(c, { head }), 404, resOptions))
+
+            subApp.get('*', async (c) => {
+              const content = await renderContent(notFoundHandler(c, { head }), renderOptions)
+              c.status(404)
+              return createResponse(c, content)
+            })
           }
           const error = content[ERROR_FILENAME]
           if (error) {
             const errorHandler = error.default as ErrorHandler
-            subApp.onError((error, c) =>
-              toWebResponse(errorHandler(c, { error, head }), 500, resOptions)
-            )
+            subApp.onError((error, c) => {
+              c.status(500)
+              return (async () => {
+                const content = await renderContent(errorHandler(c, { error, head }), renderOptions)
+                c.status(500)
+                return createResponse(c, content)
+              })()
+            })
           }
         }
       }
@@ -291,23 +294,29 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
     const defaultNotFound = preservedMap[root][NOTFOUND_FILENAME]
     if (defaultNotFound) {
       const notFoundHandler = defaultNotFound.default as unknown as NotFoundHandler<E>
-      app.notFound((c) =>
-        toWebResponse(notFoundHandler(c, { head }), 404, {
+      app.notFound(async (c) => {
+        const content = await renderContent(notFoundHandler(c, { head }), {
           head,
           filename: NOTFOUND_FILENAME,
         })
-      )
+        c.status(404)
+        return createResponse(c, content)
+      })
     }
 
     const defaultError = preservedMap[root][ERROR_FILENAME]
     if (defaultError) {
       const errorHandler = defaultError.default as unknown as ErrorHandler<E>
-      app.onError((error, c) =>
-        toWebResponse(errorHandler(c, { error, head }), 500, {
-          head,
-          filename: ERROR_FILENAME,
-        })
-      )
+      app.onError((error, c) => {
+        return (async () => {
+          const content = await renderContent(errorHandler(c, { error, head }), {
+            head,
+            filename: ERROR_FILENAME,
+          })
+          c.status(500)
+          return createResponse(c, content)
+        })()
+      })
     }
   }
 

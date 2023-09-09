@@ -1,9 +1,10 @@
-import type { Route } from '../../../../../../src'
+import { defineRoute } from '../../../../../../src'
 
-export default {
-  GET: (c, { head }) => {
-    const { name } = c.req.param()
-    head.title = `${name}'s address`
-    return <b>{name}'s address</b>
-  },
-} satisfies Route
+export default defineRoute((app) => {
+  app.get((c) => {
+    const { name } = c.req.param<'/:name/address'>()
+    return c.render(<b>{name}'s address</b>, {
+      title: `${name}'s address`,
+    })
+  })
+})

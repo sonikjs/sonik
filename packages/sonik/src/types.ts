@@ -57,11 +57,15 @@ export type LayoutHandler<N = Node> = (props: {
   filename: string
 }) => N | string | Promise<N | string>
 
+/** Function Handler */
+export type FH<E extends Env = Env, N = Node> = (c: Context<E>, props: { head: Head<N> }) => N
+
 /** Function Component */
-export type FC<E extends Env = Env, N = Node> = (c: Context<E>, props: { head: Head<N> }) => N
+export type FC<Props extends {} = {}, N = Node> = (props: Props & { children: N }) => N
 
 /** Route */
-export type Route<E extends Env = Env, N = Node> = Partial<{ [Key in Methods]: Handler<E, N> }> &
-  Partial<{
-    APP: AppHandler<E, N>
-  }>
+export type Route<E extends Env = Env, N = Node> = {
+  APP: AppHandler<E, N>
+}
+
+export type AppRoute = (app: Hono) => void

@@ -29,6 +29,10 @@
       "types": "./dist/types.d.ts",
       "import": "./dist/types.js"
     },
+    "./misc": {
+      "types": "./dist/misc.d.ts",
+      "import": "./dist/misc.js"
+    },
     "./server": {
       "types": "./dist/server/index.d.ts",
       "import": "./dist/server/index.js"
@@ -53,6 +57,9 @@
       ],
       "server": [
         "./dist/server"
+      ],
+      "misc": [
+        "./dist/misc"
       ],
       "client": [
         "./dist/client"
@@ -80,8 +87,7 @@
     "@babel/generator": "^7.22.9",
     "@babel/parser": "^7.22.7",
     "@babel/traverse": "^7.22.8",
-    "@babel/types": "^7.22.5",
-    "@hono/node-server": "^1.1.1"
+    "@babel/types": "^7.22.5"
   },
   "peerDependencies": {
     "hono": "3.x"
@@ -90,8 +96,12 @@
     "@mdx-js/rollup": "^2.3.0",
     "@playwright/test": "^1.37.0",
     "@types/babel__core": "^7.20.1",
+    "@types/babel__generator": "^7.6.4",
+    "@types/babel__traverse": "^7.20.1",
     "@types/glob": "^8.1.0",
-    "hono": "^3.5.6",
+    "esbuild": "^0.19.2",
+    "glob": "^10.3.4",
+    "hono": "3.6.0-rc.2",
     "jsdom": "^22.1.0",
     "npm-run-all": "^4.1.5",
     "publint": "^0.1.12",

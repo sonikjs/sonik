@@ -1,5 +1,4 @@
-// eslint-disable-next-line node/no-extraneous-import
-import glob from 'glob'
+import { glob } from 'glob'
 import { defineConfig } from 'tsup'
 
 const entryPoints = glob.sync('./src/**/*.+(ts|tsx|json)', {

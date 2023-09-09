@@ -1,10 +1,18 @@
 import type { Env } from 'hono'
 import { jsx, Fragment } from 'hono/jsx'
-import { createApp as baseCreateApp } from '../../server/index.js'
+import { createApp as baseCreateApp } from '../../server/server.js'
 import type { ServerOptions } from '../../server/server.js'
 import type * as types from '../../types.js'
 
 type Node = JSX.Element
+
+declare module 'hono' {
+  interface ContextRenderer {
+    (content: Node, head?: Partial<Pick<types.Head, 'title' | 'link' | 'meta'>>):
+      | Response
+      | Promise<Response>
+  }
+}
 
 export const createApp = <E extends Env = Env>(
   options?: Omit<
@@ -24,5 +32,5 @@ export type Handler<E extends Env = Env> = types.Handler<E, Node>
 export type NotFoundHandler<E extends Env = Env> = types.NotFoundHandler<E, Node>
 export type ErrorHandler<E extends Env = Env> = types.ErrorHandler<E, Node>
 export type LayoutHandler = types.LayoutHandler<Node>
-export type FC<E extends Env = Env> = types.FC<E, Node>
-export type Route<E extends Env = Env> = types.Route<E, Node>
+export type FC<Props extends {} = {}> = types.FC<Props, Node>
+export type FH<E extends Env = Env> = types.FH<E, Node>

@@ -1,6 +1,6 @@
-import type { Handler } from '../../../../src'
+import type { NotFoundHandler } from '../../../../src'
 
-const handler: Handler = () => {
+const handler: NotFoundHandler = () => {
   return <h1>Not Found</h1>
 }
 
