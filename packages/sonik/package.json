@@ -48,6 +48,10 @@
     "./vite": {
       "types": "./dist/vite/index.d.ts",
       "import": "./dist/vite/index.js"
+    },
+    "./default": {
+      "types": "./dist/preset/hono-jsx/index.d.ts",
+      "import": "./dist/preset/hono-jsx/index.js"
     }
   },
   "typesVersions": {
@@ -69,6 +73,9 @@
       ],
       "vite": [
         "./dist/vite"
+      ],
+      "default": [
+        "./dist/preset/hono-jsx"
       ]
     }
   },
