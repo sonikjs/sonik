@@ -1,7 +1,7 @@
 {
   "name": "@sonikjs/solid",
   "description": "Solid preset for the Sonik",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
