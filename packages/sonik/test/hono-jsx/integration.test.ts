@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it, vi } from 'vitest'
-import { createApp } from '../../src/presets/hono-jsx'
+import { createApp } from '../../src/default'
 
 describe('Basic', () => {
   const ROUTES = import.meta.glob('./app/routes/**/[a-z[-][a-z[_-]*.(tsx|ts)', {

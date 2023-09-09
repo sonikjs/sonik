@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createApp } from '../../src'
+import { createApp } from '../../src/default'
 
 describe('Basic', () => {
   const ROUTES = import.meta.glob('./app/routes/**/[a-z[-][a-z[_-]*.ts', {

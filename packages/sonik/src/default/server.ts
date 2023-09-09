@@ -1,18 +1,10 @@
 import type { Env } from 'hono'
 import { jsx, Fragment } from 'hono/jsx'
-import { createApp as baseCreateApp } from '../../server/server.js'
-import type { ServerOptions } from '../../server/server.js'
-import type * as types from '../../types.js'
+import { createApp as baseCreateApp } from '../server/server.js'
+import type { ServerOptions } from '../server/server.js'
+import type * as types from '../types.js'
 
-type Node = JSX.Element
-
-declare module 'hono' {
-  interface ContextRenderer {
-    (content: Node, head?: Partial<Pick<types.Head, 'title' | 'link' | 'meta'>>):
-      | Response
-      | Promise<Response>
-  }
-}
+export type Node = JSX.Element
 
 export const createApp = <E extends Env = Env>(
   options?: Omit<

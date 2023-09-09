@@ -19,6 +19,14 @@ import { Head } from './head.js'
 const NOTFOUND_FILENAME = '_404.tsx'
 const ERROR_FILENAME = '_error.tsx'
 
+declare module 'hono' {
+  interface ContextRenderer {
+    (content: Node, head?: Partial<Pick<Head, 'title' | 'link' | 'meta'>>):
+      | Response
+      | Promise<Response>
+  }
+}
+
 export type ServerOptions<E extends Env = Env> = {
   PRESERVED?: Record<string, PreservedFile>
   LAYOUTS?: Record<string, LayoutFile>
