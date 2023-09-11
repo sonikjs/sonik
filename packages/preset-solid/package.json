@@ -48,7 +48,7 @@
     "hono": "3.x"
   },
   "devDependencies": {
-    "@hono/vite-dev-server": "^0.0.7",
+    "@hono/vite-dev-server": "^0.0.8",
     "@mdx-js/rollup": "^2.3.0",
     "@playwright/test": "^1.37.1",
     "bumpp": "^9.2.0",

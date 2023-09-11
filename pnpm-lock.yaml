@@ -158,8 +158,8 @@ importers:
         version: 6.2.1(preact@10.17.1)
     devDependencies:
       '@hono/vite-dev-server':
-        specifier: ^0.0.7
-        version: 0.0.7
+        specifier: ^0.0.8
+        version: 0.0.8
       '@mdx-js/rollup':
         specifier: ^2.3.0
         version: 2.3.0(rollup@3.29.1)
@@ -204,8 +204,8 @@ importers:
         version: 18.2.0(react@18.2.0)
     devDependencies:
       '@hono/vite-dev-server':
-        specifier: ^0.0.7
-        version: 0.0.7
+        specifier: ^0.0.8
+        version: 0.0.8
       '@mdx-js/rollup':
         specifier: ^2.3.0
         version: 2.3.0(rollup@3.29.1)
@@ -250,8 +250,8 @@ importers:
         version: 1.7.11
     devDependencies:
       '@hono/vite-dev-server':
-        specifier: ^0.0.7
-        version: 0.0.7
+        specifier: ^0.0.8
+        version: 0.0.8
       '@mdx-js/rollup':
         specifier: ^2.3.0
         version: 2.3.0(rollup@3.29.1)
@@ -301,8 +301,8 @@ importers:
         specifier: ^7.22.5
         version: 7.22.11
       '@hono/vite-dev-server':
-        specifier: ^0.0.7
-        version: 0.0.7
+        specifier: ^0.0.8
+        version: 0.0.8
     devDependencies:
       '@mdx-js/rollup':
         specifier: ^2.3.0
@@ -1571,6 +1571,18 @@ packages:
 
   /@hono/vite-dev-server@0.0.7:
     resolution: {integrity: sha512-JpYDNWDiMSx08UnLE2uamTLrkg1Z/GJMzoJICkcId1MIUkQ4hM2fnSPKs+IBcIGDHe6h1cdQd0zzvQD2/cywTQ==}
+    engines: {node: '>=18.0.0'}
+    dependencies:
+      '@hono/node-server': 1.1.1
+      miniflare: 3.20230904.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: false
+
+  /@hono/vite-dev-server@0.0.8:
+    resolution: {integrity: sha512-LDp9LjAC3IrCTAjVKxAXBmG0Li+xcdIvseDg05brXhUnFHcupAFFrRwVjIsv7MAgf7ITcHXfcoioUPF4edmdyg==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@hono/node-server': 1.1.1
