@@ -9,14 +9,15 @@
     "deploy": "wrangler pages deploy ./dist"
   },
   "dependencies": {
-    "@sonikjs/preact": "^0.0.3",
-    "hono": "^3.5.6",
+    "@sonikjs/preact": "^0.0.9",
+    "hono": "^3.6.0",
     "preact": "^10.17.1",
     "preact-render-to-string": "^6.2.1",
-    "sonik": "^0.0.63"
+    "sonik": "^0.0.74"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
+    "@hono/vite-dev-server": "^0.0.7",
     "@sonikjs/cloudflare-pages": "^0.0.1",
     "vite": "^4.4.6",
     "wrangler": "^3.4.0"

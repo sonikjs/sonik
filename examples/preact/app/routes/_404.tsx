@@ -1,6 +1,6 @@
-import type { Handler } from '@sonikjs/preact'
+import type { NotFoundHandler } from '@sonikjs/preact'
 
-const handler: Handler = () => {
+const handler: NotFoundHandler = () => {
   return <p>Not Found</p>
 }
 
