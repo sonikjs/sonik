@@ -1,10 +1,8 @@
-import { defineRoute } from '../../../../../../src'
+import type { Context } from '../../../../../../src'
 
-export default defineRoute((app) => {
-  app.get((c) => {
-    const { name } = c.req.param<'/:name/address'>()
-    return c.render(<b>{name}'s address</b>, {
-      title: `${name}'s address`,
-    })
+export default function Address(c: Context) {
+  const { name } = c.req.param()
+  return c.render(<b>{name}'s address</b>, {
+    title: `${name}'s address`,
   })
-})
+}
