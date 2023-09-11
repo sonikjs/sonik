@@ -3,6 +3,6 @@
   "version": "0.0.0",
   "packageManager": "yarn@3.6.1",
   "dependencies": {
-    "hono": "3.6.0-rc.2"
+    "hono": "3.6.0"
   }
 }
