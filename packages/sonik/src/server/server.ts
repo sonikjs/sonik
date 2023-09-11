@@ -257,7 +257,8 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       // Function Handler
       if (typeof routeDefault === 'function') {
         subApp.get(path, async (c) => {
-          const innerContent = (routeDefault as FH)(c, { head })
+          const innerContent = await (routeDefault as FH)(c, { head })
+          if (innerContent instanceof Response) return innerContent
           return c.render(innerContent, head)
         })
         continue
