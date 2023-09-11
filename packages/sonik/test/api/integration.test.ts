@@ -10,15 +10,11 @@ describe('Basic', () => {
     root: './app/routes',
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ROUTES: ROUTES as any,
+    initRenderer: false,
   })
 
   it('Should have correct routes', () => {
     const routes = [
-      {
-        path: '/*',
-        method: 'ALL',
-        handler: expect.anything(),
-      },
       {
         path: '/about/:name',
         method: 'GET',
