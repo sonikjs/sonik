@@ -13,13 +13,17 @@ function fragment(props: { children: JSX.Element }) {
 }
 
 export const createApp = <E extends Env = Env>(
-  options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>
+  options?: Omit<
+    ServerOptions<E>,
+    'renderToString' | 'createElement' | 'fragment' | 'setDefaultRenderer'
+  >
 ) => {
   return baseCreateApp<E>({
     renderToString: (Comp) => renderToString(() => Comp),
     createElement: (type, props) => createComponent(() => type, props),
     createHead: () => new Head(),
     fragment: () => fragment,
+    setDefaultRenderer: true,
     ...options,
   })
 }

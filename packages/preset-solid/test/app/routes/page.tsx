@@ -1,3 +1,3 @@
 export default function Page() {
-  return <h1>Function Component!</h1>
+  return <h1>Function Handler!</h1>
 }
