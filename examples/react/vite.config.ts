@@ -6,10 +6,5 @@ export default defineConfig({
   define: {
     'process.env': process.env,
   },
-  plugins: [
-    sonik({
-      minify: true,
-    }),
-    pages(),
-  ],
+  plugins: [sonik(), pages()],
 })

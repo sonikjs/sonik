@@ -1,6 +1,6 @@
-import type { Handler } from '@sonikjs/react'
+import type { NotFoundHandler } from '@sonikjs/react'
 
-const handler: Handler = () => {
+const handler: NotFoundHandler = () => {
   return <p>Not Found</p>
 }
 
