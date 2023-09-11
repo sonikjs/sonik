@@ -19,14 +19,6 @@ import { Head } from './head.js'
 const NOTFOUND_FILENAME = '_404.tsx'
 const ERROR_FILENAME = '_error.tsx'
 
-declare module 'hono' {
-  interface ContextRenderer {
-    (content: Node, head?: Partial<Pick<Head, 'title' | 'link' | 'meta'>>):
-      | Response
-      | Promise<Response>
-  }
-}
-
 export type ServerOptions<E extends Env = Env> = {
   PRESERVED?: Record<string, PreservedFile>
   LAYOUTS?: Record<string, LayoutFile>
@@ -243,6 +235,8 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       // Set a renderer
       if (layouts && layouts.length) {
         subApp.use('*', async (c, next) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           c.setRenderer(async (node, headProps) => {
             if (headProps) head.set(headProps)
             const content = await renderContent(node, renderOptions)
@@ -257,6 +251,8 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         subApp.get(path, async (c) => {
           const innerContent = await (routeDefault as FH)(c, { head })
           if (innerContent instanceof Response) return innerContent
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           return c.render(innerContent, head)
         })
       }
