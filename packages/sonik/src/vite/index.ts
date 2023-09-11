@@ -1,6 +1,6 @@
 // eslint-disable-next-line node/no-extraneous-import
 import path from 'path'
-import devServer from '@hono/vite-dev-server'
+import devServer, { defaultOptions } from '@hono/vite-dev-server'
 import type { PluginOption } from 'vite'
 import { islandComponents } from './island-components.js'
 import { minifyEs } from './minify-es.js'
@@ -19,6 +19,7 @@ function sonik(options?: SonikOptions): PluginOption[] {
   plugins.push(
     devServer({
       entry: options?.entry ?? defaultEntryPath,
+      exclude: [...defaultOptions.exclude, '/app/.+'],
     })
   )
 

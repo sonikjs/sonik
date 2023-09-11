@@ -44,11 +44,11 @@
   },
   "homepage": "https://github.com/yusukebe/sonik",
   "peerDependencies": {
-    "hono": "3.x",
-    "@hono/vite-dev-server": "*"
+    "@hono/vite-dev-server": "*",
+    "hono": "3.x"
   },
   "devDependencies": {
-    "@hono/vite-dev-server": "^0.0.5",
+    "@hono/vite-dev-server": "^0.0.7",
     "@mdx-js/rollup": "^2.3.0",
     "@playwright/test": "^1.37.1",
     "@preact/preset-vite": "^2.5.0",
