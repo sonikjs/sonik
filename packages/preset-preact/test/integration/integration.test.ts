@@ -68,7 +68,7 @@ describe('Basic', () => {
   it('Should return 200 response /page', async () => {
     const res = await app.request('/page')
     expect(res.status).toBe(200)
-    expect(await res.text()).toBe('<h1>Function Component!</h1>')
+    expect(await res.text()).toBe('<h1>Function Handler!</h1>')
   })
 
   it('Should return 500 response /throw_error', async () => {

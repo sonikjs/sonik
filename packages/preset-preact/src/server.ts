@@ -9,12 +9,16 @@ import type * as types from 'sonik/types'
 export type Node = VNode
 
 export const createApp = <E extends Env = Env>(
-  options?: Omit<ServerOptions<E>, 'renderToString' | 'createElement' | 'fragment'>
+  options?: Omit<
+    ServerOptions<E>,
+    'renderToString' | 'createElement' | 'fragment' | 'setDefaultRenderer'
+  >
 ) => {
   return baseCreateApp<E>({
     renderToString: render,
     createElement: createElement,
     fragment: Fragment,
+    setDefaultRenderer: true,
     ...options,
   })
 }

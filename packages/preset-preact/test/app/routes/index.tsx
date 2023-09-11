@@ -1,6 +1,6 @@
-import { defineRoute } from '../../../src'
+import { defineRoute } from 'sonik'
 
-export default defineRoute((app) => {
+export const route = defineRoute((app) => {
   app.get((c) => {
     const res = c.render(<h1>Hello</h1>, {
       title: 'This is a title',

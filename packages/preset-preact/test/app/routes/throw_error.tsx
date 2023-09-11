@@ -1,7 +1,3 @@
-import { defineRoute } from '../../../src'
-
-export default defineRoute((app) => {
-  app.get(() => {
-    throw new Error('Foo')
-  })
-})
+export default function ErrorPage() {
+  throw new Error('Foo')
+}
