@@ -94,14 +94,13 @@
     "@babel/generator": "^7.22.9",
     "@babel/parser": "^7.22.7",
     "@babel/traverse": "^7.22.8",
-    "@babel/types": "^7.22.5"
+    "@babel/types": "^7.22.5",
+    "@hono/vite-dev-server": "^0.0.7"
   },
   "peerDependencies": {
-    "@hono/vite-dev-server": "*",
     "hono": "3.x"
   },
   "devDependencies": {
-    "@hono/vite-dev-server": "^0.0.7",
     "@mdx-js/rollup": "^2.3.0",
     "@playwright/test": "^1.37.0",
     "@types/babel__core": "^7.20.1",
@@ -110,7 +109,7 @@
     "@types/glob": "^8.1.0",
     "esbuild": "^0.19.2",
     "glob": "^10.3.4",
-    "hono": "3.6.0-rc.2",
+    "hono": "3.6.0",
     "jsdom": "^22.1.0",
     "npm-run-all": "^4.1.5",
     "publint": "^0.1.12",
