@@ -20,6 +20,11 @@ describe('Basic', () => {
         handler: expect.anything(),
       },
       {
+        path: '/about/:name',
+        method: 'POST',
+        handler: expect.anything(),
+      },
+      {
         path: '/about/:name/address',
         method: 'GET',
         handler: expect.anything(),
@@ -53,6 +58,13 @@ describe('Basic', () => {
     expect(res.status).toBe(200)
     // hono/jsx escape a single quote to &#39;
     expect(await res.text()).toBe('<p>It&#39;s me</p><b>My name is me</b>')
+  })
+
+  it('Should return 200 response POST /about/me', async () => {
+    const res = await app.request('/about/me', {
+      method: 'POST',
+    })
+    expect(res.status).toBe(201)
   })
 
   it('Should return 200 response /page', async () => {

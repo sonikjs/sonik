@@ -7,7 +7,7 @@ It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](
 
 ## Features
 
-- **File-based routing** - It's similar to Next.js.
+- **File-based routing** - Now, your can create a large app by separating concerns.
 - **Fast SSR** - Supports only Server-Side Rendering. Rendering is ultra-fast thanks to Hono.
 - **No JavaScript** - By default, there's no need for JavaScript. Nothing loads.
 - **Island hydration** - If you want interaction, create an island. JavaScript is hydrated only for that island.
@@ -47,6 +47,13 @@ yarn install
 yarn dev
 yarn build
 yarn deploy
+```
+
+### Getting the web API template
+
+```plain
+npx degit yusukebe/sonik/examples/api my-api
+cd my-app
 ```
 
 ### Getting other presets
@@ -139,25 +146,9 @@ The following presets are available:
 
 There are two syntaxes for creating a page.
 
-#### `AppRoute` Component
+#### `c.render()`
 
-Export the `AppRoute` typed object with `defineRoute()` as the default.
-The `app` is an instance of `Hono`.
-
-```ts
-// app/index.tsx
-import { defineRoute } from 'sonik'
-
-export default defineRoute((app) => {
-  app.get((c) => {
-    const res = c.render(<h1>Hello</h1>, {
-      title: 'This is a title',
-      meta: [{ name: 'description', content: 'This is a description' }],
-    })
-    return res
-  })
-})
-```
+Before introducing the two syntaxes, let you know about `c.render()`.
 
 You can use `c.render()` to return a HTML content with applying the layout is applied.
 The `Renderer` definition is the following:
@@ -172,14 +163,68 @@ declare module 'hono' {
 }
 ```
 
+#### `AppRoute` Component
+
+Export the `AppRoute` typed object with `defineRoute()` as the `route`.
+The `app` is an instance of `Hono`.
+
+```ts
+// app/index.tsx
+import { defineRoute } from 'sonik'
+
+export const route = defineRoute((app) => {
+  app.get((c) => {
+    const res = c.render(<h1>Hello</h1>, {
+      title: 'This is a title',
+      meta: [{ name: 'description', content: 'This is a description' }],
+    })
+    return res
+  })
+})
+```
+
 #### Function component
 
-Just return JSX function:
+Just return JSX function as the `default`:
 
 ```ts
 // app/index.tsx
 export default function Home() {
-  return <h1>Welcome!</h1>
+  return <h1>Hello!</h1>
+}
+```
+
+Or you can use the `Context` instance:
+
+```ts
+import type { Context } from 'sonik'
+
+// app/index.tsx
+export default function Home(c: Context) {
+  return c.render(<h1>Hello!</h1>, {
+    title: 'My title',
+  })
+}
+```
+
+#### Use both syntaxes
+
+You can put both syntaxes in one file:
+
+```ts
+export const route = defineRoute((app) => {
+  app.post((c) => {
+    return c.text('Created!', 201)
+  })
+})
+
+export default function Books(c: Context) {
+  return c.render(
+    <form method='POST'>
+      <input type='text' name='title' />
+      <input type='submit' />
+    </form>
+  )
 }
 ```
 

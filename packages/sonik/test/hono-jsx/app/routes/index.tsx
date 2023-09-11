@@ -1,6 +1,6 @@
 import { defineRoute } from '../../../../src'
 
-export default defineRoute((app) => {
+export const route = defineRoute((app) => {
   app.get((c) => {
     return c.render(<h1>Hello</h1>, {
       title: 'This is a title',

@@ -1,6 +1,6 @@
 import { defineRoute } from '../../../../src'
 
-export default defineRoute((app) => {
+export const route = defineRoute((app) => {
   app.get((c) => {
     c.header('X-Custom', 'Hello')
     return c.json({

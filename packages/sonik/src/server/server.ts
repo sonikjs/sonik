@@ -42,7 +42,7 @@ export type ServerOptions<E extends Env = Env> = {
   app?: Hono<E>
 }
 
-type RouteFile = { default: FH & AppRoute & Hono }
+type RouteFile = { default: FH & Hono; route: { APP: AppRoute } }
 type LayoutFile = { default: LayoutHandler }
 type PreservedFile = { default: ErrorHandler }
 
@@ -202,12 +202,11 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
 
     for (const [filename, route] of Object.entries(content)) {
       const routeDefault = route.default
-      if (!routeDefault) continue
 
       const path = filePathToPath(filename)
 
       // Instance of Hono
-      if ('fetch' in routeDefault) {
+      if (routeDefault && 'fetch' in routeDefault) {
         subApp.route(path, routeDefault)
         continue
       }
@@ -231,9 +230,6 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         filename,
       }
 
-      // export default {} satisfies { APP: AppRoute }
-      const appRoute = routeDefault as { APP: AppRoute }
-
       // Set a renderer
       if (layouts && layouts.length) {
         subApp.use('*', async (c, next) => {
@@ -247,14 +243,17 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       }
 
       // Function Handler
-      if (typeof routeDefault === 'function') {
+      if (routeDefault && typeof routeDefault === 'function') {
         subApp.get(path, async (c) => {
           const innerContent = await (routeDefault as FH)(c, { head })
           if (innerContent instanceof Response) return innerContent
           return c.render(innerContent, head)
         })
-        continue
       }
+
+      // export const route {} satisfies { APP: AppRoute }
+      const appRoute = route.route
+      if (!appRoute) continue
 
       appRoute['APP'](subApp.use(path))
 
