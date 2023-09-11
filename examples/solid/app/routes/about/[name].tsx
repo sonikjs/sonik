@@ -1,9 +1,8 @@
-import type { Route } from '@sonikjs/solid'
+import type { Context } from 'sonik'
 
-export default {
-  GET: (c, { head }) => {
-    const name = c.req.param('name')
-    head.title = `About ${name}`
-    return <h2>It's {name}!</h2>
-  },
-} satisfies Route
+export default function AboutName(c: Context) {
+  const name = c.req.param('name')
+  return c.render(<h2>It's {name}!</h2>, {
+    title: `About ${name}`,
+  })
+}
