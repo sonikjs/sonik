@@ -14,7 +14,7 @@
     "hono": "^3.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sonik": "^0.0.75"
+    "sonik": "^0.0.76"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
