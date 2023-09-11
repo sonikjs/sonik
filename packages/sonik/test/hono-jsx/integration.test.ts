@@ -15,11 +15,6 @@ describe('Basic', () => {
   it('Should have correct routes', () => {
     const routes = [
       {
-        path: '/*',
-        method: 'ALL',
-        handler: expect.anything(),
-      },
-      {
         path: '/about/:name',
         method: 'GET',
         handler: expect.anything(),

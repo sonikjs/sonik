@@ -39,7 +39,6 @@ export type ServerOptions<E extends Env = Env> = {
   fragment: FragmentType
   createHead?: () => Head
   streaming?: boolean
-  initRenderer?: boolean
   app?: Hono<E>
 }
 
@@ -162,16 +161,6 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
   }
 
   const app = options.app ?? new Hono()
-
-  // Default renderer
-  if (options.initRenderer !== false) {
-    app.use('*', async (c, next) => {
-      c.setRenderer(async (node) => {
-        return createResponse(c, render(node))
-      })
-      await next()
-    })
-  }
 
   for (const [dir, content] of Object.entries(routesMap)) {
     const subApp = new Hono()
