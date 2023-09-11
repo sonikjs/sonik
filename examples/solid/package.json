@@ -9,7 +9,7 @@
     "deploy": "wrangler pages deploy ./dist"
   },
   "dependencies": {
-    "@sonikjs/solid": "^0.0.3",
+    "@sonikjs/solid": "^0.0.4",
     "hono": "^3.6.0",
     "solid-js": "^1.7.11",
     "sonik": "^0.0.76"
