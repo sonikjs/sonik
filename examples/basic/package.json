@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "hono": "^3.6.0",
-    "sonik": "^0.0.72"
+    "sonik": "^0.0.73"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
