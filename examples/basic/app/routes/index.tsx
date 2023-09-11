@@ -1,4 +1,4 @@
-import { Context } from 'sonik'
+import type { Context } from 'sonik'
 
 export default function Index(c: Context) {
   return c.render(

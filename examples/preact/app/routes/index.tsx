@@ -1,4 +1,4 @@
-import type { Context } from '@sonikjs/preact'
+import type { Context } from 'sonik'
 import Counter from '../islands/counter'
 
 export default function Index(c: Context) {
