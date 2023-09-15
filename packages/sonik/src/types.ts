@@ -67,4 +67,4 @@ export type Route<E extends Env = Env, N = Node> = {
   APP: AppHandler<E, N>
 }
 
-export type AppRoute = (app: Hono) => void
+export type AppRoute<E extends Env = Env> = (app: Hono<E>) => void
