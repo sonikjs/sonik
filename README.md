@@ -7,7 +7,7 @@ It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](
 
 ## Features
 
-- **File-based routing** - Now, your can create a large app by separating concerns.
+- **File-based routing** - Now, you can create a large app by separating concerns.
 - **Fast SSR** - Supports only Server-Side Rendering. Rendering is ultra-fast thanks to Hono.
 - **No JavaScript** - By default, there's no need for JavaScript. Nothing loads.
 - **Island hydration** - If you want interaction, create an island. JavaScript is hydrated only for that island.
