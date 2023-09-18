@@ -95,7 +95,7 @@
     "@babel/parser": "^7.22.7",
     "@babel/traverse": "^7.22.8",
     "@babel/types": "^7.22.5",
-    "@hono/vite-dev-server": "^0.0.8"
+    "@hono/vite-dev-server": "^0.0.9"
   },
   "peerDependencies": {
     "hono": "3.x"

@@ -21,7 +21,7 @@ function sonik(options?: SonikOptions): PluginOption[] {
   plugins.push(
     devServer({
       entry: options?.entry ?? defaultEntryPath,
-      exclude: [...defaultOptions.exclude, '/app/.+'],
+      exclude: [...defaultOptions.exclude, '^/app/.+', '^/favicon.ico', '^/static/.+'],
       ...options?.devServer,
     })
   )
@@ -35,5 +35,7 @@ function sonik(options?: SonikOptions): PluginOption[] {
 
   return plugins
 }
+
+export const devServerDefaultOptions = defaultOptions
 
 export default sonik
