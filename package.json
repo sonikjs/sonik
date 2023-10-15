@@ -16,7 +16,7 @@
     "lint": "eslint src/**.ts",
     "lint:fix": "eslint src/**.ts --fix",
     "prerelease": "yarn test && yarn build",
-    "release": "np"
+    "release": "np --no-yarn"
   },
   "files": [
     "dist"
