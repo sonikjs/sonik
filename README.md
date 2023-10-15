@@ -3,7 +3,7 @@
 Sonik is a simple and fast -_supersonic_- meta framework for creating web APIs and websites with Server-Side Rendering.
 It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](https://vitejs.dev), and JSX-based UI libraries.
 
-**Note:** _Sonik is currently a work in progress. There will be breaking changes without any announcement. Don't use it in production. However, feel free to try it in your hobby project and give us your feedback!_
+**Note:** _Sonik is currently in a "alpha stage". There will be breaking changes without any announcement. Don't use it in production. However, feel free to try it in your hobby project and give us your feedback!_
 
 ## Features
 
@@ -18,13 +18,20 @@ It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](
 
 ## Quick Start
 
-### Getting the basic template
+### Getting with the starter templates
 
 Give it a try:
 
-```plain
-npx degit sonikjs/starter/templates/basic my-app
-cd my-app
+```txt
+npm create sonik@latest
+
+// Or
+
+yarn create sonik
+
+// Or
+
+pnpm create sonik@latest
 ```
 
 ### Usage
@@ -33,7 +40,7 @@ _By default, it can be deployed to Cloudflare Pages._
 
 npm:
 
-```plain
+```txt
 npm install
 npm run dev
 npm run build
@@ -42,41 +49,18 @@ npm run deploy
 
 yarn:
 
-```plain
+```txt
 yarn install
 yarn dev
 yarn build
 yarn deploy
 ```
 
-### Getting the web API template
-
-```plain
-npx degit sonikjs/starter/templates/api my-api
-cd my-app
-```
-
-### Getting other presets
-
-Preact:
-
-```plain
-npx degit sonikjs/starter/templates/preact preact-app
-cd preact-app
-```
-
-React:
-
-```plain
-npx degit sonikjs/starter/templates/react react-app
-cd react-app
-```
-
 ## Project Structure
 
 Below is a typical project structure for a Sonik application with Islands.
 
-```plain
+```txt
 .
 ├── app
 │   ├── client.ts // client entry file
@@ -422,13 +406,13 @@ export default defineConfig({
 
 Build command (including a client):
 
-```plain
+```txt
 vite build && vite build --mode client
 ```
 
 Deploy with the following commands after build. Ensure you have [Wrangler](https://developers.cloudflare.com/workers/wrangler/) installed:
 
-```plain
+```txt
 wrangler pages deploy ./dist
 ```
 
@@ -447,13 +431,13 @@ export default defineConfig({
 
 Build command (including a client):
 
-```plain
+```txt
 vite build && vite build --mode client
 ```
 
 Ensure you have [Vercel CLI](https://vercel.com/docs/cli) installed.
 
-```plain
+```txt
 vercel --prebuilt
 ```
 
@@ -474,13 +458,13 @@ export default defineConfig({
 
 Build command:
 
-```plain
+```txt
 vite build
 ```
 
 Deploy command:
 
-```plain
+```txt
 wrangler deploy --compatibility-date 2023-08-01 --minify ./dist/index.js --name my-app
 ```
 
