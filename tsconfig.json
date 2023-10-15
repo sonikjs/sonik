@@ -1,19 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "ES2022",
+    "module": "ES2022",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
-    "lib": [
-      "esnext"
-    ],
+    "declaration": true,
     "types": [
-      "@cloudflare/workers-types",
       "node",
-      "vite/client",
+      "vite/client"
     ],
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "hono/jsx",
   },
+  "include": [
+    "src",
+    "test"
+  ],
 }

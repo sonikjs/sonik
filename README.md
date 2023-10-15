@@ -23,7 +23,7 @@ It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](
 Give it a try:
 
 ```plain
-npx degit yusukebe/sonik/examples/basic my-app
+npx degit sonikjs/starter/templates/basic my-app
 cd my-app
 ```
 
@@ -52,7 +52,7 @@ yarn deploy
 ### Getting the web API template
 
 ```plain
-npx degit yusukebe/sonik/examples/api my-api
+npx degit sonikjs/starter/templates/api my-api
 cd my-app
 ```
 
@@ -61,14 +61,14 @@ cd my-app
 Preact:
 
 ```plain
-npx degit yusukebe/sonik/examples/preact preact-app
+npx degit sonikjs/starter/templates/preact preact-app
 cd preact-app
 ```
 
 React:
 
 ```plain
-npx degit yusukebe/sonik/examples/react react-app
+npx degit sonikjs/starter/templates/react react-app
 cd react-app
 ```
 
