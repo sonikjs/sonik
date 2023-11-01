@@ -105,6 +105,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       : options.renderToString
 
   const renderContent = async (
+    c: Context,
     innerContent: string | Promise<string> | Node | Promise<Node>,
     { layouts, head, filename, nestedLayouts }: ToWebOptions
   ) => {
@@ -116,7 +117,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
         const layout = NESTED_LAYOUTS[path]
         if (layout) {
           try {
-            innerContent = await layout.default({ children: innerContent, head, filename })
+            innerContent = await layout.default({ children: innerContent, head, filename, c })
           } catch (e) {
             console.trace(e)
           }
@@ -136,7 +137,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
 
     if (defaultLayout) {
       try {
-        innerContent = await defaultLayout.default({ children: innerContent, head, filename })
+        innerContent = await defaultLayout.default({ children: innerContent, head, filename, c })
       } catch (e) {
         console.trace(e)
       }
@@ -239,7 +240,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
           // @ts-ignore
           c.setRenderer(async (node, headProps) => {
             if (headProps) head.set(headProps)
-            const content = await renderContent(node, renderOptions)
+            const content = await renderContent(c, node, renderOptions)
             return createResponse(c, content)
           })
           await next()
@@ -270,7 +271,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
             const notFoundHandler = notFound.default as NotFoundHandler
 
             subApp.get('*', async (c) => {
-              const content = await renderContent(notFoundHandler(c, { head }), renderOptions)
+              const content = await renderContent(c, notFoundHandler(c, { head }), renderOptions)
               c.status(404)
               return createResponse(c, content)
             })
@@ -281,7 +282,11 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
             subApp.onError((error, c) => {
               c.status(500)
               return (async () => {
-                const content = await renderContent(errorHandler(c, { error, head }), renderOptions)
+                const content = await renderContent(
+                  c,
+                  errorHandler(c, { error, head }),
+                  renderOptions
+                )
                 c.status(500)
                 return createResponse(c, content)
               })()
@@ -308,7 +313,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
     if (defaultNotFound) {
       const notFoundHandler = defaultNotFound.default as unknown as NotFoundHandler<E>
       app.notFound(async (c) => {
-        const content = await renderContent(notFoundHandler(c, { head }), {
+        const content = await renderContent(c, notFoundHandler(c, { head }), {
           head,
           filename: NOTFOUND_FILENAME,
         })
@@ -322,7 +327,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       const errorHandler = defaultError.default as unknown as ErrorHandler<E>
       app.onError((error, c) => {
         return (async () => {
-          const content = await renderContent(errorHandler(c, { error, head }), {
+          const content = await renderContent(c, errorHandler(c, { error, head }), {
             head,
             filename: ERROR_FILENAME,
           })
