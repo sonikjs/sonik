@@ -142,7 +142,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
       }
     }
 
-    const content = render(innerContent)
+    const content = await render(innerContent)
 
     if (typeof content === 'string') {
       if (defaultLayout || layouts?.length) {
@@ -158,7 +158,7 @@ export const createApp = <E extends Env>(options: ServerOptions<E>): Hono<E> => 
   if (options.setDefaultRenderer === true) {
     app.use('*', async (c, next) => {
       c.setRenderer(async (node) => {
-        return createResponse(c, render(node))
+        return createResponse(c, await render(node))
       })
       await next()
     })
