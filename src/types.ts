@@ -27,7 +27,7 @@ export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'
 /** JSX */
 export type CreateElement = (type: any, props: any, ...children: any[]) => Node
 export type FragmentType = any
-export type RenderToString<N = Node> = (node: N) => string
+export type RenderToString<N = Node> = (node: N) => string | Promise<string>
 export type RenderToReadableStream<N = Node> = (node: N, options?: any) => Promise<ReadableStream>
 export type Hydrate = (children: Node, parent: Element) => void
 
