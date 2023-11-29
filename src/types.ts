@@ -54,6 +54,7 @@ export type LayoutHandler<N = Node> = (props: {
   children: N | string
   head: Head<N>
   filename: string
+  c: LayoutContext
 }) => N | string | Promise<N | string>
 
 /** Function Handler */
@@ -68,3 +69,5 @@ export type Route<E extends Env = Env, N = Node> = {
 }
 
 export type AppRoute<E extends Env = Env> = (app: Hono<E>) => void
+
+export type LayoutContext = Omit<Context | 'render', 'setRenderer'>
