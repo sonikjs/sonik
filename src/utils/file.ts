@@ -91,3 +91,8 @@ export const listByDirectory = <T = unknown>(files: Record<string, T>) => {
 
   return organizedFiles
 }
+
+export const pathToDirPath = (path: string) => {
+  const dirPath = path.replace(/[^\/]+$/, '')
+  return dirPath
+}
