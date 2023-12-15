@@ -94,7 +94,6 @@
     "@types/babel__generator": "^7.6.4",
     "@types/babel__traverse": "^7.20.1",
     "@types/glob": "^8.1.0",
-    "esbuild": "^0.19.2",
     "eslint": "^8.55.0",
     "glob": "^10.3.10",
     "hono": "^3.11.7",

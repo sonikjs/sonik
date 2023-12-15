@@ -1,4 +1,3 @@
-import mdx from '@mdx-js/rollup'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -6,11 +5,4 @@ export default defineConfig({
     globals: true,
     exclude: ['node_modules', 'dist', '.git', '.cache', 'test-presets', 'sandbox'],
   },
-  plugins: [
-    {
-      ...mdx({
-        jsxImportSource: 'hono/jsx',
-      }),
-    },
-  ],
 })
