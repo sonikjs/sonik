@@ -30,10 +30,6 @@
       "types": "./dist/types.d.ts",
       "import": "./dist/types.js"
     },
-    "./misc": {
-      "types": "./dist/misc.d.ts",
-      "import": "./dist/misc.js"
-    },
     "./server": {
       "types": "./dist/server/index.d.ts",
       "import": "./dist/server/index.js"
@@ -49,10 +45,6 @@
     "./vite": {
       "types": "./dist/vite/index.d.ts",
       "import": "./dist/vite/index.js"
-    },
-    "./default": {
-      "types": "./dist/default/index.d.ts",
-      "import": "./dist/default/index.js"
     }
   },
   "typesVersions": {
@@ -63,9 +55,6 @@
       "server": [
         "./dist/server"
       ],
-      "misc": [
-        "./dist/misc"
-      ],
       "client": [
         "./dist/client"
       ],
@@ -74,9 +63,6 @@
       ],
       "vite": [
         "./dist/vite"
-      ],
-      "default": [
-        "./dist/default"
       ]
     }
   },
