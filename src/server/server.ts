@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Env } from 'hono'
-import type { H, NotFoundHandler, ErrorHandler, MiddlewareHandler } from 'hono/types'
 import { Hono } from 'hono'
+import type { Env, NotFoundHandler, ErrorHandler, MiddlewareHandler } from 'hono'
+import type { H } from 'hono/types'
 import { filePathToPath, groupByDirectory, listByDirectory, pathToDirPath } from '../utils/file.js'
 
 const NOTFOUND_FILENAME = '_404.tsx'
@@ -119,7 +119,7 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
     app.route(rootPath, subApp)
   }
 
-  return app as unknown as Hono<E>
+  return app
 }
 
 function applyNotFound(
