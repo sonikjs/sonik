@@ -56,11 +56,11 @@ export const groupByDirectory = <T = unknown>(files: Record<string, T>) => {
 }
 
 /*
-    /app/routes/_layout.tsx
-    /app/routes/blog/_layout.tsx
+    /app/routes/_renderer.tsx
+    /app/routes/blog/_renderer.tsx
     => {
-      '/app/routes': ['/app/routes/_layout.tsx']
-      '/app/routes/blog': ['/app/routes/blog/_layout.tsx', '/app/routes/_layout.tsx']
+      '/app/routes': ['/app/routes/_renderer.tsx']
+      '/app/routes/blog': ['/app/routes/blog/_renderer.tsx', '/app/routes/_.tsx']
     }
    */
 export const listByDirectory = <T = unknown>(files: Record<string, T>) => {
@@ -79,11 +79,11 @@ export const listByDirectory = <T = unknown>(files: Record<string, T>) => {
     }
   }
 
-  const directories = Object.keys(organizedFiles).sort((a, b) => a.length - b.length)
+  const directories = Object.keys(organizedFiles).sort((a, b) => b.length - a.length)
   for (const dir of directories) {
     for (const subDir of directories) {
       if (subDir.startsWith(dir) && subDir !== dir) {
-        const uniqueFiles = new Set([...organizedFiles[dir], ...organizedFiles[subDir]])
+        const uniqueFiles = new Set([...organizedFiles[subDir], ...organizedFiles[dir]])
         organizedFiles[subDir] = [...uniqueFiles]
       }
     }
@@ -92,7 +92,7 @@ export const listByDirectory = <T = unknown>(files: Record<string, T>) => {
   return organizedFiles
 }
 
-export const pathToDirPath = (path: string) => {
+export const pathToDirectoryPath = (path: string) => {
   const dirPath = path.replace(/[^\/]+$/, '')
   return dirPath
 }

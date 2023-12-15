@@ -1,10 +1,7 @@
-import { defineRoute } from '../../../../src'
+import { createHandlers } from '../factory'
 
-export const route = defineRoute((app) => {
-  app.get((c) => {
-    return c.render(<h1>Hello</h1>, {
-      title: 'This is a title',
-      meta: [{ name: 'description', content: 'This is a description' }],
-    })
+export default createHandlers((c) => {
+  return c.render(<h1>Hello</h1>, {
+    title: 'This is a title',
   })
 })

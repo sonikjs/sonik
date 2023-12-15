@@ -1,5 +1,9 @@
-import { describe, it, expect } from 'vitest'
-import { filePathToPath, groupByDirectory, listByDirectory } from '../../../src/utils/file.js'
+import {
+  filePathToPath,
+  groupByDirectory,
+  listByDirectory,
+  pathToDirectoryPath,
+} from '../../../src/utils/file.js'
 
 describe('filePathToPath', () => {
   it('Should return a correct path', () => {
@@ -54,21 +58,30 @@ describe('groupByDirectory', () => {
 describe('listByDirectory', () => {
   it('Should list files by their directory', () => {
     const files = {
-      '/app/routes/blog/posts/_layout.tsx': 'foo3',
-      '/app/routes/_layout.tsx': 'foo',
-      '/app/routes/blog/_layout.tsx': 'foo2',
+      '/app/routes/blog/posts/_renderer.tsx': 'foo3',
+      '/app/routes/_renderer.tsx': 'foo',
+      '/app/routes/blog/_renderer.tsx': 'foo2',
     }
 
     const result = listByDirectory(files)
 
     expect(result).toEqual({
-      '/app/routes': ['/app/routes/_layout.tsx'],
-      '/app/routes/blog': ['/app/routes/_layout.tsx', '/app/routes/blog/_layout.tsx'],
+      '/app/routes': ['/app/routes/_renderer.tsx'],
+      '/app/routes/blog': ['/app/routes/blog/_renderer.tsx', '/app/routes/_renderer.tsx'],
       '/app/routes/blog/posts': [
-        '/app/routes/_layout.tsx',
-        '/app/routes/blog/_layout.tsx',
-        '/app/routes/blog/posts/_layout.tsx',
+        '/app/routes/blog/posts/_renderer.tsx',
+        '/app/routes/blog/_renderer.tsx',
+        '/app/routes/_renderer.tsx',
       ],
     })
+  })
+})
+
+describe('pathToDirectoryPath', () => {
+  it('Should return the directory path', () => {
+    expect(pathToDirectoryPath('/')).toBe('/')
+    expect(pathToDirectoryPath('/about.tsx')).toBe('/')
+    expect(pathToDirectoryPath('/posts/index.tsx')).toBe('/posts/')
+    expect(pathToDirectoryPath('/posts/authors/index.tsx')).toBe('/posts/authors/')
   })
 })

@@ -1,14 +1,11 @@
-import type { Context } from '../../../../../src'
-import { defineRoute } from '../../../../../src'
 import Badge from '../../components/Badge'
+import { createHandlers } from '../../factory'
 
-export const route = defineRoute((app) => {
-  app.post((c) => {
-    return c.text('Created!', 201)
-  })
+export const POST = createHandlers((c) => {
+  return c.text('Created!', 201)
 })
 
-export default function AboutName(c: Context) {
+export default createHandlers((c) => {
   const { name } = c.req.param()
   return c.render(
     <>
@@ -19,4 +16,4 @@ export default function AboutName(c: Context) {
       title: name,
     }
   )
-}
+})

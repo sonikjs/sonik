@@ -1,7 +1,5 @@
-import { defineRoute } from '../../../../src'
+import { createHandlers } from '../factory'
 
-export const route = defineRoute((app) => {
-  app.get(() => {
-    throw new Error('Foo')
-  })
+export default createHandlers(() => {
+  throw new Error('Foo')
 })

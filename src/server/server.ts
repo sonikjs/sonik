@@ -2,17 +2,16 @@
 import { Hono } from 'hono'
 import type { Env, NotFoundHandler, ErrorHandler, MiddlewareHandler } from 'hono'
 import type { H } from 'hono/types'
-import { filePathToPath, groupByDirectory, listByDirectory, pathToDirPath } from '../utils/file.js'
+import {
+  filePathToPath,
+  groupByDirectory,
+  listByDirectory,
+  pathToDirectoryPath,
+} from '../utils/file.js'
 
 const NOTFOUND_FILENAME = '_404.tsx'
 const ERROR_FILENAME = '_error.tsx'
 const METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'] as const
-
-export type ServerOptions<E extends Env = Env> = {
-  ROUTES?: Record<string, RouteFile>
-  root?: string
-  app?: Hono<E>
-}
 
 type AppFile = { default: Hono }
 type RouteFile = {
@@ -22,32 +21,47 @@ type RendererFile = { default: MiddlewareHandler }
 type NotFoundFile = { default: NotFoundHandler }
 type ErrorFile = { default: ErrorHandler }
 
+export type ServerOptions<E extends Env = Env> = {
+  ROUTES?: Record<string, RouteFile>
+  RENDERER?: Record<string, RendererFile>
+  NOT_FOUND?: Record<string, NotFoundFile>
+  ERROR?: Record<string, ErrorFile>
+  root?: string
+  app?: Hono<E>
+}
+
 export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> => {
   const root = options?.root ?? '/app/routes'
   const rootRegExp = new RegExp(`^${root}`)
   const app = options?.app ?? new Hono()
 
   // Not Found
-  const NOT_FOUND_FILE = import.meta.glob<NotFoundFile>('/app/routes/**/_404.(ts|tsx)', {
-    eager: true,
-  })
+  const NOT_FOUND_FILE =
+    options?.NOT_FOUND ??
+    import.meta.glob<NotFoundFile>('/app/routes/**/_404.(ts|tsx)', {
+      eager: true,
+    })
   const notFoundMap = groupByDirectory(NOT_FOUND_FILE)
 
   // Error
-  const ERROR_FILE = import.meta.glob<ErrorFile>('/app/routes/**/_error.(ts|tsx)', {
-    eager: true,
-  })
+  const ERROR_FILE =
+    options?.ERROR ??
+    import.meta.glob<ErrorFile>('/app/routes/**/_error.(ts|tsx)', {
+      eager: true,
+    })
   const errorMap = groupByDirectory(ERROR_FILE)
 
   // Renderer
-  const RENDERER_FILE = import.meta.glob<RendererFile>('/app/routes/**/_renderer.tsx', {
-    eager: true,
-  })
+  const RENDERER_FILE =
+    options?.RENDERER ??
+    import.meta.glob<RendererFile>('/app/routes/**/_renderer.tsx', {
+      eager: true,
+    })
   const rendererList = listByDirectory(RENDERER_FILE)
-  const applyRenderer = (app: Hono, rendererFile: string) => {
+  const applyRenderer = (rendererFile: string) => {
     const renderer = RENDERER_FILE[rendererFile]
-    const path = pathToDirPath(rendererFile).replace(rootRegExp, '')
-    app.get(`${path}*`, renderer.default)
+    const path = pathToDirectoryPath(rendererFile).replace(rootRegExp, '')
+    app.get(`${filePathToPath(path)}*`, renderer.default)
   }
 
   // Routes
@@ -65,7 +79,7 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
     let rendererFiles = rendererList[dir]
 
     if (rendererFiles) {
-      applyRenderer(subApp, rendererFiles[0])
+      applyRenderer(rendererFiles[0])
     }
 
     if (!rendererFiles) {
@@ -81,7 +95,9 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
         return rendererFiles
       }
       rendererFiles = getRendererPaths(dirPaths)
-      applyRenderer(subApp, rendererFiles[0])
+      if (rendererFiles) {
+        applyRenderer(rendererFiles[0])
+      }
     }
 
     // Root path
@@ -110,26 +126,20 @@ export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> =>
       if (routeDefault && Array.isArray(routeDefault)) {
         subApp.get(path, ...(routeDefault as H[]))
       }
-
-      // Not Found
-      applyNotFound(subApp, root, dir, notFoundMap)
-      // Error
-      applyError(subApp, root, dir, errorMap)
     }
+    // Not Found
+    applyNotFound(subApp, dir, notFoundMap)
+    // Error
+    applyError(subApp, dir, errorMap)
     app.route(rootPath, subApp)
   }
 
   return app
 }
 
-function applyNotFound(
-  app: Hono,
-  root: string,
-  dir: string,
-  map: Record<string, Record<string, NotFoundFile>>
-) {
+function applyNotFound(app: Hono, dir: string, map: Record<string, Record<string, NotFoundFile>>) {
   for (const [mapDir, content] of Object.entries(map)) {
-    if (dir !== root && dir === mapDir) {
+    if (dir === mapDir) {
       const notFound = content[NOTFOUND_FILENAME]
       if (notFound) {
         const notFoundHandler = notFound.default
@@ -142,14 +152,9 @@ function applyNotFound(
   }
 }
 
-function applyError(
-  app: Hono,
-  root: string,
-  dir: string,
-  map: Record<string, Record<string, ErrorFile>>
-) {
+function applyError(app: Hono, dir: string, map: Record<string, Record<string, ErrorFile>>) {
   for (const [mapDir, content] of Object.entries(map)) {
-    if (dir !== root && dir === mapDir) {
+    if (dir === mapDir) {
       const error = content[ERROR_FILENAME]
       if (error) {
         const errorHandler = error.default
