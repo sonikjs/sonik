@@ -1,7 +1,7 @@
 {
   "name": "sonik",
   "description": "The meta-framework for Edges",
-  "version": "0.0.0-x-0.0.1",
+  "version": "0.0.0-x-0.0.2",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "type": "module",
