@@ -12,7 +12,7 @@ describe('transformJsxTags', () => {
   return <h1>Hello</h1>;
 };
 const WrappedBadge = function (props) {
-  return import.meta.env.SSR ? <div component-name="Badge.tsx" data-serialized-props={JSON.stringify(props)}><BadgeOriginal {...props}></BadgeOriginal></div> : <BadgeOriginal {...props}></BadgeOriginal>;
+  return import.meta.env.SSR ? <sonik-island component-name="Badge.tsx" data-serialized-props={JSON.stringify(props)}><BadgeOriginal {...props}></BadgeOriginal></sonik-island> : <BadgeOriginal {...props}></BadgeOriginal>;
 };
 export default WrappedBadge;`
     )

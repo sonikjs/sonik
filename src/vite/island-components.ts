@@ -42,14 +42,14 @@ function addSSRCheck(funcName: string, componentName: string) {
 
   const ssrElement = jsxElement(
     jsxOpeningElement(
-      jsxIdentifier('div'),
+      jsxIdentifier('sonik-island'),
       [
         jsxAttribute(jsxIdentifier(COMPONENT_NAME), stringLiteral(componentName)),
         jsxAttribute(jsxIdentifier(DATA_SERIALIZED_PROPS), jsxExpressionContainer(serializedProps)),
       ],
       false
     ),
-    jsxClosingElement(jsxIdentifier('div')),
+    jsxClosingElement(jsxIdentifier('sonik-island')),
     [
       jsxElement(
         jsxOpeningElement(
