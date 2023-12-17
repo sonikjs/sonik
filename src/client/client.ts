@@ -31,8 +31,8 @@ export const createClient = async (options: ClientOptions) => {
           const hydrate = options.hydrate
           const createElement = options.createElement
 
-          const newElem = createElement(Component, props)
-          hydrate(newElem, element)
+          const newElem = await createElement(Component, props)
+          await hydrate(newElem, element)
         })
         await Promise.all(elementPromises)
       }
