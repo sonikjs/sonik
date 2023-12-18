@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { showRoutes } from 'hono/dev'
-import { describe, expect, it, vi } from 'vitest'
 import { createApp } from '../../src/server'
 
 describe('Basic', () => {

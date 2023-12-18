@@ -1,4 +1,3 @@
-import { expect, describe, it } from 'vitest'
 import { transformJsxTags } from '../../../src/vite/island-components.js'
 
 describe('transformJsxTags', () => {

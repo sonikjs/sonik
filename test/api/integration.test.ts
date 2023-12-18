@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest'
 import { createApp } from '../../src/server'
 
 describe('Basic', () => {
