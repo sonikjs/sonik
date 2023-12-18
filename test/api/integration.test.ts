@@ -1,3 +1,4 @@
+import { poweredBy } from 'hono/powered-by'
 import { createApp } from '../../src/server'
 
 describe('Basic', () => {
@@ -9,10 +10,14 @@ describe('Basic', () => {
     root: './app/routes',
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ROUTES: ROUTES as any,
+    init: (app) => {
+      app.use('*', poweredBy())
+    },
   })
 
   it('Should have correct routes', () => {
     const routes = [
+      { path: '/*', method: 'ALL', handler: expect.anything() },
       {
         path: '/about/:name',
         method: 'GET',
@@ -44,12 +49,13 @@ describe('Basic', () => {
     expect(app.routes).toEqual(routes)
   })
 
-  it('Should return 200 response - /', async () => {
+  it('Should return 200 response - / with a Powered By header', async () => {
     const res = await app.request('/')
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({
       path: '/',
     })
+    expect(res.headers.get('x-powered-by')).toBe('Hono')
   })
 
   it('Should return 200 response - /foo', async () => {

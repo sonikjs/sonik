@@ -20,6 +20,7 @@ type RouteFile = {
 type RendererFile = { default: MiddlewareHandler }
 type NotFoundFile = { default: NotFoundHandler }
 type ErrorFile = { default: ErrorHandler }
+type InitFunction<E extends Env = Env> = (app: Hono<E>) => void
 
 export type ServerOptions<E extends Env = Env> = {
   ROUTES?: Record<string, RouteFile>
@@ -28,12 +29,17 @@ export type ServerOptions<E extends Env = Env> = {
   ERROR?: Record<string, ErrorFile>
   root?: string
   app?: Hono<E>
+  init?: InitFunction<E>
 }
 
 export const createApp = <E extends Env>(options?: ServerOptions<E>): Hono<E> => {
   const root = options?.root ?? '/app/routes'
   const rootRegExp = new RegExp(`^${root}`)
   const app = options?.app ?? new Hono()
+
+  if (options?.init) {
+    options.init(app)
+  }
 
   // Not Found
   const NOT_FOUND_FILE =

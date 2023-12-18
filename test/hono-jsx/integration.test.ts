@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { poweredBy } from 'hono/powered-by'
 import { createApp } from '../../src/server'
 
 describe('Basic', () => {
@@ -9,10 +10,18 @@ describe('Basic', () => {
   const app = createApp({
     root: './app/routes',
     ROUTES: ROUTES as any,
+    init: (app) => {
+      app.use('*', poweredBy())
+    },
   })
 
   it('Should have correct routes', () => {
     const routes = [
+      {
+        path: '/*',
+        method: 'ALL',
+        handler: expect.any(Function),
+      },
       {
         path: '/about/:name',
         method: 'POST',
@@ -40,10 +49,11 @@ describe('Basic', () => {
     expect(app.routes).toEqual(routes)
   })
 
-  it('Should return 200 response - /', async () => {
+  it('Should return 200 response - / with a Powered By header', async () => {
     const res = await app.request('/')
     expect(res.status).toBe(200)
     expect(await res.text()).toBe('<h1>Hello</h1>')
+    expect(res.headers.get('x-powered-by'), 'Hono')
   })
 
   it('Should return 404 response - /foo', async () => {
