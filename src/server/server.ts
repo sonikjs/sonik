@@ -166,10 +166,7 @@ function applyError(app: Hono, dir: string, map: Record<string, Record<string, E
         const errorHandler = error.default
         app.onError((error, c) => {
           c.status(500)
-          return (async () => {
-            c.status(500)
-            return errorHandler(error, c)
-          })()
+          return errorHandler(error, c)
         })
       }
     }
