@@ -30,6 +30,10 @@
       "types": "./dist/types.d.ts",
       "import": "./dist/types.js"
     },
+    "./factory": {
+      "types": "./dist/factory/index.d.ts",
+      "import": "./dist/factory/index.js"
+    },
     "./server": {
       "types": "./dist/server/index.d.ts",
       "import": "./dist/server/index.js"
@@ -51,6 +55,9 @@
     "*": {
       "types": [
         "./dist/types"
+      ],
+      "factory": [
+        "./dist/factory"
       ],
       "server": [
         "./dist/server"

@@ -2,7 +2,7 @@ import { builtinModules } from 'module'
 import path from 'path'
 import devServer, { defaultOptions as devServerDefaultOptions } from '@hono/vite-dev-server'
 import type { DevServerOptions } from '@hono/vite-dev-server'
-import type { PluginOption, UserConfig } from 'vite'
+import type { PluginOption } from 'vite'
 import { islandComponents } from './island-components.js'
 
 type SonikOptions = {
