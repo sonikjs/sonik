@@ -1,5 +1,11 @@
 # Sonik
 
+> [!IMPORTANT]
+> Sonik becomes HonoX; development of Sonik is discontinued and it is reborn as HonoX.
+> Everyone, please use HonoX: <https://github.com/honojs/honox>
+
+---
+
 Sonik is a simple and fast -_supersonic_- meta framework for creating web APIs and websites with Server-Side Rendering.
 It stands on the shoulders of giants; built on [Hono](https://hono.dev), [Vite](https://vitejs.dev), and JSX-based UI libraries.
 
